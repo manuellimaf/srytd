@@ -1,5 +1,7 @@
 package ar.com.dccsoft.srytd.services;
 
+import static java.lang.String.format;
+
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ public class FileBuilder {
 		long startTime = System.currentTimeMillis();
 		// TODO . Marcar proceso como iniciado
 		Long processId = processDao.create(from, username);
-		logger.info(String.format("[#%d] Starting process for date %tc", processId, from));
+		logger.info(format("[%d] Starting process for date %tc", processId, from));
 		
 		// TODO . Leer datos de campo
 		// TODO . Leer mapeos de tags
@@ -29,8 +31,8 @@ public class FileBuilder {
 		// TODO . Subir a FTPServer
 		// TODO . Enviar mail de resultado
 		
-		long duration = (System.currentTimeMillis() - startTime) / 1000;
-		logger.info(String.format("[#%d] Process finished after %d seconds", processId, duration));
+		long duration = (System.currentTimeMillis() - startTime);
+		logger.info(format("[%d] Process finished after %d millis", processId, duration));
 		MDC.clear();
 	}
 }

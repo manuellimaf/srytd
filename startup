@@ -1,6 +1,5 @@
 #!/bin/sh
 
-REPO="/home/manuel/.m2/repository/"
-CLASSPATH=$REPO"org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar"
-CLASSPATH=$CLASSPATH":"$REPO"org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"
-java -cp target/classes/:$CLASSPATH ar.com.dccsoft.srytd.App
+cd "$(dirname "$0")"
+java -jar target/srytd-jar-with-dependencies.jar 
+
