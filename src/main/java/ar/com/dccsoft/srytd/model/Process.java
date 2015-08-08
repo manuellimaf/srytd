@@ -9,7 +9,15 @@ public class Process {
 	private String startedBy;
 	private Date startDate;
 	private ProcessStatus status;
+	private Date readingsFrom;
 	
+	
+	public Date getReadingsFrom() {
+		return readingsFrom;
+	}
+	public void setReadingsFrom(Date readingsFrom) {
+		this.readingsFrom = readingsFrom;
+	}
 	public Long getId() {
 		return id;
 	}

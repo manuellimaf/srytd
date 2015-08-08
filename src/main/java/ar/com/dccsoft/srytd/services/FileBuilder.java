@@ -19,10 +19,12 @@ public class FileBuilder {
 	public void start(Date from, String username) {
 		MDC.put("user", username);
 		long startTime = System.currentTimeMillis();
-		// TODO . Marcar proceso como iniciado
-		Long processId = processDao.create(from, username);
-		logger.info(format("[%d] Starting process for date %tc", processId, from));
+		logger.info(format("Starting process for date %tc", from));
 		
+		// Iniciar el proceso
+		Long processId = processDao.create(from, username).getId();
+		logger.info(format("[%d] Process started", processId));
+
 		// TODO . Leer datos de campo
 		// TODO . Leer mapeos de tags
 		// TODO . Realizar validaciones

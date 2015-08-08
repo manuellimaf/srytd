@@ -9,8 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
-	// Logger createion MUST be the first statement (NPE Otherwise)
+	// Logger creation MUST be the first statement (NPE Otherwise)
 	private static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
+	
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 	
 	public static void init() {

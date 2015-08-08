@@ -12,10 +12,16 @@ public class App {
 			
 	public static void main(String[] args) {
 		
-		HibernateUtil.init();
+		try {
+			HibernateUtil.init();
 
-		Date from = DateUtils.addHours(new Date(), -1);
-		new FileBuilder().start(from, DEFAULT_USER);
+			Date from = DateUtils.addHours(new Date(), -1);
+			new FileBuilder().start(from, DEFAULT_USER);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		} finally {
+			HibernateUtil.getSessionFactory().close();
+		}
 		
 	}
 }
