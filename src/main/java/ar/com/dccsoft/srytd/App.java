@@ -1,5 +1,6 @@
 package ar.com.dccsoft.srytd;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -16,6 +17,8 @@ public class App {
 			HibernateUtil.init();
 
 			Date from = DateUtils.addHours(new Date(), -1);
+			from = DateUtils.truncate(from, Calendar.HOUR_OF_DAY);
+			
 			new FileBuilder().start(from, DEFAULT_USER);
 		} catch (Throwable t) {
 			t.printStackTrace();
