@@ -23,7 +23,7 @@ public class App {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {
-			HibernateUtil.getSessionFactory().close();
+			HibernateUtil.closeSessions();
 		}
 		
 	}

@@ -12,25 +12,37 @@ public class HibernateUtil {
 	// Logger creation MUST be the first statement (NPE Otherwise)
 	private static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 	
-	private static final SessionFactory sessionFactory = buildSessionFactory();
+	private static final SessionFactory sqlSrvSessionFactory = buildSQLServerSessionFactory();
+	private static final SessionFactory mysqlSessionFactory = buildMySQLSessionFactory();
 	
 	public static void init() {
 		logger.info("Hibernate initialization finished");
 	}
-	
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
+	public static void closeSessions() {
+		sqlSrvSessionFactory.close();
+		mysqlSessionFactory.close();
 	}
 	
-	public static Session currentSession() {
-		return sessionFactory.getCurrentSession();
+	static Session currentSQLServerSession() {
+		return sqlSrvSessionFactory.getCurrentSession();
+	}
+	static Session currentMySQLSession() {
+		return mysqlSessionFactory.getCurrentSession();
 	}
 	
-    private static SessionFactory buildSessionFactory() {
-		logger.info("Initializing Hibernate");
+    private static SessionFactory buildSQLServerSessionFactory() {
+		return buildSessionFactory("hibernate/hibernate-sqlserver.cfg.xml");
+    }
+
+    private static SessionFactory buildMySQLSessionFactory() {
+		return buildSessionFactory("hibernate/hibernate-mysql.cfg.xml");
+    }
+
+	private static SessionFactory buildSessionFactory(String configFile) throws ExceptionInInitializerError {
+		logger.info("Initializing Hibernate using " + configFile);
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-        	Configuration configuration = new Configuration().configure("hibernate/hibernate.cfg.xml");
+        	Configuration configuration = new Configuration().configure(configFile);
         
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
                     configuration.getProperties()).build();
@@ -42,6 +54,7 @@ public class HibernateUtil {
     		logger.error("Initial SessionFactory creation failed", ex);
             throw new ExceptionInInitializerError(ex);
         }
-    }
+	}
+
 
 }

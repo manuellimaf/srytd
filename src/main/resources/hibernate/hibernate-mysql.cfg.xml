@@ -31,7 +31,6 @@
 
 		<!-- Mappings -->
         <mapping resource="hibernate/Process.xml"/>
-        <mapping resource="hibernate/FieldValue.xml"/>
 
     </session-factory>
 
