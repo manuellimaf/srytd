@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+
+	<!-- SQLServer datasource properties -->
+	<sqlserver-url>jdbc:mysql://localhost/srytd</sqlserver-url>
+	<sqlserver-user>root</sqlserver-user>
+	<sqlserver-password>root</sqlserver-password>
+
+	<!-- MySQL datasource properties -->
+	<mysql-url>jdbc:mysql://localhost/srytd</mysql-url>
+	<mysql-user>root</mysql-user>
+	<mysql-password>root</mysql-password>
+	
+	<!-- Mail properties -->
+	<mail-from>srytd@gmail.com</mail-from>
+	<mail-user>srytd@gmail.com</mail-user>
+	<mail-password>srytd1234!!</mail-password>
+	<mail-smtp-host>smtp.google.com</mail-smtp-host>
+	<mail-smtp-port>123</mail-smtp-port>
+	
+	<!-- Alert mail -->
+	<alert-subject>[SRyTD] Error durante el proceso de envío de mediciones de campo</alert-subject>
+	<alert-body>
+		Se produjo un error cuando el usuario %s realizó el procesamiento de las mediciones 
+		de campo a enviar a la secretaría de energía.
+		Si necesita más información, contáctese con un administrador con este código de error: %s
+	</alert-body>
+</config>

@@ -11,50 +11,51 @@ import org.slf4j.LoggerFactory;
 public class HibernateUtil {
 	// Logger creation MUST be the first statement (NPE Otherwise)
 	private static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
-	
+
 	private static final SessionFactory sqlSrvSessionFactory = buildSQLServerSessionFactory();
 	private static final SessionFactory mysqlSessionFactory = buildMySQLSessionFactory();
-	
+
 	public static void init() {
 		logger.info("Hibernate initialization finished");
 	}
+
 	public static void closeSessions() {
 		sqlSrvSessionFactory.close();
 		mysqlSessionFactory.close();
 	}
-	
+
 	static Session currentSQLServerSession() {
 		return sqlSrvSessionFactory.getCurrentSession();
 	}
+
 	static Session currentMySQLSession() {
 		return mysqlSessionFactory.getCurrentSession();
 	}
-	
-    private static SessionFactory buildSQLServerSessionFactory() {
-		return buildSessionFactory("hibernate/hibernate-sqlserver.cfg.xml");
-    }
 
-    private static SessionFactory buildMySQLSessionFactory() {
-		return buildSessionFactory("hibernate/hibernate-mysql.cfg.xml");
-    }
-
-	private static SessionFactory buildSessionFactory(String configFile) throws ExceptionInInitializerError {
-		logger.info("Initializing Hibernate using " + configFile);
-        try {
-            // Create the SessionFactory from hibernate.cfg.xml
-        	Configuration configuration = new Configuration().configure(configFile);
-        
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
-                    configuration.getProperties()).build();
-            return configuration.buildSessionFactory(serviceRegistry);
-        
-        }
-        catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
-    		logger.error("Initial SessionFactory creation failed", ex);
-            throw new ExceptionInInitializerError(ex);
-        }
+	private static SessionFactory buildSQLServerSessionFactory() {
+		return buildSessionFactory("hibernate/hibernate-sqlserver.cfg.xml", Config.getSqlServerUrl(), Config.getSqlServerUser(),
+				Config.getSqlServerPassword());
 	}
 
+	private static SessionFactory buildMySQLSessionFactory() {
+		return buildSessionFactory("hibernate/hibernate-mysql.cfg.xml", Config.getMysqlUrl(), Config.getMysqlUser(),
+				Config.getMysqlPassword());
+	}
+
+	private static SessionFactory buildSessionFactory(String configFile, String url, String username, String password)
+			throws ExceptionInInitializerError {
+		logger.info("Initializing Hibernate using " + configFile);
+		try {
+			Configuration configuration = new Configuration().configure(configFile);
+			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties())
+					.applySetting("hibernate.connection.url", url).applySetting("hibernate.connection.username", username)
+					.applySetting("hibernate.connection.password", password).build();
+			return configuration.buildSessionFactory(serviceRegistry);
+
+		} catch (Throwable ex) {
+			logger.error("Initial SessionFactory creation failed", ex);
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
 
 }

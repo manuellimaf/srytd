@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ar.com.dccsoft.srytd.model">
+	<class name="ProcessError" table="process_error">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="errorId" column="error_id" not-null="true"/>
+		<property name="message" not-null="true"/>
+		<property name="errorDate" column="error_date" not-null="true"/>
+		<property name="stacktrace" />
+		<property name="username" not-null="true"/>
+	</class>
+	
+</hibernate-mapping>
