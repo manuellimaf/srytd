@@ -1,68 +1,99 @@
 package ar.com.dccsoft.srytd.services;
 
-import static java.lang.String.format;
+import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.TagMapping;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 
 public class FileBuilder {
 
-	private static Logger logger = LoggerFactory.getLogger(FileBuilder.class);
+	private CSVFormat format = CSVFormat.DEFAULT.withDelimiter(',');
+	private List<FieldValue> fieldValues;
+	private Map<String, String> mappings;
+	private AppPropertyService propService = new AppPropertyService();
 
-	private FieldValueService fieldValueService = new FieldValueService();
-	private TagMappingService tagService = new TagMappingService();
-	private ProcessService processService = new ProcessService();
-
-	public void start(Date from, String username) {
-		MDC.put("user", username);
-		long startTime = System.currentTimeMillis();
-		logger.info(format("Starting process for date %tc", from));
-
-		// Iniciar el proceso
-		Long processId = processService.create(from, username);
-		MDC.put("processId", processId.toString());
-		logger.info("Process started");
-
-		// Leer datos de campo
-		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(from);
-
-		// Leer mapeos de tags
-		List<TagMapping> mappings = tagService.getAllMappings();
-
-		// TODO . Realizar validaciones
-		performValidations(fieldValues, mappings);
-
-		// TODO . Generar txt (csv)
-		// TODO . Persistir txt
-		// TODO . Subir a FTPServer
-		// TODO . Enviar mail de resultado
-
-		long duration = (System.currentTimeMillis() - startTime);
-		logger.info(format("Process finished after %d millis", processId, duration));
-		MDC.clear();
+	public FileBuilder withValues(List<FieldValue> fieldValues) {
+		this.fieldValues = fieldValues;
+		return this;
 	}
 
-	private void performValidations(List<FieldValue> fieldValues, List<TagMapping> mappings) {
-		Set<String> tagNames = Sets.newHashSet(Lists.transform(mappings, mapping -> mapping.getName()));
-		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fv -> fv.getTag()));
+	public FileBuilder withMappings(List<TagMapping> mappings) {
+		this.mappings = asMap(mappings);
+		return this;
+	}
 
-		if (!tagNames.containsAll(fieldTagNames)) {
-			fieldTagNames.removeAll(tagNames);
-			String notFound = Arrays.toString(fieldTagNames.toArray(new String[0]));
-			logger.info(format("Tag Mappings not found for: %s", notFound));
-			// TODO . Marcar el proceso para finalización con warning
+	public void build() {
+		tryAndInform("Error building file", () -> {
+			format = formatWithHeaders();
+			Appendable out = null; // new ByteArrayOutputStream();
+
+				try (CSVPrinter printer = new CSVPrinter(out, format);) {
+					String ID_EMPRESA = propService.getCompanyId();
+					String ID_INSTALACION = propService.getFacilityId();
+
+					// Automatic readings
+				for (FieldValue v : fieldValues) {
+					String tagCode = mappings.get(v.getTag());
+					Date ts = v.getTimestamp();
+					String timestamp = String.format("%td-%tm-%tY %tH:%tM", ts, ts, ts, ts, ts);
+					String readingType = "A";
+					printer.printRecord(ID_EMPRESA, ID_INSTALACION, tagCode, timestamp, readingType, v.getPresion(), v.getPresion_q(),
+							v.getTemperatura(), v.getTemperatura_q(), v.getCaudal_horario(), v.getCaudal_horario_q(),
+							v.getVolumen_bruto_acumulado(), v.getVolumen_bruto_acumulado_q(), v.getVolumen_neto_hoy(),
+							v.getVolumen_neto_hoy_q(), v.getCaudal_horario_9300(), v.getCaudal_horario_9300_q(),
+							v.getVolumen_acumulado_9300(), v.getVolumen_acumulado_9300_q(), v.getVolumen_desplazado(),
+							v.getVolumen_desplazado_q(), v.getAltura_liquida(), v.getAltura_liquida_q(), v.getMf(), v.getMf_q(),
+							v.getCtl(), v.getCtl_q(), v.getCpl(), v.getCpl_q(), v.getFactor_k(), v.getFactor_k_q(), v.getPulsos_brutos(),
+							v.getPulsos_brutos_q(), v.getFcv(), v.getFcv_q(), v.getCtsh(), v.getCtsh_q(), v.getPorcentaje_agua(),
+							v.getPorcentaje_agua_q(), v.getPoder_calorifico(), v.getPoder_calorifico_q(), v.getDensidad_relativa(),
+							v.getDensidad_relativa_q(), v.getCo2(), v.getCo2_q(), v.getN2(), v.getN2_q(), v.getSh2(), v.getSh2_q(),
+							v.getC1(), v.getC1_q(), v.getC2(), v.getC2_q(), v.getC3(), v.getC3_q(), v.getIc4(), v.getIc4_q(), v.getNc4(),
+							v.getNc4_q(), v.getIc5(), v.getIc5_q(), v.getNc5(), v.getNc5_q(), v.getC6(), v.getC6_q(), v.getVolumen_seco(),
+							v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(), v.getFin_transac(),
+							v.getFin_transac_q(), v.getVolumen_hoy_9300(), v.getVolumen_hoy_9300_q(), v.getDensidad(), v.getDensidad_q(),
+							v.getVolumen_bruto_hoy(), v.getVolumen_bruto_hoy_q(), v.getVolumen_neto_acumulado(),
+							v.getVolumen_neto_acumulado_q());
+				}
+
+				// TODO . Manual values
+
+			} catch (Exception e) {
+				throw new RuntimeException("Error building CSV", e);
+			}
+
+			return null;
+		});
+	}
+
+	private CSVFormat formatWithHeaders() {
+		return format.withHeader("idempresa", "idinstalacion", "tagmedidor", "timestamp", "manual_auto", "presion", "presion_q",
+				"temperatura", "temperatura_q", "caudal_horario", "caudal_horario_q", "volumen_bruto_acumulado",
+				"volumen_bruto_acumulado_q", "volumen_neto_hoy", "volumen_neto_hoy_q", "caudal_horario_9300", "caudal_horario_9300_q",
+				"volumen_acumulado_9300", "volumen_acumulado_9300_q", "volumen_desplazado", "volumen_desplazado_q", "altura_liquida",
+				"altura_liquida_q", "mf", "mf_q", "ctl", "ctl_q", "cpl", "cpl_q", "factor_k", "factor_k_q", "pulsos_brutos",
+				"pulsos_brutos_q", "fcv", "fcv_q", "ctsh", "ctsh_q", "porcentaje_agua", "porcentaje_agua_q", "poder_calorifico",
+				"poder_calorifico_q", "densidad_relativa", "densidad_relativa_q", "co2", "co2_q", "n2", "n2_q", "sh2", "sh2_q", "c1",
+				"c1_q", "c2", "c2_q", "c3", "c3_q", "ic4", "ic4_q", "nc4", "nc4_q", "Ic5", "Ic5_q", "nc5", "nc5_q", "c6", "c6_q",
+				"volumen_seco", "Volumen_seco_q", "inicio_transac", "inicio_transac_q", "fin_transac", "Fin_transac_q", "Volumen_hoy_9300",
+				"Volumen_hoy_9300_q", "densidad", "Densidad_q", "Volumen_bruto_hoy", "Volumen_bruto_hoy_q", "Volumen_neto_acumulado",
+				"Volumen_neto_acumulado_q");
+	}
+
+	private Map<String, String> asMap(List<TagMapping> mappings) {
+		Map<String, String> result = Maps.newHashMap();
+		for (TagMapping m : mappings) {
+			result.put(m.getName(), m.getCode());
 		}
+		return result;
 	}
+
 }
