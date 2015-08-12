@@ -1,4 +1,4 @@
-package ar.com.dccsoft.srytd.utils;
+package ar.com.dccsoft.srytd.utils.hibernate;
 
 import org.hibernate.Session;
 

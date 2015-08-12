@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.services.FileBuilder;
 import ar.com.dccsoft.srytd.utils.Config;
-import ar.com.dccsoft.srytd.utils.HibernateUtil;
+import ar.com.dccsoft.srytd.utils.hibernate.HibernateUtil;
 
 public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);

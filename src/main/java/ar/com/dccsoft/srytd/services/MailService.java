@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.utils.Config;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 public class MailService {
@@ -100,14 +99,8 @@ public class MailService {
 	}
 
 	private InternetAddress[] createInternetAddresses(List<String> recipients) {
-		InternetAddress[] to = Lists.transform(recipients, new Function<String, InternetAddress>() {
-			@Override
-			public InternetAddress apply(String recipient) {
-				return createInternetAddress(recipient);
-			}
-
-		}).toArray(new InternetAddress[0]);
-		return to;
+		List<InternetAddress> to = Lists.transform(recipients, recipient -> createInternetAddress(recipient));
+		return to.toArray(new InternetAddress[0]);
 	}
 
 	private InternetAddress createInternetAddress(String recipient) {

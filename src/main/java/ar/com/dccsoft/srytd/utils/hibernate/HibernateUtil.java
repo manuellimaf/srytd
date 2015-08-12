@@ -1,4 +1,4 @@
-package ar.com.dccsoft.srytd.utils;
+package ar.com.dccsoft.srytd.utils.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,6 +7,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ar.com.dccsoft.srytd.utils.Config;
 
 public class HibernateUtil {
 	// Logger creation MUST be the first statement (NPE Otherwise)

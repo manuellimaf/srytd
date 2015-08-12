@@ -1,7 +1,7 @@
 package ar.com.dccsoft.srytd.daos;
 
-import static ar.com.dccsoft.srytd.utils.TransactionManager.transactional;
-import static ar.com.dccsoft.srytd.utils.Datasource.MySQL;
+import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
+import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 import ar.com.dccsoft.srytd.model.ProcessError;
 
 public class ProcessErrorDao {

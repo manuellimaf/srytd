@@ -2,27 +2,29 @@ package ar.com.dccsoft.srytd.services;
 
 import static java.lang.String.format;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import ar.com.dccsoft.srytd.daos.FieldValueDao;
-import ar.com.dccsoft.srytd.daos.TagMappingDao;
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.TagMapping;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class FileBuilder {
 
 	private static Logger logger = LoggerFactory.getLogger(FileBuilder.class);
 
-	private FieldValueDao fieldValueDao = new FieldValueDao();
-	private TagMappingDao tagMappingDao = new TagMappingDao();
+	private FieldValueService fieldValueService = new FieldValueService();
+	private TagMappingService tagService = new TagMappingService();
 	private ProcessService processService = new ProcessService();
-	
+
 	public void start(Date from, String username) {
 		MDC.put("user", username);
 		long startTime = System.currentTimeMillis();
@@ -34,17 +36,14 @@ public class FileBuilder {
 		logger.info("Process started");
 
 		// Leer datos de campo
-		Date to = DateUtils.addHours(from, 1);
-		logger.info(format("Reading field values for: %tc-%tc", from, to));
-		List<FieldValue> fieldValues = fieldValueDao.readFieldValues(from, to);
-		logger.info(format("%d field values read", fieldValues.size()));
+		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(from);
 
 		// Leer mapeos de tags
-		logger.info("Reading tag mappings");
-		List<TagMapping> mappings = tagMappingDao.getAll();
-		logger.info(format("%d tag mappings read", mappings.size()));
+		List<TagMapping> mappings = tagService.getAllMappings();
 
 		// TODO . Realizar validaciones
+		performValidations(fieldValues, mappings);
+
 		// TODO . Generar txt (csv)
 		// TODO . Persistir txt
 		// TODO . Subir a FTPServer
@@ -55,4 +54,15 @@ public class FileBuilder {
 		MDC.clear();
 	}
 
+	private void performValidations(List<FieldValue> fieldValues, List<TagMapping> mappings) {
+		Set<String> tagNames = Sets.newHashSet(Lists.transform(mappings, mapping -> mapping.getName()));
+		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fv -> fv.getTag()));
+
+		if (!tagNames.containsAll(fieldTagNames)) {
+			fieldTagNames.removeAll(tagNames);
+			String notFound = Arrays.toString(fieldTagNames.toArray(new String[0]));
+			logger.info(format("Tag Mappings not found for: %s", notFound));
+			// TODO . Marcar el proceso para finalización con warning
+		}
+	}
 }

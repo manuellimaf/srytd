@@ -4,8 +4,8 @@ import java.util.Date;
 
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
-import static ar.com.dccsoft.srytd.utils.TransactionManager.transactional;
-import static ar.com.dccsoft.srytd.utils.Datasource.MySQL;
+import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
+import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
 public class ProcessDao {
 

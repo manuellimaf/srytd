@@ -1,7 +1,7 @@
 package ar.com.dccsoft.srytd.daos;
 
-import static ar.com.dccsoft.srytd.utils.Datasource.SQLSERVER;
-import static ar.com.dccsoft.srytd.utils.TransactionManager.transactional;
+import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.SQLSERVER;
+import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
 import java.util.Date;
 import java.util.List;
