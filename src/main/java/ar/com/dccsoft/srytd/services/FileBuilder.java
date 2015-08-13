@@ -17,6 +17,7 @@ import com.google.common.collect.Maps;
 
 public class FileBuilder {
 
+	// TODO . parameterize delimiter
 	private CSVFormat format = CSVFormat.DEFAULT.withDelimiter(',');
 	private List<FieldValue> fieldValues;
 	private Map<String, String> mappings;
@@ -47,33 +48,34 @@ public class FileBuilder {
 					Date ts = v.getTimestamp();
 					String timestamp = String.format("%td-%tm-%tY %tH:%tM", ts, ts, ts, ts, ts);
 					String readingType = "A";
-					printer.printRecord(ID_EMPRESA, ID_INSTALACION, tagCode, timestamp, readingType, v.getPresion(), v.getPresion_q(),
-							v.getTemperatura(), v.getTemperatura_q(), v.getCaudal_horario(), v.getCaudal_horario_q(),
-							v.getVolumen_bruto_acumulado(), v.getVolumen_bruto_acumulado_q(), v.getVolumen_neto_hoy(),
-							v.getVolumen_neto_hoy_q(), v.getCaudal_horario_9300(), v.getCaudal_horario_9300_q(),
-							v.getVolumen_acumulado_9300(), v.getVolumen_acumulado_9300_q(), v.getVolumen_desplazado(),
-							v.getVolumen_desplazado_q(), v.getAltura_liquida(), v.getAltura_liquida_q(), v.getMf(), v.getMf_q(),
-							v.getCtl(), v.getCtl_q(), v.getCpl(), v.getCpl_q(), v.getFactor_k(), v.getFactor_k_q(), v.getPulsos_brutos(),
-							v.getPulsos_brutos_q(), v.getFcv(), v.getFcv_q(), v.getCtsh(), v.getCtsh_q(), v.getPorcentaje_agua(),
-							v.getPorcentaje_agua_q(), v.getPoder_calorifico(), v.getPoder_calorifico_q(), v.getDensidad_relativa(),
-							v.getDensidad_relativa_q(), v.getCo2(), v.getCo2_q(), v.getN2(), v.getN2_q(), v.getSh2(), v.getSh2_q(),
-							v.getC1(), v.getC1_q(), v.getC2(), v.getC2_q(), v.getC3(), v.getC3_q(), v.getIc4(), v.getIc4_q(), v.getNc4(),
-							v.getNc4_q(), v.getIc5(), v.getIc5_q(), v.getNc5(), v.getNc5_q(), v.getC6(), v.getC6_q(), v.getVolumen_seco(),
-							v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(), v.getFin_transac(),
-							v.getFin_transac_q(), v.getVolumen_hoy_9300(), v.getVolumen_hoy_9300_q(), v.getDensidad(), v.getDensidad_q(),
-							v.getVolumen_bruto_hoy(), v.getVolumen_bruto_hoy_q(), v.getVolumen_neto_acumulado(),
-							v.getVolumen_neto_acumulado_q());
-				}
 
-				// TODO . Manual values
-
-				os.write(sb.toString().getBytes());
-
-				return os;
-			} catch (Exception e) {
-				throw new RuntimeException("Error building CSV", e);
+					// TODO . Parameterize decimal separator
+				printer.printRecord(ID_EMPRESA, ID_INSTALACION, tagCode, timestamp, readingType, v.getPresion(), v.getPresion_q(),
+						v.getTemperatura(), v.getTemperatura_q(), v.getCaudal_horario(), v.getCaudal_horario_q(),
+						v.getVolumen_bruto_acumulado(), v.getVolumen_bruto_acumulado_q(), v.getVolumen_neto_hoy(),
+						v.getVolumen_neto_hoy_q(), v.getCaudal_horario_9300(), v.getCaudal_horario_9300_q(), v.getVolumen_acumulado_9300(),
+						v.getVolumen_acumulado_9300_q(), v.getVolumen_desplazado(), v.getVolumen_desplazado_q(), v.getAltura_liquida(),
+						v.getAltura_liquida_q(), v.getMf(), v.getMf_q(), v.getCtl(), v.getCtl_q(), v.getCpl(), v.getCpl_q(),
+						v.getFactor_k(), v.getFactor_k_q(), v.getPulsos_brutos(), v.getPulsos_brutos_q(), v.getFcv(), v.getFcv_q(),
+						v.getCtsh(), v.getCtsh_q(), v.getPorcentaje_agua(), v.getPorcentaje_agua_q(), v.getPoder_calorifico(),
+						v.getPoder_calorifico_q(), v.getDensidad_relativa(), v.getDensidad_relativa_q(), v.getCo2(), v.getCo2_q(),
+						v.getN2(), v.getN2_q(), v.getSh2(), v.getSh2_q(), v.getC1(), v.getC1_q(), v.getC2(), v.getC2_q(), v.getC3(),
+						v.getC3_q(), v.getIc4(), v.getIc4_q(), v.getNc4(), v.getNc4_q(), v.getIc5(), v.getIc5_q(), v.getNc5(),
+						v.getNc5_q(), v.getC6(), v.getC6_q(), v.getVolumen_seco(), v.getVolumen_seco_q(), v.getInicio_transac(),
+						v.getInicio_transac_q(), v.getFin_transac(), v.getFin_transac_q(), v.getVolumen_hoy_9300(),
+						v.getVolumen_hoy_9300_q(), v.getDensidad(), v.getDensidad_q(), v.getVolumen_bruto_hoy(),
+						v.getVolumen_bruto_hoy_q(), v.getVolumen_neto_acumulado(), v.getVolumen_neto_acumulado_q());
 			}
-		});
+
+			// TODO . Manual values
+
+			os.write(sb.toString().getBytes());
+
+			return os;
+		} catch (Exception e) {
+			throw new RuntimeException("Error building CSV", e);
+		}
+	}	);
 	}
 
 	private CSVFormat formatWithHeaders() {
