@@ -5,8 +5,14 @@ import org.hibernate.Transaction;
 
 public class TransactionManager {
 
-    public static <A> A transactional(Datasource datasource, HibernateSessionTask<A> task) {
+	public static <A> A transactional(Datasource datasource, HibernateSessionTask<A> task) {
 		Session s = datasource.currentSession();
+
+		// Prevent nested transactions
+		if (s.getTransaction().isActive()) {
+			return task.call(s);
+		}
+
 		Transaction tx = s.beginTransaction();
 		try {
 			A result = task.call(s);
@@ -16,7 +22,6 @@ public class TransactionManager {
 			tx.rollback();
 			throw new RuntimeException("Error in transaction", t);
 		}
-    }
+	}
 
 }
-

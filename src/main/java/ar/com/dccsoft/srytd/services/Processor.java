@@ -2,6 +2,7 @@ package ar.com.dccsoft.srytd.services;
 
 import static java.lang.String.format;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Processor {
 	public void start(Date from, String username) {
 		MDC.put("user", username);
 		long startTime = System.currentTimeMillis();
-		logger.info(format("Starting process for date %tc", from));
+		logger.info(format("Starting process for date %tY-%tm-%td %tH:%tM", from, from, from, from, from));
 
 		// Iniciar el proceso
 		Long processId = processService.create(from, username);
@@ -44,11 +45,13 @@ public class Processor {
 		// Realizar validaciones
 		performValidations(fieldValues, mappings);
 
-		// TODO . Generar txt (csv)
+		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings).withValues(fieldValues);
-		fileBuilder.build();
+		ByteArrayOutputStream os = fileBuilder.build();
 
-		// TODO . Persistir txt
+		// Persistir txt
+		processService.saveFile(processId, os.toByteArray());
+
 		// TODO . Subir a FTPServer
 		// TODO . Enviar mail de resultado
 

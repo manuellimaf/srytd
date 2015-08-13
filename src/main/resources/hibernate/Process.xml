@@ -17,6 +17,9 @@
 			   <param name="type">12</param> <!-- varchar(255) -->
 			</type>
 		</property>
+		<property name="file">
+			<column name="file" sql-type="longtext"></column>
+		</property>
 	</class>
 	
 </hibernate-mapping>

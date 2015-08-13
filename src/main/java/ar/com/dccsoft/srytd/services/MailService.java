@@ -1,12 +1,10 @@
 package ar.com.dccsoft.srytd.services;
 
-import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,6 +17,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,9 @@ public class MailService {
 		send(message);
 	}
 
-	public void send(String subject, String body, List<String> recipients, File attachment) {
+	public void send(String subject, String body, List<String> recipients, byte[] attachment, String attachmentName, String attachmentType) {
 		InternetAddress[] to = createInternetAddresses(recipients);
-		Multipart multipart = createMultipartBody(body, attachment);
+		Multipart multipart = createMultipartBody(body, attachment, attachmentName, attachmentType);
 		Message message = createMultipartMessage(subject, multipart, to);
 		send(message);
 	}
@@ -52,7 +51,7 @@ public class MailService {
 		}
 	}
 
-	private Multipart createMultipartBody(String body, File attachment) {
+	private Multipart createMultipartBody(String body, byte[] attachment, String attachmentName, String attachmentType) {
 		Multipart multipart = new MimeMultipart();
 		MimeBodyPart bodyPart = new MimeBodyPart();
 		try {
@@ -60,9 +59,9 @@ public class MailService {
 			multipart.addBodyPart(bodyPart);
 
 			MimeBodyPart attachmentPart = new MimeBodyPart();
-			DataSource source = new FileDataSource(attachment);
+			DataSource source = new ByteArrayDataSource(attachment, attachmentType);
 			attachmentPart.setDataHandler(new DataHandler(source));
-			attachmentPart.setFileName(attachment.getName());
+			attachmentPart.setFileName(attachmentName);
 			multipart.addBodyPart(attachmentPart);
 			return multipart;
 		} catch (MessagingException e) {

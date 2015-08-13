@@ -2,6 +2,7 @@ package ar.com.dccsoft.srytd.services;
 
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,16 @@ public class FileBuilder {
 		return this;
 	}
 
-	public void build() {
-		tryAndInform("Error building file", () -> {
+	public ByteArrayOutputStream build() {
+		return tryAndInform("Error building file", () -> {
 			format = formatWithHeaders();
-			Appendable out = null; // new ByteArrayOutputStream();
+			StringBuilder sb = new StringBuilder("");
 
-				try (CSVPrinter printer = new CSVPrinter(out, format);) {
-					String ID_EMPRESA = propService.getCompanyId();
-					String ID_INSTALACION = propService.getFacilityId();
+			try (CSVPrinter printer = new CSVPrinter(sb, format); ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+				String ID_EMPRESA = propService.getCompanyId();
+				String ID_INSTALACION = propService.getFacilityId();
 
-					// Automatic readings
+				// Automatic readings
 				for (FieldValue v : fieldValues) {
 					String tagCode = mappings.get(v.getTag());
 					Date ts = v.getTimestamp();
@@ -66,11 +67,12 @@ public class FileBuilder {
 
 				// TODO . Manual values
 
+				os.write(sb.toString().getBytes());
+
+				return os;
 			} catch (Exception e) {
 				throw new RuntimeException("Error building CSV", e);
 			}
-
-			return null;
 		});
 	}
 
