@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.utils.Config;
 
-public class AlertService {
+public class NotificationsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AlertService.class);
+	private static final Logger logger = LoggerFactory.getLogger(NotificationsService.class);
 	private MailService mailService = new MailService();
 	private AppPropertyService propertyService = new AppPropertyService();
 
@@ -24,5 +24,17 @@ public class AlertService {
 			logger.warn("No recipients found for mail alerts.");
 		}
 	}
+
+	// public void sendFinishMessage(String dateStr, File data) {
+	// String subject = Config.getAlertSubject();
+	// String body = String.format(Config.getAlertBody(), username, errorId);
+	// List<String> recipients = propertyService.getAlertsRecipients();
+	//
+	// if (!recipients.isEmpty()) {
+	// mailService.send(subject, body, recipients);
+	// } else {
+	// logger.warn("No recipients found for mail alerts.");
+	// }
+	// }
 
 }

@@ -11,7 +11,7 @@ public class ErrorService {
 
 	private static Logger logger = LoggerFactory.getLogger(ErrorService.class);
 	private ProcessErrorDao errorDao = new ProcessErrorDao();
-	private AlertService alertService = new AlertService();
+	private NotificationsService alertService = new NotificationsService();
 
 	public void handleError(Long errorId, String message, Throwable t) {
 		String username = currentUser();

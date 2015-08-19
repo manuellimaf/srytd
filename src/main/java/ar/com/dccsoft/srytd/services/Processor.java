@@ -2,7 +2,7 @@ package ar.com.dccsoft.srytd.services;
 
 import static java.lang.String.format;
 
-import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.slf4j.MDC;
 
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.TagMapping;
+import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -25,6 +26,8 @@ public class Processor {
 	private FieldValueService fieldValueService = new FieldValueService();
 	private TagMappingService tagService = new TagMappingService();
 	private ProcessService processService = new ProcessService();
+	private FTPConnector ftpConnector = new FTPConnector();
+	private AppPropertyService propService = new AppPropertyService();
 
 	public void start(Date from, String username) {
 		MDC.put("user", username);
@@ -47,17 +50,27 @@ public class Processor {
 
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings).withValues(fieldValues);
-		ByteArrayOutputStream os = fileBuilder.build();
+		InputStream is = fileBuilder.build();
 
 		// Persistir txt
-		processService.saveFile(processId, os.toByteArray());
+		processService.saveFile(processId, is);
 
-		// TODO . Subir a FTPServer
+		// Subir a FTPServer
+		ftpConnector.transfer(is, fileName(from));
+
 		// TODO . Enviar mail de resultado
 
 		long duration = (System.currentTimeMillis() - startTime);
 		logger.info(format("Process finished after %d millis", processId, duration));
 		MDC.clear();
+	}
+
+	private String fileName(Date from) {
+		String companyId = propService.getCompanyId();
+		String facilityId = propService.getFacilityId();
+		String suffix = "res318_mediciones.txt";
+
+		return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
 	}
 
 	private void performValidations(List<FieldValue> fieldValues, List<TagMapping> mappings) {

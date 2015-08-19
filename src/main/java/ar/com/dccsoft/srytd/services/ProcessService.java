@@ -2,8 +2,10 @@ package ar.com.dccsoft.srytd.services;
 
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
+import java.io.InputStream;
 import java.util.Date;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +23,10 @@ public class ProcessService {
 		});
 	}
 
-	public void saveFile(Long processId, byte[] byteArray) {
+	public void saveFile(Long processId, InputStream is) {
 		try {
-			String file = new String(byteArray);
-			processDao.saveFile(processId, file);
+			String data = IOUtils.toString(is);
+			processDao.saveFile(processId, data);
 		} catch (Throwable t) {
 			logger.error("Error persisting generated file to database", t);
 		}

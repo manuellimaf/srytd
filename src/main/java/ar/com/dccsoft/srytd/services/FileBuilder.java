@@ -3,12 +3,14 @@ package ar.com.dccsoft.srytd.services;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.io.IOUtils;
 
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.TagMapping;
@@ -33,14 +35,13 @@ public class FileBuilder {
 		return this;
 	}
 
-	public ByteArrayOutputStream build() {
+	public InputStream build() {
 		return tryAndInform("Error building file", () -> {
 			format = formatWithHeaders();
 			StringBuilder sb = new StringBuilder("");
 
 			try (CSVPrinter printer = new CSVPrinter(sb, format); ByteArrayOutputStream os = new ByteArrayOutputStream();) {
 				String ID_EMPRESA = propService.getCompanyId();
-				String ID_INSTALACION = propService.getFacilityId();
 
 				// Automatic readings
 				for (FieldValue v : fieldValues) {
@@ -50,7 +51,7 @@ public class FileBuilder {
 					String readingType = "A";
 
 					// TODO . Parameterize decimal separator
-				printer.printRecord(ID_EMPRESA, ID_INSTALACION, tagCode, timestamp, readingType, v.getPresion(), v.getPresion_q(),
+				printer.printRecord(ID_EMPRESA, v.getTag(), tagCode, timestamp, readingType, v.getPresion(), v.getPresion_q(),
 						v.getTemperatura(), v.getTemperatura_q(), v.getCaudal_horario(), v.getCaudal_horario_q(),
 						v.getVolumen_bruto_acumulado(), v.getVolumen_bruto_acumulado_q(), v.getVolumen_neto_hoy(),
 						v.getVolumen_neto_hoy_q(), v.getCaudal_horario_9300(), v.getCaudal_horario_9300_q(), v.getVolumen_acumulado_9300(),
@@ -69,9 +70,7 @@ public class FileBuilder {
 
 			// TODO . Manual values
 
-			os.write(sb.toString().getBytes());
-
-			return os;
+			return IOUtils.toInputStream(sb.toString());
 		} catch (Exception e) {
 			throw new RuntimeException("Error building CSV", e);
 		}
