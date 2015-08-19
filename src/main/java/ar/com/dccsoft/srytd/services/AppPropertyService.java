@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 public class AppPropertyService {
 
 	private static final String ALERTS_RECIPIENTS = "alerts_recipients";
+	private static final String FINISH_RECIPIENTS = "finish_recipients";
 	private static final String COMPANY_ID = "company_id";
 	private static final String FACILITY_ID = "facility_id";
 	private static final String FTP_SERVER = "ftp_server";
@@ -22,6 +23,15 @@ public class AppPropertyService {
 
 	public List<String> getAlertsRecipients() {
 		AppProperty prop = dao.getProperty(ALERTS_RECIPIENTS);
+		return asRecipientsList(prop);
+	}
+
+	public List<String> getFinishEmailRecipients() {
+		AppProperty prop = dao.getProperty(FINISH_RECIPIENTS);
+		return asRecipientsList(prop);
+	}
+
+	private List<String> asRecipientsList(AppProperty prop) {
 		if (prop != null) {
 			return Arrays.asList(prop.getValue().split(","));
 		}

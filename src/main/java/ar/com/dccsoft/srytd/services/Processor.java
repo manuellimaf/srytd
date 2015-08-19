@@ -2,12 +2,14 @@ package ar.com.dccsoft.srytd.services;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -28,11 +30,13 @@ public class Processor {
 	private ProcessService processService = new ProcessService();
 	private FTPConnector ftpConnector = new FTPConnector();
 	private AppPropertyService propService = new AppPropertyService();
+	private NotificationsService notificationsService = new NotificationsService();
 
 	public void start(Date from, String username) {
 		MDC.put("user", username);
 		long startTime = System.currentTimeMillis();
-		logger.info(format("Starting process for date %tY-%tm-%td %tH:%tM", from, from, from, from, from));
+		String dateStr = format("%tY-%tm-%td %tH:%tM", from, from, from, from, from);
+		logger.info(format("Starting process for date %s", dateStr));
 
 		// Iniciar el proceso
 		Long processId = processService.create(from, username);
@@ -56,13 +60,23 @@ public class Processor {
 		processService.saveFile(processId, is);
 
 		// Subir a FTPServer
-		ftpConnector.transfer(is, fileName(from));
+		String fileName = fileName(from);
+		ftpConnector.transfer(is, fileName);
 
-		// TODO . Enviar mail de resultado
+		// Enviar mail de resultado
+		sendNotification(dateStr, is, fileName);
 
 		long duration = (System.currentTimeMillis() - startTime);
 		logger.info(format("Process finished after %d millis", processId, duration));
 		MDC.clear();
+	}
+
+	private void sendNotification(String dateStr, InputStream is, String fileName) {
+		try {
+			notificationsService.sendFinishMessage(dateStr, IOUtils.toByteArray(is), fileName);
+		} catch (IOException e) {
+			logger.error("Error trying to send after process notifications", e);
+		}
 	}
 
 	private String fileName(Date from) {

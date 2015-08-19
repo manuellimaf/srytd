@@ -25,16 +25,16 @@ public class NotificationsService {
 		}
 	}
 
-	// public void sendFinishMessage(String dateStr, File data) {
-	// String subject = Config.getAlertSubject();
-	// String body = String.format(Config.getAlertBody(), username, errorId);
-	// List<String> recipients = propertyService.getAlertsRecipients();
-	//
-	// if (!recipients.isEmpty()) {
-	// mailService.send(subject, body, recipients);
-	// } else {
-	// logger.warn("No recipients found for mail alerts.");
-	// }
-	// }
+	public void sendFinishMessage(String dateStr, byte[] data, String fileName) {
+		String subject = String.format(Config.getFinishEmailSubject(), dateStr);
+		String body = String.format(Config.getFinishEmailBody(), dateStr);
+		List<String> recipients = propertyService.getFinishEmailRecipients();
+
+		if (!recipients.isEmpty()) {
+			mailService.send(subject, body, recipients, data, fileName, "text/plain");
+		} else {
+			logger.warn("No recipients found for process finish email.");
+		}
+	}
 
 }

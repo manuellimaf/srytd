@@ -25,4 +25,11 @@
 		de campo a enviar a la secretaría de energía.
 		Si necesita más información, contáctese con un administrador con este código de error: %s
 	</alert-body>
+
+	<!-- Process finished notification email -->
+	<finish-subject>[SRyTD][%s] Proceso de envío de mediciones de campo finalizado</finish-subject>
+	<finish-body>
+		El proceso correspondiente a la hora %s finalizó correctamente. 
+		Se adjunta el archivo envíado a la secretaría de energía.
+	</finish-body>
 </config>

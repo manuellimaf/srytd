@@ -23,6 +23,8 @@ public class Config {
 	private static Properties mailProperties = null;
 	private static String alertSubject = null;
 	private static String alertBody = null;
+	private static String finishEmailSubject = null;
+	private static String finishEmailBody = null;
 
 	public static void init() {
 		Configuration config;
@@ -48,6 +50,8 @@ public class Config {
 
 		alertSubject = config.getString("alert-subject");
 		alertBody = config.getString("alert-body");
+		finishEmailSubject = config.getString("finish-subject");
+		finishEmailBody = config.getString("finish-body");
 	}
 
 	public static String getSqlServerUrl() {
@@ -92,5 +96,13 @@ public class Config {
 
 	public static String getAlertBody() {
 		return alertBody;
+	}
+
+	public static String getFinishEmailSubject() {
+		return finishEmailSubject;
+	}
+
+	public static String getFinishEmailBody() {
+		return finishEmailBody;
 	}
 }
