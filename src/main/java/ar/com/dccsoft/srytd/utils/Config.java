@@ -3,7 +3,6 @@ package ar.com.dccsoft.srytd.utils;
 import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,31 +31,32 @@ public class Config {
 		Configuration config;
 		try {
 			config = new XMLConfiguration("config.xml");
-		} catch (ConfigurationException e) {
+
+			sqlServerUrl = config.getString("sqlserver-url");
+			sqlServerUser = config.getString("sqlserver-user");
+			sqlServerPassword = config.getString("sqlserver-password");
+			mysqlUrl = config.getString("mysql-url");
+			mysqlUser = config.getString("mysql-user");
+			mysqlPassword = config.getString("mysql-password");
+
+			mailProperties = new Properties();
+			mailProperties.put("mail.from", config.getString("mail-from"));
+			mailProperties.put("mail.smtp.host", config.getString("mail-smtp-host"));
+			mailProperties.put("mail.smtp.port", config.getInt("mail-smtp-port"));
+			mailUser = config.getString("mail-user");
+			mailPassword = config.getString("mail-password");
+
+			alertSubject = config.getString("alert-subject");
+			alertBody = config.getString("alert-body");
+			finishEmailSubject = config.getString("finish-subject");
+			finishEmailBody = config.getString("finish-body");
+
+			decimalSeparator = config.getString("decimal-separator").charAt(0);
+			delimiter = config.getString("delimiter").charAt(0);
+
+		} catch (Exception e) {
 			throw new RuntimeException("Error loading configuration file", e);
 		}
-
-		sqlServerUrl = config.getString("sqlserver-url");
-		sqlServerUser = config.getString("sqlserver-user");
-		sqlServerPassword = config.getString("sqlserver-password");
-		mysqlUrl = config.getString("mysql-url");
-		mysqlUser = config.getString("mysql-user");
-		mysqlPassword = config.getString("mysql-password");
-
-		mailProperties = new Properties();
-		mailProperties.put("mail.from", config.getString("mail-from"));
-		mailProperties.put("mail.smtp.host", config.getString("mail-smtp-host"));
-		mailProperties.put("mail.smtp.port", config.getInt("mail-smtp-port"));
-		mailUser = config.getString("mail-user");
-		mailPassword = config.getString("mail-password");
-
-		alertSubject = config.getString("alert-subject");
-		alertBody = config.getString("alert-body");
-		finishEmailSubject = config.getString("finish-subject");
-		finishEmailBody = config.getString("finish-body");
-
-		delimiter = config.getString("delimiter").charAt(0);
-		decimalSeparator = config.getString("decimal-separator").charAt(0);
 	}
 
 	public static String getSqlServerUrl() {
