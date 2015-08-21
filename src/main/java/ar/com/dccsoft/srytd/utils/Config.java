@@ -25,6 +25,8 @@ public class Config {
 	private static String alertBody = null;
 	private static String finishEmailSubject = null;
 	private static String finishEmailBody = null;
+	private static char delimiter;
+	private static char decimalSeparator;
 
 	public static void init() {
 		Configuration config;
@@ -52,6 +54,9 @@ public class Config {
 		alertBody = config.getString("alert-body");
 		finishEmailSubject = config.getString("finish-subject");
 		finishEmailBody = config.getString("finish-body");
+
+		delimiter = config.getString("delimiter").charAt(0);
+		decimalSeparator = config.getString("decimal-separator").charAt(0);
 	}
 
 	public static String getSqlServerUrl() {
@@ -104,5 +109,13 @@ public class Config {
 
 	public static String getFinishEmailBody() {
 		return finishEmailBody;
+	}
+
+	public static char getDecimalSeparator() {
+		return decimalSeparator;
+	}
+
+	public static char getDelimiter() {
+		return delimiter;
 	}
 }

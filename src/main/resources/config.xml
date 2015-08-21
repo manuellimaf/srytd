@@ -32,4 +32,8 @@
 		El proceso correspondiente a la hora %s finalizó correctamente. 
 		Se adjunta el archivo envíado a la secretaría de energía.
 	</finish-body>
+	
+	<!-- File format -->
+	<delimiter>;</delimiter>
+	<decimal-separator>,</decimal-separator>
 </config>
