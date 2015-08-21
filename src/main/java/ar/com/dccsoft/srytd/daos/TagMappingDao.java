@@ -5,14 +5,14 @@ import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactio
 
 import java.util.List;
 
-import ar.com.dccsoft.srytd.model.TagMapping;
+import ar.com.dccsoft.srytd.model.Device;
 
 public class TagMappingDao {
 
 	@SuppressWarnings("unchecked")
-	public List<TagMapping> getAll() {
+	public List<Device> getAll() {
 		return transactional(MySQL, (session) -> {
-			return session.createCriteria(TagMapping.class).list();
+			return session.createCriteria(Device.class).list();
 		});
 	}
 

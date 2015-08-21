@@ -28,7 +28,7 @@
 
 		<!-- Mappings -->
         <mapping resource="hibernate/Process.xml"/>
-        <mapping resource="hibernate/TagMapping.xml"/>
+        <mapping resource="hibernate/Device.xml"/>
         <mapping resource="hibernate/ProcessError.xml"/>
         <mapping resource="hibernate/AppProperty.xml"/>
 

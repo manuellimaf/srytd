@@ -8,17 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.daos.TagMappingDao;
-import ar.com.dccsoft.srytd.model.TagMapping;
+import ar.com.dccsoft.srytd.model.Device;
 
 public class TagMappingService {
 
 	private static Logger logger = LoggerFactory.getLogger(TagMappingService.class);
 	private TagMappingDao tagMappingDao = new TagMappingDao();
 
-	public List<TagMapping> getAllMappings() {
+	public List<Device> getAllMappings() {
 		return tryAndInform("Error reading tag mappings", () -> {
 			logger.info("Reading tag mappings");
-			List<TagMapping> mappings = tagMappingDao.getAll();
+			List<Device> mappings = tagMappingDao.getAll();
 			logger.info(String.format("%d tag mappings read", mappings.size()));
 			return mappings;
 		});

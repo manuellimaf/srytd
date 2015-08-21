@@ -4,13 +4,13 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="ar.com.dccsoft.srytd.model">
-	<class name="TagMapping" table="tag_mapping">
+	<class name="Device" table="device">
 		<id name="id">
 			<generator class="native"/>
 		</id>
 		
 		<property name="name" not-null="true"/>
-		<property name="code" not-null="true"/>
+		<property name="tag" not-null="true"/>
 		<property name="creationDate" column="creation_date" not-null="true"/>
 		<property name="createdBy" column="created_by" not-null="true"/>
 	</class>

@@ -6,7 +6,7 @@ import java.util.Date;
 public class FieldValue {
 
 	private Long id;
-	private String tag;
+	private String deviceId;
 	private Date timestamp;
 	private String valueType;
 
@@ -685,12 +685,12 @@ public class FieldValue {
 		this.volumen_neto_acumulado_q = volumen_neto_acumulado_q;
 	}
 
-	public String getTag() {
-		return tag;
+	public String getDeviceId() {
+		return deviceId;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public Date getTimestamp() {

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import ar.com.dccsoft.srytd.model.FieldValue;
-import ar.com.dccsoft.srytd.model.TagMapping;
+import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 
 import com.google.common.collect.Lists;
@@ -47,7 +47,7 @@ public class Processor {
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(from);
 
 		// Leer mapeos de tags
-		List<TagMapping> mappings = tagService.getAllMappings();
+		List<Device> mappings = tagService.getAllMappings();
 
 		// Realizar validaciones
 		performValidations(fieldValues, mappings);
@@ -87,9 +87,9 @@ public class Processor {
 		return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
 	}
 
-	private void performValidations(List<FieldValue> fieldValues, List<TagMapping> mappings) {
+	private void performValidations(List<FieldValue> fieldValues, List<Device> mappings) {
 		Set<String> tagNames = Sets.newHashSet(Lists.transform(mappings, mapping -> mapping.getName()));
-		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fv -> fv.getTag()));
+		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fv -> fv.getDeviceId()));
 
 		if (!tagNames.containsAll(fieldTagNames)) {
 			fieldTagNames.removeAll(tagNames);

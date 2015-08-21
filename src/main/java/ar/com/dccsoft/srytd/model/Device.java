@@ -2,13 +2,13 @@ package ar.com.dccsoft.srytd.model;
 
 import java.util.Date;
 
-public class TagMapping {
+public class Device {
 
 	private Long id;
-	/** Tag name used by company **/
+	/** Device identifier used by company **/
 	private String name;
 	/** Tag code assigned by authority **/
-	private String code;
+	private String tag;
 
 	private Date creationDate;
 	private String createdBy;
@@ -29,12 +29,12 @@ public class TagMapping {
 		this.name = name;
 	}
 
-	public String getCode() {
-		return code;
+	public String getTag() {
+		return tag;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 	public Date getCreationDate() {

@@ -9,9 +9,9 @@
 			<generator class="native"/>
 		</id>
 
-		<property name="tag"/>
-		<property name="timestamp"/>
-		<property name="valueType" length="1"/>
+		<property name="deviceId" column="device_id"/>
+		<property name="timestamp" column="ts"/>
+		<property name="valueType" column="value_type" length="1"/>
 
 		<property name="presion"/>
 		<property name="presion_q" length="2"/>

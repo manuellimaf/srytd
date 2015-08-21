@@ -16,7 +16,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.IOUtils;
 
 import ar.com.dccsoft.srytd.model.FieldValue;
-import ar.com.dccsoft.srytd.model.TagMapping;
+import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.utils.Config;
 
 import com.google.common.collect.Maps;
@@ -33,7 +33,7 @@ public class FileBuilder {
 		return this;
 	}
 
-	public FileBuilder withMappings(List<TagMapping> mappings) {
+	public FileBuilder withMappings(List<Device> mappings) {
 		this.mappings = asMap(mappings);
 		return this;
 	}
@@ -49,12 +49,12 @@ public class FileBuilder {
 
 				// Automatic readings
 				for (FieldValue v : fieldValues) {
-					String tagCode = mappings.get(v.getTag());
+					String tagCode = mappings.get(v.getDeviceId());
 					Date ts = v.getTimestamp();
 					String timestamp = String.format("%td-%tm-%tY %tH:%tM", ts, ts, ts, ts, ts);
 					String readingType = "A";
 
-					printer.printRecord(ID_EMPRESA, v.getTag(), tagCode, timestamp, readingType, nf.format(v.getPresion()),
+					printer.printRecord(ID_EMPRESA, v.getDeviceId(), tagCode, timestamp, readingType, nf.format(v.getPresion()),
 							v.getPresion_q(), nf.format(v.getTemperatura()), v.getTemperatura_q(), nf.format(v.getCaudal_horario()),
 							v.getCaudal_horario_q(), nf.format(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
 							nf.format(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), nf.format(v.getCaudal_horario_9300()),
@@ -99,10 +99,10 @@ public class FileBuilder {
 				"Volumen_neto_acumulado_q");
 	}
 
-	private Map<String, String> asMap(List<TagMapping> mappings) {
+	private Map<String, String> asMap(List<Device> mappings) {
 		Map<String, String> result = Maps.newHashMap();
-		for (TagMapping m : mappings) {
-			result.put(m.getName(), m.getCode());
+		for (Device m : mappings) {
+			result.put(m.getName(), m.getTag());
 		}
 		return result;
 	}
