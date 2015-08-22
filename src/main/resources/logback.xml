@@ -13,9 +13,12 @@
         <maxIndex>5</maxIndex>
     </rollingPolicy>
 
-    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-        <maxFileSize>200MB</maxFileSize>
-    </triggeringPolicy>  
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder immediateFlush="true">
+		<pattern>%date{yyyy-MM-dd HH:mm:ss} %-5level [%.-35thread][%X{user}][%X{processId}] %logger{5} - %msg %n</pattern>
+    </encoder>
   </appender>
 
   <logger name="org.eclipse.jetty" level="off" />
@@ -23,5 +26,6 @@
 	
   <root level="DEBUG">
     <appender-ref ref="FILE" />
+    <appender-ref ref="STDOUT" />
   </root>
 </configuration>

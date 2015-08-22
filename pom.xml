@@ -10,7 +10,7 @@
 	<name>srytd</name>
 
 	<url>http://maven.apache.org</url>
-	<dependencies>
+ 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -72,6 +72,16 @@
 		    <artifactId>commons-io</artifactId>
 		    <version>1.3.2</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>9.2.10.v20150310</version>
+		</dependency>	
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-webapp</artifactId>
+		    <version>9.2.10.v20150310</version>
+		</dependency>	
 	</dependencies>
 	
 	

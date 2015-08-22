@@ -26,6 +26,8 @@ public class Config {
 	private static String finishEmailBody = null;
 	private static char delimiter;
 	private static char decimalSeparator;
+	private static Integer httpPort;
+	private static String contextPath;
 
 	public static void init() {
 		Configuration config;
@@ -51,12 +53,23 @@ public class Config {
 			finishEmailSubject = config.getString("finish-subject");
 			finishEmailBody = config.getString("finish-body");
 
-			decimalSeparator = config.getString("decimal-separator").charAt(0);
-			delimiter = config.getString("delimiter").charAt(0);
+			decimalSeparator = config.getString("decimal-separator", ",").charAt(0);
+			delimiter = config.getString("delimiter", ";").charAt(0);
+
+			httpPort = config.getInteger("http-port", 80);
+			contextPath = config.getString("context-path", "/srytd");
 
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading configuration file", e);
 		}
+	}
+
+	public static String getContextPath() {
+		return contextPath;
+	}
+
+	public static Integer getHttpPort() {
+		return httpPort;
 	}
 
 	public static String getSqlServerUrl() {

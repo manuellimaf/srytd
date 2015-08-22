@@ -36,4 +36,8 @@
 	<!-- File format -->
 	<decimal-separator>\,</decimal-separator>
 	<delimiter>;</delimiter>
+	
+	<!-- webapp -->
+	<http-port>8080</http-port>
+	<context-path>/</context-path>
 </config>
