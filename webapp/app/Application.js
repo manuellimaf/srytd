@@ -8,15 +8,20 @@ Ext.define('App.Application', {
     ],
     
     views: [
+        'App.view.login.Login',
     	'App.view.layout.MainPanel',
+        'App.view.layout.BodyPanel',
+        'App.view.process.ProcessPanel',
+        'App.view.fieldValue.FieldValuePanel',
+        'App.view.config.ConfigPanel',
         'App.view.main.Main',
-        'App.view.main.List',
-        'App.view.login.Login'
+        'App.view.main.List'
     ],
     
     controllers: [
         'LoginController',
-        'MainController'
+        'MainController',
+        'MainPanelController'
     ],
     
     launch: function () {

@@ -27,7 +27,6 @@ Ext.define('App.controller.LoginController', {
         // Remove Login Window
         this.getLoginView().destroy();
 
-		console.log("Create app-main");
         // Add the main view to the viewport
         Ext.create('App.view.layout.MainPanel');
 
