@@ -7,9 +7,9 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.http.HttpServer;
 import ar.com.dccsoft.srytd.utils.Config;
 import ar.com.dccsoft.srytd.utils.hibernate.HibernateUtil;
+import ar.com.dccsoft.srytd.utils.http.HttpServer;
 
 public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);

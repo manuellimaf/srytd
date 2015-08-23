@@ -59,6 +59,7 @@ public class Config {
 			httpPort = config.getInteger("http-port", 80);
 			contextPath = config.getString("context-path", "/srytd");
 
+			logger.info("Configuration successfully loaded");
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading configuration file", e);
 		}
