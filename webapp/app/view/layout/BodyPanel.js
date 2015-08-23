@@ -21,6 +21,7 @@ Ext.define('App.view.layout.BodyPanel', {
             iconCls: 'add16'
         },'->',{
             text: 'Salir',
+            action: 'logout',
             iconCls: 'add16'
         }]
     },

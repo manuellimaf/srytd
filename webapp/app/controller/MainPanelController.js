@@ -11,6 +11,9 @@ Ext.define('App.controller.MainPanelController', {
             },
             'panel button[action=showConfig]': {
                 click: this.onShowConfig
+            },
+            'panel button[action=logout]': {
+                click: this.onLogout
             } 
         });
     },
@@ -40,5 +43,16 @@ Ext.define('App.controller.MainPanelController', {
     onShowConfig: function() {
     	var body = this.clearBody();
     	body.add({xtype: 'config-panel'});
+    }, 
+    
+    onLogout: function () {
+        // Remove the localStorage key/value
+        localStorage.removeItem('LoggedIn');
+
+        // Remove Main View
+        this.getView().destroy();
+
+        // Add the Login Window
+        Ext.create('login');
     }
 });
