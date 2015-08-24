@@ -3,8 +3,7 @@ Ext.define('App.view.config.ConfigPanel', {
     alias: 'widget.config-panel',
 	
 	title: 'Configuraci&oacute;n',
-	height: 500,
-	//border: false,
+	height: 600,
 	
 	layout: {
 		type: 'table',
@@ -16,13 +15,13 @@ Ext.define('App.view.config.ConfigPanel', {
 	    },
 	    trAttrs: {
 	        style: {
-	            height: 250,
 	            verticalAlign: 'top'
 	        }
 	    },
 	    tdAttrs: {
 	        style: {
-	            width: '50%'
+	            width: '50%',
+	            padding: 5
 	        }
 	    }
 	},
@@ -32,7 +31,7 @@ Ext.define('App.view.config.ConfigPanel', {
     },{
         html: 'Mapeos'
     },{
-        html: 'General config',
+        xtype: 'config-props',
         colspan: 2
     }]
 });

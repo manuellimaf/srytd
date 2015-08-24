@@ -1,8 +1,13 @@
 Ext.define('App.view.layout.BodyPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.body-panel',
-    title: 'SRyTD',
-    
+    header: {
+        xtype: 'box',
+        id: 'header',
+        region: 'north',
+        html: '<h1> SRyTD</h1>',
+        height: 30
+    },
     tbar: {
     	defaults: {
             scale: 'medium',
@@ -26,7 +31,7 @@ Ext.define('App.view.layout.BodyPanel', {
             iconCls: 'add16'
         }]
     },
-    items: {
+    items: [{
     	xtype: 'process-panel'
-    }
+    }]
 });

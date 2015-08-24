@@ -15,7 +15,8 @@ Ext.define('App.Application', {
         'App.view.process.List',
         'App.view.fieldValue.FieldValuePanel',
         'App.view.config.ConfigPanel',
-        'App.view.user.List'
+        'App.view.user.List',
+        'App.view.configProps.Form'
     ],
     
     controllers: [

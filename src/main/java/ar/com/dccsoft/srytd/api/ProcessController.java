@@ -18,7 +18,6 @@ public class ProcessController {
 	private ProcessService service = new ProcessService();
 
 	@GET
-	// @Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Paginable getAllProcesses() {
 		logger.debug("Loading all processes");

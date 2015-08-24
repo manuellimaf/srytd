@@ -3,8 +3,7 @@ Ext.define('App.view.user.List', {
     alias: 'widget.user-list',
 
     title: 'Usuarios',
-	border: false,
-    
+	layout: 'fit',    
     store: 'User',
     columns: [
         { text: 'Usuario',  dataIndex: 'username' },
