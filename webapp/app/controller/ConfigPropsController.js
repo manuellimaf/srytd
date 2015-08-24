@@ -1,5 +1,6 @@
 Ext.define('App.controller.ConfigPropsController', {
     extend: 'Ext.app.Controller',
+	requires: ['App.util.FormSubmit'],
 	
 	views: ['configProps.Form'],
     refs: [{
@@ -30,15 +31,9 @@ Ext.define('App.controller.ConfigPropsController', {
     },
     
 	update: function() {
+		var store = this.getStore('ConfigPropsStore').reload();
 		var form = this.getConfigForm().getForm();
-		Ext.Ajax.request({
-            url: '/api/config',
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-          	},
-          	params: Ext.JSON.encode(form.getValues())
-		});
+		App.util.FormSubmit.submit(form, '/api/config', store);
 	}
 	
 });

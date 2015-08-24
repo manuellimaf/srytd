@@ -188,14 +188,14 @@ public class AppPropertyService {
 		// TODO . validate
 
 		transactional(MySQL, (s) -> {
-			dao.update(COMPANY_ID, dto.getCompanyCode());
-			dao.update(FACILITY_ID, dto.getFacilityCode());
-			dao.update(FTP_SERVER, dto.getIp());
-			dao.update(FTP_PORT, dto.getPort().toString());
-			dao.update(FTP_USER, dto.getFtpUser());
-			dao.update(FTP_PASSWORD, dto.getFtpPassword());
-			dao.update(ALERTS_RECIPIENTS, dto.getAlertEmails());
-			dao.update(FINISH_RECIPIENTS, dto.getNotificationEmails());
+			dao.upsert(COMPANY_ID, dto.getCompanyCode());
+			dao.upsert(FACILITY_ID, dto.getFacilityCode());
+			dao.upsert(FTP_SERVER, dto.getIp());
+			dao.upsert(FTP_PORT, dto.getPort().toString());
+			dao.upsert(FTP_USER, dto.getFtpUser());
+			dao.upsert(FTP_PASSWORD, dto.getFtpPassword());
+			dao.upsert(ALERTS_RECIPIENTS, dto.getAlertEmails());
+			dao.upsert(FINISH_RECIPIENTS, dto.getNotificationEmails());
 			return null;
 		});
 	}
