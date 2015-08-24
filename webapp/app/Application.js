@@ -14,13 +14,15 @@ Ext.define('App.Application', {
         'App.view.process.ProcessPanel',
         'App.view.process.List',
         'App.view.fieldValue.FieldValuePanel',
-        'App.view.config.ConfigPanel'
+        'App.view.config.ConfigPanel',
+        'App.view.user.List'
     ],
     
     controllers: [
         'LoginController',
         'MainPanelController',
-        'ProcessController'
+        'ProcessController',
+        'UserController'
     ],
     
     launch: function () {
