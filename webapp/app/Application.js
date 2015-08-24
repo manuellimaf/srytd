@@ -23,7 +23,8 @@ Ext.define('App.Application', {
         'LoginController',
         'MainPanelController',
         'ProcessController',
-        'UserController'
+        'UserController',
+        'ConfigPropsController'
     ],
     
     launch: function () {

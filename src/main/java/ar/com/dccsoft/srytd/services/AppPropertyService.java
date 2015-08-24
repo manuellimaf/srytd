@@ -1,5 +1,8 @@
 package ar.com.dccsoft.srytd.services;
 
+import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
+import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,6 +11,7 @@ import ar.com.dccsoft.srytd.model.AppProperty;
 
 import com.google.common.collect.Lists;
 
+// FIXME - Hacer que tenga un mapa con las propiedades en memoria y que se puedan recargar
 public class AppPropertyService {
 
 	private static final String ALERTS_RECIPIENTS = "alerts_recipients";
@@ -26,9 +30,19 @@ public class AppPropertyService {
 		return asRecipientsList(prop);
 	}
 
+	public String getAlertsRecipientsStr() {
+		AppProperty prop = dao.getProperty(ALERTS_RECIPIENTS);
+		return asStr(prop);
+	}
+
 	public List<String> getFinishEmailRecipients() {
 		AppProperty prop = dao.getProperty(FINISH_RECIPIENTS);
 		return asRecipientsList(prop);
+	}
+
+	public String getFinishEmailRecipientsStr() {
+		AppProperty prop = dao.getProperty(FINISH_RECIPIENTS);
+		return asStr(prop);
 	}
 
 	private List<String> asRecipientsList(AppProperty prop) {
@@ -36,6 +50,13 @@ public class AppPropertyService {
 			return Arrays.asList(prop.getValue().split(","));
 		}
 		return Lists.newArrayList();
+	}
+
+	private String asStr(AppProperty prop) {
+		if (prop != null) {
+			return prop.getValue().toString();
+		}
+		return "";
 	}
 
 	public String getCompanyId() {
@@ -71,5 +92,111 @@ public class AppPropertyService {
 		public String getPassword() {
 			return password;
 		}
+	}
+
+	public PropertiesDTO getPropertiesDTO() {
+		PropertiesDTO dto = new PropertiesDTO();
+		dto.setCompanyCode(getCompanyId());
+		dto.setFacilityCode(getFacilityId());
+		FTPConfig config = getFTPConfig();
+		dto.setIp(config.getServer());
+		dto.setPort(config.getPort());
+		dto.setFtpUser(config.getUsername());
+		dto.setFtpPassword(config.getPassword());
+		dto.setAlertEmails(getAlertsRecipientsStr());
+		dto.setNotificationEmails(getFinishEmailRecipientsStr());
+		return dto;
+	}
+
+	public static class PropertiesDTO {
+		private String companyCode;
+		private String facilityCode;
+		private String ip;
+		private Integer port;
+		private String ftpUser;
+		private String ftpPassword;
+		private String alertEmails;
+		private String notificationEmails;
+
+		public String getCompanyCode() {
+			return companyCode;
+		}
+
+		public void setCompanyCode(String companyCode) {
+			this.companyCode = companyCode;
+		}
+
+		public String getFacilityCode() {
+			return facilityCode;
+		}
+
+		public void setFacilityCode(String facilityCode) {
+			this.facilityCode = facilityCode;
+		}
+
+		public String getIp() {
+			return ip;
+		}
+
+		public void setIp(String ip) {
+			this.ip = ip;
+		}
+
+		public Integer getPort() {
+			return port;
+		}
+
+		public void setPort(Integer port) {
+			this.port = port;
+		}
+
+		public String getFtpUser() {
+			return ftpUser;
+		}
+
+		public void setFtpUser(String ftpUser) {
+			this.ftpUser = ftpUser;
+		}
+
+		public String getFtpPassword() {
+			return ftpPassword;
+		}
+
+		public void setFtpPassword(String ftpPassword) {
+			this.ftpPassword = ftpPassword;
+		}
+
+		public String getAlertEmails() {
+			return alertEmails;
+		}
+
+		public void setAlertEmails(String alertEmails) {
+			this.alertEmails = alertEmails;
+		}
+
+		public String getNotificationEmails() {
+			return notificationEmails;
+		}
+
+		public void setNotificationEmails(String notificationEmails) {
+			this.notificationEmails = notificationEmails;
+		}
+
+	}
+
+	public void updateProperties(PropertiesDTO dto) {
+		// TODO . validate
+
+		transactional(MySQL, (s) -> {
+			dao.update(COMPANY_ID, dto.getCompanyCode());
+			dao.update(FACILITY_ID, dto.getFacilityCode());
+			dao.update(FTP_SERVER, dto.getIp());
+			dao.update(FTP_PORT, dto.getPort().toString());
+			dao.update(FTP_USER, dto.getFtpUser());
+			dao.update(FTP_PASSWORD, dto.getFtpPassword());
+			dao.update(ALERTS_RECIPIENTS, dto.getAlertEmails());
+			dao.update(FINISH_RECIPIENTS, dto.getNotificationEmails());
+			return null;
+		});
 	}
 }

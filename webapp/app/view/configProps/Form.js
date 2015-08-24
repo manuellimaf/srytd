@@ -25,6 +25,8 @@ Ext.define('App.view.configProps.Form', {
 	    }
 	},
 
+	store: 'ConfigPropsStore',
+	
     items: [{
     	xtype:'fieldset',
         title: 'C&oacute;digos',
@@ -107,6 +109,7 @@ Ext.define('App.view.configProps.Form', {
     buttons: [{
     	text: 'Guardar',
         formBind: true,
-        disabled: true
+        disabled: true,
+        action: 'update'
     }]
 });
