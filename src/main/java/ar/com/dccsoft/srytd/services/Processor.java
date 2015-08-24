@@ -14,8 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.Device;
+import ar.com.dccsoft.srytd.model.FieldValue;
+import ar.com.dccsoft.srytd.model.Process;
+import ar.com.dccsoft.srytd.model.ProcessStatus;
+import ar.com.dccsoft.srytd.services.FileBuilder.FileBuildResult;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 
 import com.google.common.collect.Lists;
@@ -35,16 +38,32 @@ public class Processor {
 	public void start(Date from, String username) {
 		MDC.put("user", username);
 		long startTime = System.currentTimeMillis();
-		String dateStr = format("%tY-%tm-%td %tH:%tM", from, from, from, from, from);
-		logger.info(format("Starting process for date %s", dateStr));
 
-		// Iniciar el proceso
-		Long processId = processService.create(from, username);
-		MDC.put("processId", processId.toString());
+		Process process = null;
+		try {
+			logger.info(format("Starting process for date %s", formatDate(from)));
+
+			// Iniciar el proceso
+			process = processService.create(from, username);
+			MDC.put("processId", process.getId().toString());
+
+			runProcess(process);
+
+		} catch (Throwable t) {
+			if (process != null)
+				processService.updateFinalStatus(process, ProcessStatus.ERROR, 0L, 0L);
+		}
+
+		long duration = (System.currentTimeMillis() - startTime);
+		logger.info(format("Process finished after %d millis", duration));
+		MDC.clear();
+	}
+
+	private void runProcess(Process process) {
 		logger.info("Process started");
 
 		// Leer datos de campo
-		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(from);
+		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 
 		// Leer mapeos de tags
 		List<Device> mappings = tagService.getAllMappings();
@@ -54,21 +73,31 @@ public class Processor {
 
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings).withValues(fieldValues);
-		InputStream is = fileBuilder.build();
+		FileBuildResult result = fileBuilder.build();
+		processService.updateStatus(process, ProcessStatus.PROCESSED);
+		verifyResult(result);
 
 		// Persistir txt
-		processService.saveFile(processId, is);
+		processService.saveFile(process, result.getFile());
 
 		// Subir a FTPServer
-		String fileName = fileName(from);
-		ftpConnector.transfer(is, fileName);
+		String fileName = fileName(process.getValuesFrom());
+		ftpConnector.transfer(result.getFile(), fileName);
+		processService.updateStatus(process, ProcessStatus.SENT);
 
 		// Enviar mail de resultado
-		sendNotification(dateStr, is, fileName);
+		sendNotification(formatDate(process.getValuesFrom()), result.getFile(), fileName);
 
-		long duration = (System.currentTimeMillis() - startTime);
-		logger.info(format("Process finished after %d millis", processId, duration));
-		MDC.clear();
+		// Actualizar el estado final
+		processService.updateFinalStatus(process, ProcessStatus.FINISHED_OK, result.getProcessedValues(), result.getUnprocessedValues());
+	}
+
+	private void verifyResult(FileBuildResult result) {
+		if (result.getUnprocessedValues() > 0) {
+			// TODO . Marcar el proceso para finalización con warning, persistir los devices sin mapeos
+
+		}
+
 	}
 
 	private void sendNotification(String dateStr, InputStream is, String fileName) {
@@ -85,6 +114,10 @@ public class Processor {
 		String suffix = "res318_mediciones.txt";
 
 		return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
+	}
+
+	private String formatDate(Date from) {
+		return format("%tY-%tm-%td %tH:%tM", from, from, from, from, from);
 	}
 
 	private void performValidations(List<FieldValue> fieldValues, List<Device> mappings) {

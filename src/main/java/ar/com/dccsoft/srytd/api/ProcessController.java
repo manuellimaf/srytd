@@ -5,33 +5,24 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ar.com.dccsoft.srytd.services.ProcessService;
+import ar.com.dccsoft.srytd.utils.ui.Paginable;
+
 @Path("/process")
 public class ProcessController {
 
-	@GET
-	@Path("test")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String test() {
-		return "ok";
-	}
+	private static Logger logger = LoggerFactory.getLogger(ProcessController.class);
+	private ProcessService service = new ProcessService();
 
 	@GET
-	@Path("test-json")
+	// @Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public TestJson testJson() {
-		return new TestJson();
+	public Paginable getAllProcesses() {
+		logger.debug("Loading all processes");
+		return new Paginable(service.getAll());
 	}
 
-	public class TestJson {
-		private String result = "ok";
-
-		public String getResult() {
-			return result;
-		}
-
-		public void setResult(String result) {
-			this.result = result;
-		}
-
-	}
 }

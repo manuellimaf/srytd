@@ -2,6 +2,7 @@ Ext.define('App.view.layout.BodyPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.body-panel',
     title: 'SRyTD',
+    
     tbar: {
     	defaults: {
             scale: 'medium',

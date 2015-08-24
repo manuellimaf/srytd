@@ -30,7 +30,8 @@ public class App {
 		} catch (Throwable t) {
 			logger.error("Error found", t);
 		} finally {
-			HibernateUtil.closeSessions();
+			// TODO . close on app shutdown
+			// HibernateUtil.closeSessions();
 		}
 
 	}

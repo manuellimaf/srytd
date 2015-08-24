@@ -21,7 +21,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.eclipse.jetty" level="off" />
+  <logger name="org.eclipse.jetty" level="INFO" />
   <logger name="org.hibernate" level="INFO" />
 	
   <root level="DEBUG">

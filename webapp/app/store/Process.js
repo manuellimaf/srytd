@@ -2,14 +2,15 @@ Ext.define('App.store.Process', {
     extend: 'Ext.data.Store',
 
     model: 'App.model.Process',
-
-    data: { items: []},
-
+	autoLoad: {start: 0, limit: 20},
+	pageSize: 20,
     proxy: {
-        type: 'memory',
+        type: 'ajax',
+        url: '/api/process',
         reader: {
             type: 'json',
-            rootProperty: 'items'
+            root: 'items',
+            totalProperty: 'total'
         }
     }
 });

@@ -11,10 +11,14 @@
 		
 		<property name="startedBy" column="started_by" not-null="true"/>
 		<property name="startDate" column="start_date" not-null="true"/>
+		<property name="valuesFrom" column="values_from" not-null="true"/>
+		<property name="sentValues" column="sent_values" not-null="true"/>
+		<property name="unsentValues" column="unsent_values" not-null="true"/>
+		
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 			   <param name="enumClass">ar.com.dccsoft.srytd.model.ProcessStatus</param>
-			   <param name="type">12</param> <!-- varchar(255) -->
+			   <param name="type">12</param> <!-- type 12 == varchar(255) -->
 			</type>
 		</property>
 		<property name="file">

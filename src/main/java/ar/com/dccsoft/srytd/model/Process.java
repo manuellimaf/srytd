@@ -2,17 +2,43 @@ package ar.com.dccsoft.srytd.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Process {
 
 	private Long id;
 	private String startedBy;
 	private Date startDate;
 	private ProcessStatus status;
-	private Date readingsFrom;
+	private Date valuesFrom;
+	private Long sentValues = 0L;
+	private Long unsentValues = 0L;
+
+	@JsonIgnore
 	private String file;
 
-	public Date getReadingsFrom() {
-		return readingsFrom;
+	public Long getSentValues() {
+		return sentValues;
+	}
+
+	public void setSentValues(Long sentValues) {
+		this.sentValues = sentValues;
+	}
+
+	public Long getUnsentValues() {
+		return unsentValues;
+	}
+
+	public void setUnsentValues(Long unsentValues) {
+		this.unsentValues = unsentValues;
+	}
+
+	public Date getValuesFrom() {
+		return valuesFrom;
+	}
+
+	public void setValuesFrom(Date valuesFrom) {
+		this.valuesFrom = valuesFrom;
 	}
 
 	public String getFile() {
@@ -21,10 +47,6 @@ public class Process {
 
 	public void setFile(String file) {
 		this.file = file;
-	}
-
-	public void setReadingsFrom(Date readingsFrom) {
-		this.readingsFrom = readingsFrom;
 	}
 
 	public Long getId() {
