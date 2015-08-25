@@ -32,6 +32,7 @@ public class ProcessService {
 
 	public void saveFile(Process process, InputStream is) {
 		try {
+			logger.info("Persisting file to database");
 			String data = IOUtils.toString(is);
 			process.setFile(data);
 			transactional(MySQL, (session) -> {
@@ -41,7 +42,7 @@ public class ProcessService {
 		} catch (Throwable t) {
 			logger.error("Error persisting generated file to database", t);
 		}
-
+		logger.info("File persisted to database");
 	}
 
 	public void updateStatus(Process process, ProcessStatus status) {
@@ -50,6 +51,7 @@ public class ProcessService {
 			processDao.update(process);
 			return null;
 		});
+		logger.info(String.format("Updating process state -> %s", status.toString()));
 	}
 
 	public void updateFinalStatus(Process process, ProcessStatus status, Long sent, Long unsent) {

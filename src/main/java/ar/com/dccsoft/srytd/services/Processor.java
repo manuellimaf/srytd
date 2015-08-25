@@ -16,6 +16,7 @@ import org.slf4j.MDC;
 
 import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.FieldValue;
+import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
 import ar.com.dccsoft.srytd.services.FileBuilder.FileBuildResult;
@@ -29,7 +30,8 @@ public class Processor {
 	private static Logger logger = LoggerFactory.getLogger(Processor.class);
 
 	private FieldValueService fieldValueService = new FieldValueService();
-	private TagMappingService tagService = new TagMappingService();
+	private MappedFieldValueService mappedFieldValueService = new MappedFieldValueService();
+	private DeviceService deviceService = new DeviceService();
 	private ProcessService processService = new ProcessService();
 	private FTPConnector ftpConnector = new FTPConnector();
 	private AppPropertyService propService = new AppPropertyService();
@@ -66,13 +68,19 @@ public class Processor {
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 
 		// Leer mapeos de tags
-		List<Device> mappings = tagService.getAllMappings();
+		List<Device> devices = deviceService.getAllDevices();
 
 		// Realizar validaciones
-		performValidations(fieldValues, mappings);
+		performValidations(fieldValues, devices);
+
+		// Persistir valores mapeados
+		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices);
+
+		// Leer valores manuales y unirlos a la lista de valores automáticos
+		mappings.addAll(mappedFieldValueService.readOneHourMaualValues(process.getValuesFrom()));
 
 		// Generar txt (csv)
-		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings).withValues(fieldValues);
+		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings);
 		FileBuildResult result = fileBuilder.build();
 		processService.updateStatus(process, ProcessStatus.PROCESSED);
 		verifyResult(result);
@@ -122,7 +130,7 @@ public class Processor {
 
 	private void performValidations(List<FieldValue> fieldValues, List<Device> mappings) {
 		Set<String> tagNames = Sets.newHashSet(Lists.transform(mappings, mapping -> mapping.getName()));
-		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fv -> fv.getDeviceId()));
+		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fieldVale -> fieldVale.getDeviceId()));
 
 		if (!tagNames.containsAll(fieldTagNames)) {
 			fieldTagNames.removeAll(tagNames);

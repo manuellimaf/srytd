@@ -1,6 +1,8 @@
 package ar.com.dccsoft.srytd.services;
 
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
+import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.SQLSERVER;
+import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 import static java.lang.String.format;
 
 import java.util.Date;
@@ -20,12 +22,13 @@ public class FieldValueService {
 
 	public List<FieldValue> readOneHourValues(Date from) {
 		return tryAndInform("Error reading field values", () -> {
-			Date to = DateUtils.addHours(from, 1);
-			logger.info(format("Reading field values for: %tc-%tc", from, to));
-			List<FieldValue> fieldValues = dao.readFieldValues(from, to);
-			logger.info(format("%d field values read", fieldValues.size()));
-			return fieldValues;
+			return transactional(SQLSERVER, (session) -> {
+				Date to = DateUtils.addHours(from, 1);
+				logger.info(format("Reading field values for: %tY-%tm-%td (%tH:%tM - %tH:%tM)", from, from, from, from, from, to, to));
+				List<FieldValue> fieldValues = dao.readFieldValues(from, to);
+				logger.info(format("%d field values read", fieldValues.size()));
+				return fieldValues;
+			});
 		});
 	}
-
 }

@@ -2,7 +2,7 @@
 <config>
 
 	<!-- SQLServer datasource properties -->
-	<sqlserver-url>jdbc:mysql://localhost/srytd</sqlserver-url>
+	<sqlserver-url>jdbc:mysql://localhost/srytd_sqlserver</sqlserver-url>
 	<sqlserver-user>root</sqlserver-user>
 	<sqlserver-password>root</sqlserver-password>
 

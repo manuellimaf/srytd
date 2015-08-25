@@ -7,7 +7,7 @@ import java.util.List;
 
 import ar.com.dccsoft.srytd.model.Device;
 
-public class TagMappingDao {
+public class DeviceDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Device> getAll() {

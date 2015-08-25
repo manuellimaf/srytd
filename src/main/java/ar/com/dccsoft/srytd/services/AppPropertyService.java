@@ -25,6 +25,22 @@ public class AppPropertyService {
 
 	private AppPropertyDao dao = new AppPropertyDao();
 
+	public void updateProperties(PropertiesDTO dto) {
+		// TODO . validate
+
+		transactional(MySQL, (s) -> {
+			dao.upsert(COMPANY_ID, dto.getCompanyCode());
+			dao.upsert(FACILITY_ID, dto.getFacilityCode());
+			dao.upsert(FTP_SERVER, dto.getIp());
+			dao.upsert(FTP_PORT, dto.getPort().toString());
+			dao.upsert(FTP_USER, dto.getFtpUser());
+			dao.upsert(FTP_PASSWORD, dto.getFtpPassword());
+			dao.upsert(ALERTS_RECIPIENTS, dto.getAlertEmails());
+			dao.upsert(FINISH_RECIPIENTS, dto.getNotificationEmails());
+			return null;
+		});
+	}
+
 	public List<String> getAlertsRecipients() {
 		AppProperty prop = dao.getProperty(ALERTS_RECIPIENTS);
 		return asRecipientsList(prop);
@@ -184,19 +200,4 @@ public class AppPropertyService {
 
 	}
 
-	public void updateProperties(PropertiesDTO dto) {
-		// TODO . validate
-
-		transactional(MySQL, (s) -> {
-			dao.upsert(COMPANY_ID, dto.getCompanyCode());
-			dao.upsert(FACILITY_ID, dto.getFacilityCode());
-			dao.upsert(FTP_SERVER, dto.getIp());
-			dao.upsert(FTP_PORT, dto.getPort().toString());
-			dao.upsert(FTP_USER, dto.getFtpUser());
-			dao.upsert(FTP_PASSWORD, dto.getFtpPassword());
-			dao.upsert(ALERTS_RECIPIENTS, dto.getAlertEmails());
-			dao.upsert(FINISH_RECIPIENTS, dto.getNotificationEmails());
-			return null;
-		});
-	}
 }

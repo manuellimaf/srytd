@@ -1,7 +1,6 @@
 package ar.com.dccsoft.srytd.daos;
 
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.SQLSERVER;
-import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,10 +14,8 @@ public class FieldValueDao {
 
 	@SuppressWarnings("unchecked")
 	public List<FieldValue> readFieldValues(Date from, Date to) {
-		return transactional(SQLSERVER, (session) -> {
-			Criteria c = session.createCriteria(FieldValue.class);
-			c.add(Restrictions.between("timestamp", from, to));
-			return c.list();
-		});
+		Criteria c = SQLSERVER.currentSession().createCriteria(FieldValue.class);
+		c.add(Restrictions.between("timestamp", from, to));
+		return c.list();
 	}
 }
