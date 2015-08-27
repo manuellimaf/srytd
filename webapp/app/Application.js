@@ -12,6 +12,8 @@ Ext.define('App.Application', {
     	'App.view.layout.MainPanel',
         'App.view.layout.BodyPanel',
         'App.view.process.ProcessPanel',
+        'App.view.mappedFieldValue.Panel',
+        'App.view.mappedFieldValue.List',
         'App.view.process.List',
         'App.view.fieldValue.FieldValuePanel',
         'App.view.config.ConfigPanel',

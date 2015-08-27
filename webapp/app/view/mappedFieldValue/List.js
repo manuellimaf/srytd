@@ -1,12 +1,12 @@
-Ext.define('App.view.fieldValue.List', {
+Ext.define('App.view.mappedFieldValue.List', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.field-value-list',
+    alias: 'widget.mapped-field-value-list',
 
     title: 'Mediciones autom&aacute;ticas',
 	height: 500,
 	border: false,
     
-    store: 'FieldValues',
+   // store: 'MappedFieldValue',
     columns: [
 		{ text: 'Dispositivo',  dataIndex: 'deviceId' },
 		{ text: 'Tag',  dataIndex: 'tag' },
@@ -89,11 +89,9 @@ Ext.define('App.view.fieldValue.List', {
     ],
     autoRender: true,
     tbar: {
-    	defaults: {
-            scale: 'small',
-            iconAlign:'left'
-        },
     	items: [{
+            scale: 'small',
+            iconAlign:'left',
             text: 'Reenviar todo',
             action: 'resend',
             iconCls: 'add16'
