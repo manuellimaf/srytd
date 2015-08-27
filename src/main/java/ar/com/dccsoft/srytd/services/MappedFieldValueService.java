@@ -76,4 +76,10 @@ public class MappedFieldValueService {
 			});
 		});
 	}
+
+	public List<MappedFieldValue> getValuesForProcess(Long processId) {
+		return transactional(MySQL, (session) -> {
+			return dao.filterByProcessId(processId);
+		});
+	}
 }

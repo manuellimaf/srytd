@@ -23,4 +23,11 @@ public class MappedFieldValueDao {
 		c.add(Restrictions.between("timestamp", from, to));
 		return c.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<MappedFieldValue> filterByProcessId(Long processId) {
+		Criteria c = MySQL.currentSession().createCriteria(MappedFieldValue.class);
+		c.createCriteria("process").add(Restrictions.idEq(processId));
+		return c.list();
+	}
 }

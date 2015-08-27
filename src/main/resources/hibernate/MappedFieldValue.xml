@@ -9,6 +9,8 @@
 			<generator class="native"/>
 		</id>
 
+		<many-to-one name="process"/>
+		
 		<property name="deviceId" column="device_id"/>
 		<property name="tag" column="tag"/>
 		<property name="timestamp" column="ts"/>
