@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,28 +42,37 @@ public class MappedFieldValueService {
 		 */
 		Map<String, String> map = mappings.stream().collect(Collectors.toMap(Device::getName, (mapping) -> mapping.getTag()));
 
+		// This prevents errors when cloning bean with null properties
+		BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+		
 		return transactional(MySQL, (s) -> {
 			List<MappedFieldValue> result = Lists.newLinkedList();
+			int mappedCount = 0;
 			for (FieldValue fieldValue : fieldValues) {
+
 				MappedFieldValue mapped = new MappedFieldValue();
 
 				try {
 					BeanUtils.copyProperties(mapped, fieldValue);
 				} catch (Exception e) {
 					// This should never happen, it's almost the same object.
-				logger.error(String.format("Error cloning field value id: %d", fieldValue.getId()), e);
+					logger.error(String.format("Error cloning field value id: %d", fieldValue.getId()), e);
+				}
+
+				String tag = map.get(fieldValue.getDeviceId());
+				if(StringUtils.isNotBlank(tag)) {
+					mappedCount++;
+					mapped.setTag(tag);
+				}
+				mapped.setProcess(process);
+				mapped.setId(null);
+
+				dao.save(mapped);
+				result.add(mapped);
 			}
-
-			mapped.setProcess(process);
-			mapped.setTag(map.get(fieldValue.getDeviceId()));
-			mapped.setId(null);
-
-			dao.save(mapped);
-			result.add(mapped);
-		}
-		logger.info(String.format("%d values mapped", result.size()));
-		return result;
-	}	);
+			logger.info(String.format("%d values mapped out of %d", mappedCount, result.size()));
+			return result;
+		});
 
 	}
 

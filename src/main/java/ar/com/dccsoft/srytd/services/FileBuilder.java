@@ -68,8 +68,8 @@ public class FileBuilder {
 						nf.format(v.getSh2()), v.getSh2_q(), nf.format(v.getC1()), v.getC1_q(), nf.format(v.getC2()), v.getC2_q(),
 						nf.format(v.getC3()), v.getC3_q(), nf.format(v.getIc4()), v.getIc4_q(), nf.format(v.getNc4()), v.getNc4_q(),
 						nf.format(v.getIc5()), v.getIc5_q(), nf.format(v.getNc5()), v.getNc5_q(), nf.format(v.getC6()), v.getC6_q(),
-						nf.format(v.getVolumen_seco()), v.getVolumen_seco_q(), nf.format(v.getInicio_transac()), v.getInicio_transac_q(),
-						nf.format(v.getFin_transac()), v.getFin_transac_q(), nf.format(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
+						nf.format(v.getVolumen_seco()), v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(),
+						v.getFin_transac(), v.getFin_transac_q(), nf.format(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
 						nf.format(v.getDensidad()), v.getDensidad_q(), nf.format(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
 						nf.format(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
 
