@@ -19,7 +19,8 @@ Ext.define('App.view.mappedFieldValue.Panel', {
 	        title: 'Mediciones',
 	        xtype: 'mapped-field-value-list'
 	    }, {
-	        title: 'Resultado'
+	        title: 'Resultado',
+	        xtype: 'process-result'
 	    }]
     }
 });

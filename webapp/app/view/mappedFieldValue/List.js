@@ -2,10 +2,6 @@ Ext.define('App.view.mappedFieldValue.List', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.mapped-field-value-list',
 
-    title: 'Mediciones autom&aacute;ticas',
-	height: 250,
-	border: false,
-    
     columns: {
     	defaults : {
     		draggable: false,

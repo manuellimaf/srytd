@@ -13,12 +13,21 @@ public class Process {
 	private Date valuesFrom;
 	private Long sentValues = 0L;
 	private Long unsentValues = 0L;
+	private ProcessResult result;
 
 	@JsonIgnore
 	private String file;
 
 	public Long getSentValues() {
 		return sentValues;
+	}
+
+	public ProcessResult getResult() {
+		return result;
+	}
+
+	public void setResult(ProcessResult result) {
+		this.result = result;
 	}
 
 	public void setSentValues(Long sentValues) {

@@ -7,16 +7,30 @@ Ext.define('App.controller.ProcessController', {
         		click: this.showDetail
         	}
         });
+		this.control({
+			'process-result': {
+				afterrender: this.loadProcessResult
+			}
+		});
+        this.control({
+        	'process-result button[action=downloadFile]': {
+        		click: this.downloadFile
+        	}
+        });
     },
     
-    views: ['process.List'],
-    stores: ['Process'],
+    views: ['process.List', 'process.Result'],
+    stores: ['Process', 'ProcessResultStore'],
     models: ['Process'],
     refs: [{
 		selector: 'process-list',
 		ref: 'processList'
+	},{
+		selector: 'process-result',
+		ref: 'processResult'
 	}],    
     currentWindow: undefined,
+    currentProcessId: undefined,
     showDetail: function () {
     	console.log(this.getProcessList().getSelectionModel());
 	    var selected = this.getProcessList().getSelectionModel().selected;
@@ -27,9 +41,26 @@ Ext.define('App.controller.ProcessController', {
 	    	if(this.currentWindow) {
 	    		this.currentWindow.close();
 	    	}
+	    	this.currentProcessId = processId;
 	        this.currentWindow = Ext.create('App.view.mappedFieldValue.Panel', {processId: processId});
 			this.currentWindow.show();
 	    }
+    },
+    
+    loadProcessResult: function() {
+		var form = this.getProcessResult().getForm();
+		this.getStore('ProcessResultStore').load({
+			params: { processId: this.currentProcessId },
+			callback: function(results, operation, success) {
+				var data = results[0];
+		        form.loadRecord(data);
+		    }
+		});
+    },
+    
+    downloadFile: function() {
+    	alert("download file for process " + this.currentProcessId);
     }
-
+    
+	
 });

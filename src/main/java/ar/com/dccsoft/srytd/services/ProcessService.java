@@ -63,4 +63,8 @@ public class ProcessService {
 	public List<Process> getAll() {
 		return transactional(MySQL, (session) -> processDao.getAll());
 	}
+
+	public Process getProcess(Long id) {
+		return transactional(MySQL, (session) -> processDao.find(id));
+	}
 }
