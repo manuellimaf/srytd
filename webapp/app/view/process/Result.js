@@ -35,16 +35,15 @@ Ext.define('App.view.process.Result', {
     	xtype:'fieldset',
         title: 'Errores',
         anchor: '100% 75%',
-        layout: 'fit',
-        collapsible: true,
-        collapsed: true,
+        layout: 'anchor',
 	    items: [{
 	        fieldLabel: 'C&oacute;digo de error',
-	        type: 'displayfield',
+	        xtype: 'displayfield',
 	        name: 'errorId'
 	    },{
-	        fieldLabel: 'Error',
-	        type: 'textArea',
+	        fieldLabel: 'Descripci&oacute;n',
+	        xtype: 'textarea',
+	        anchor: '100% 75%',
 	        name: 'errorDesc'
 	    }]
     }]
