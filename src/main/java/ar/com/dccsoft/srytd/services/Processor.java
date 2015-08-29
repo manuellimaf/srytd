@@ -77,7 +77,7 @@ public class Processor {
 		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices);
 
 		// Leer valores manuales y unirlos a la lista de valores automáticos
-		mappings.addAll(mappedFieldValueService.readOneHourMaualValues(process.getValuesFrom()));
+		mappings.addAll(mappedFieldValueService.safetlyGetValuesForProcess(process));
 
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings);

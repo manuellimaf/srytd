@@ -8,6 +8,11 @@ Ext.define('App.controller.ProcessController', {
         	}
         });
 		this.control({
+			'mapped-field-value-list': {
+				afterrender: this.loadFieldValueList
+			}
+		});
+		this.control({
 			'process-result': {
 				afterrender: this.loadProcessResult
 			}
@@ -19,12 +24,15 @@ Ext.define('App.controller.ProcessController', {
         });
     },
     
-    views: ['process.List', 'process.Result'],
-    stores: ['Process', 'ProcessResultStore'],
+    views: ['process.List', 'process.Result', 'mappedFieldValue.List'],
+    stores: ['Process', 'MappedFieldValueStore', 'ProcessResultStore'],
     models: ['Process'],
     refs: [{
 		selector: 'process-list',
 		ref: 'processList'
+	},{
+		selector: 'mapped-field-value-list',
+		ref: 'mappedFieldValueList'
 	},{
 		selector: 'process-result',
 		ref: 'processResult'
@@ -32,7 +40,6 @@ Ext.define('App.controller.ProcessController', {
     currentWindow: undefined,
     currentProcessId: undefined,
     showDetail: function () {
-    	console.log(this.getProcessList().getSelectionModel());
 	    var selected = this.getProcessList().getSelectionModel().selected;
 	    if(selected.getCount() > 0) {
 		    var processId = selected.first().get('id');
@@ -45,6 +52,14 @@ Ext.define('App.controller.ProcessController', {
 	        this.currentWindow = Ext.create('App.view.mappedFieldValue.Panel', {processId: processId});
 			this.currentWindow.show();
 	    }
+    },
+    loadFieldValueList: function() {
+    	var list = this.getMappedFieldValueList();
+    	console.log(list);
+    	var store = this.getStore('MappedFieldValueStore');
+		store.load({
+			params: { processId: this.currentProcessId }
+		});
     },
     
     loadProcessResult: function() {

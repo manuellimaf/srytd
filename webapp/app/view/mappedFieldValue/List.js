@@ -2,6 +2,7 @@ Ext.define('App.view.mappedFieldValue.List', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.mapped-field-value-list',
 
+	store: 'MappedFieldValueStore',
     columns: {
     	defaults : {
     		draggable: false,

@@ -3,9 +3,7 @@ package ar.com.dccsoft.srytd.services;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
-import static java.lang.String.format;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,7 +11,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,15 +73,9 @@ public class MappedFieldValueService {
 
 	}
 
-	public List<MappedFieldValue> readOneHourMaualValues(Date from) {
-		return tryAndInform("Error reading manual values", () -> {
-			return transactional(MySQL, (session) -> {
-				Date to = DateUtils.addHours(from, 1);
-				logger.info(format("Reading field values for: %tY-%tm-%td (%tH:%tM - %tH:%tM)", from, from, from, from, from, to, to));
-				List<MappedFieldValue> mappings = dao.readManualValues(from, to);
-				logger.info(format("%d manual values read", mappings.size()));
-				return mappings;
-			});
+	public List<MappedFieldValue> safetlyGetValuesForProcess(Process process) {
+		return tryAndInform("Error reading values for process", () -> {
+			return getValuesForProcess(process.getId());
 		});
 	}
 

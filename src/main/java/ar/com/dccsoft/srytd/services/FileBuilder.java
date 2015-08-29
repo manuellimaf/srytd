@@ -4,6 +4,7 @@ import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -25,6 +26,7 @@ public class FileBuilder {
 
 	private static Logger logger = LoggerFactory.getLogger(FileBuilder.class);
 	private CSVFormat format = CSVFormat.DEFAULT.withDelimiter(Config.getDelimiter());
+	private NumberFormat nf = numberFormat();
 	private List<MappedFieldValue> mappings;
 	private AppPropertyService propService = new AppPropertyService();
 
@@ -38,7 +40,7 @@ public class FileBuilder {
 		return tryAndInform("Error building file", () -> {
 			FileBuildResult result = new FileBuildResult();
 			format = formatWithHeaders();
-			NumberFormat nf = numberFormat();
+			
 			StringBuilder sb = new StringBuilder("");
 
 			try (CSVPrinter printer = new CSVPrinter(sb, format); ByteArrayOutputStream os = new ByteArrayOutputStream();) {
@@ -53,42 +55,48 @@ public class FileBuilder {
 						String readingType = v.getValueType();
 
 						// TODO - Ojo con los campos inicio/fin transac!! (no se si son números o fechas)
-				printer.printRecord(ID_EMPRESA, v.getDeviceId(), tagCode, timestamp, readingType, nf.format(v.getPresion()),
-						v.getPresion_q(), nf.format(v.getTemperatura()), v.getTemperatura_q(), nf.format(v.getCaudal_horario()),
-						v.getCaudal_horario_q(), nf.format(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
-						nf.format(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), nf.format(v.getCaudal_horario_9300()),
-						v.getCaudal_horario_9300_q(), nf.format(v.getVolumen_acumulado_9300()), v.getVolumen_acumulado_9300_q(),
-						nf.format(v.getVolumen_desplazado()), v.getVolumen_desplazado_q(), nf.format(v.getAltura_liquida()),
-						v.getAltura_liquida_q(), nf.format(v.getMf()), v.getMf_q(), nf.format(v.getCtl()), v.getCtl_q(),
-						nf.format(v.getCpl()), v.getCpl_q(), nf.format(v.getFactor_k()), v.getFactor_k_q(),
-						nf.format(v.getPulsos_brutos()), v.getPulsos_brutos_q(), nf.format(v.getFcv()), v.getFcv_q(),
-						nf.format(v.getCtsh()), v.getCtsh_q(), nf.format(v.getPorcentaje_agua()), v.getPorcentaje_agua_q(),
-						nf.format(v.getPoder_calorifico()), v.getPoder_calorifico_q(), nf.format(v.getDensidad_relativa()),
-						v.getDensidad_relativa_q(), nf.format(v.getCo2()), v.getCo2_q(), nf.format(v.getN2()), v.getN2_q(),
-						nf.format(v.getSh2()), v.getSh2_q(), nf.format(v.getC1()), v.getC1_q(), nf.format(v.getC2()), v.getC2_q(),
-						nf.format(v.getC3()), v.getC3_q(), nf.format(v.getIc4()), v.getIc4_q(), nf.format(v.getNc4()), v.getNc4_q(),
-						nf.format(v.getIc5()), v.getIc5_q(), nf.format(v.getNc5()), v.getNc5_q(), nf.format(v.getC6()), v.getC6_q(),
-						nf.format(v.getVolumen_seco()), v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(),
-						v.getFin_transac(), v.getFin_transac_q(), nf.format(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
-						nf.format(v.getDensidad()), v.getDensidad_q(), nf.format(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
-						nf.format(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
+						printer.printRecord(ID_EMPRESA, v.getDeviceId(), tagCode, timestamp, readingType, numFormat(v.getPresion()),
+						v.getPresion_q(), numFormat(v.getTemperatura()), v.getTemperatura_q(), numFormat(v.getCaudal_horario()),
+						v.getCaudal_horario_q(), numFormat(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
+						numFormat(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), numFormat(v.getCaudal_horario_9300()),
+						v.getCaudal_horario_9300_q(), numFormat(v.getVolumen_acumulado_9300()), v.getVolumen_acumulado_9300_q(),
+						numFormat(v.getVolumen_desplazado()), v.getVolumen_desplazado_q(), numFormat(v.getAltura_liquida()),
+						v.getAltura_liquida_q(), numFormat(v.getMf()), v.getMf_q(), numFormat(v.getCtl()), v.getCtl_q(),
+						numFormat(v.getCpl()), v.getCpl_q(), numFormat(v.getFactor_k()), v.getFactor_k_q(),
+						numFormat(v.getPulsos_brutos()), v.getPulsos_brutos_q(), numFormat(v.getFcv()), v.getFcv_q(),
+						numFormat(v.getCtsh()), v.getCtsh_q(), numFormat(v.getPorcentaje_agua()), v.getPorcentaje_agua_q(),
+						numFormat(v.getPoder_calorifico()), v.getPoder_calorifico_q(), numFormat(v.getDensidad_relativa()),
+						v.getDensidad_relativa_q(), numFormat(v.getCo2()), v.getCo2_q(), numFormat(v.getN2()), v.getN2_q(),
+						numFormat(v.getSh2()), v.getSh2_q(), numFormat(v.getC1()), v.getC1_q(), numFormat(v.getC2()), v.getC2_q(),
+						numFormat(v.getC3()), v.getC3_q(), numFormat(v.getIc4()), v.getIc4_q(), numFormat(v.getNc4()), v.getNc4_q(),
+						numFormat(v.getIc5()), v.getIc5_q(), numFormat(v.getNc5()), v.getNc5_q(), numFormat(v.getC6()), v.getC6_q(),
+						numFormat(v.getVolumen_seco()), v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(),
+						v.getFin_transac(), v.getFin_transac_q(), numFormat(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
+						numFormat(v.getDensidad()), v.getDensidad_q(), numFormat(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
+						numFormat(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
 
-				result.addProcessedValue();
-			} else {
-				result.addMissingMapping(v.getDeviceId());
+						result.addProcessedValue();
+					} else {
+						result.addMissingMapping(v.getDeviceId());
+					}
+				}
+
+				result.setFile(IOUtils.toInputStream(sb.toString()));
+				logger.info(String.format("File built (%d values total, %d values with missing mappings)", result.getProcessedValues(),
+						result.getUnprocessedValues()));
+				return result;
+			} catch (Exception e) {
+				throw new RuntimeException("Error building CSV", e);
 			}
-		}
-
-		result.setFile(IOUtils.toInputStream(sb.toString()));
-		logger.info(String.format("File built (%d values total, %d values with missing mappings)", result.getProcessedValues(),
-				result.getUnprocessedValues()));
-		return result;
-	} catch (Exception e) {
-		throw new RuntimeException("Error building CSV", e);
-	}
-}		);
+		});
 	}
 
+	private String numFormat(BigDecimal value) {
+		if(value == null)
+			return "";
+		return nf.format(value);
+	}
+	
 	private CSVFormat formatWithHeaders() {
 		return format.withHeader("idempresa", "idinstalacion", "tagmedidor", "timestamp", "manual_auto", "presion", "presion_q",
 				"temperatura", "temperatura_q", "caudal_horario", "caudal_horario_q", "volumen_bruto_acumulado",

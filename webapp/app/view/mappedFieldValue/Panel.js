@@ -3,9 +3,7 @@ Ext.define('App.view.mappedFieldValue.Panel', {
 	alias: 'widget.mapped-field-value-panel',
 
 	constructor: function(config) {
-	    this.processId = config.processId; 
-	    this.title = 'Detalle del env&iacute;o #' + this.processId;
-		this.store = Ext.create('App.store.MappedFieldValueStore', {processId: this.processId});	    
+	    this.title = 'Detalle del env&iacute;o #' + config.processId;
         this.callParent(config);
     },	
 	
