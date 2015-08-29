@@ -15,7 +15,7 @@ import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 
-
+// TODO . This class has lots of copy/pasted code. Refactor required!
 public class ProcessAlertService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessAlertService.class);
@@ -27,24 +27,52 @@ public class ProcessAlertService {
 		return transactional(MySQL, (session) -> alertDao.find(id));
 	}
 
+	public void addWarning(String message, String description) {
+		Long errorId = System.currentTimeMillis();
+		logger.info("Registering warning " + errorId);
+		String username = MDCUtils.currentUser();
+		transactional(MySQL, (session) -> {
+			ProcessAlert warning = buildAlert(errorId, message, username, description);
+			addToProcess(warning);
+			logger.info("Warning persisted in database with id: " + warning.getId());
+			
+			return warning;
+		});
+	}
+	
 	public void handleError(Long errorId, String message, Throwable t) {
 		logger.info("Handling error " + errorId);
 		String username = MDCUtils.currentUser();
-		transactional(MySQL, (session) -> {
-			ProcessAlert error = buildAlert(errorId, message, username, ExceptionUtils.getStackTrace(t));
-			alertDao.saveAlert(error);
-			logger.info("Error persisted in database with id: " + error.getId());
+		try {
+			transactional(MySQL, (session) -> {
+				ProcessAlert error = buildAlert(errorId, message, username, ExceptionUtils.getStackTrace(t));
+				alertDao.saveAlert(error);
+				logger.info("Error persisted in database with id: " + error.getId());
 
-			Long processId = Long.valueOf(MDCUtils.get(MDCKey.PROCESS_ID));
-			Process process = processDao.find(processId); 
-			ProcessResult result = process.getResult();
-			result.setError(error);
-			processDao.update(process);
-			
-			return error;
-		});
+				bindToProcess(error);
 
-		alertService.sendAlert(errorId, username);
+				return error;
+			});
+		} finally {
+			// Alerts must be sent, no matter what
+			alertService.sendAlert(errorId, username);
+		}
+	}
+
+	private void addToProcess(ProcessAlert warning) {
+		Long processId = Long.valueOf(MDCUtils.get(MDCKey.PROCESS_ID));
+		Process process = processDao.find(processId); 
+		ProcessResult result = process.getResult();
+		result.getWarnings().add(warning);
+		processDao.update(process);
+	}
+
+	private void bindToProcess(ProcessAlert error) {
+		Long processId = Long.valueOf(MDCUtils.get(MDCKey.PROCESS_ID));
+		Process process = processDao.find(processId); 
+		ProcessResult result = process.getResult();
+		result.setError(error);
+		processDao.update(process);
 	}
 
 	private ProcessAlert buildAlert(Long errorId, String message, String username, String description) {

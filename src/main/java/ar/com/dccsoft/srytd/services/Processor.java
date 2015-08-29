@@ -1,5 +1,6 @@
 package ar.com.dccsoft.srytd.services;
 
+import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static java.lang.String.format;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ import ar.com.dccsoft.srytd.model.ProcessStatus;
 import ar.com.dccsoft.srytd.services.FileBuilder.FileBuildResult;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
-import ar.com.dccsoft.srytd.utils.errors.ProcessException;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 
 import com.google.common.collect.Lists;
@@ -38,31 +38,22 @@ public class Processor {
 	private FTPConnector ftpConnector = new FTPConnector();
 	private AppPropertyService propService = new AppPropertyService();
 	private NotificationsService notificationsService = new NotificationsService();
+	private ProcessAlertService processAlertService = new ProcessAlertService();
 
 	public void start(Date from, String username) {
 		MDCUtils.put(MDCKey.USER, username);
 		long startTime = System.currentTimeMillis();
 
-		Process process = null;
-		try {
+		tryAndInform("Unhandled error", () -> {
 			logger.info(format("Starting process for date %s", formatDate(from)));
 
 			// Iniciar el proceso
-			process = processService.create(from, username);
+			Process process = processService.create(from, username);
 			MDCUtils.put(MDCKey.PROCESS_ID, process.getId().toString());
 
 			runProcess(process);
-
-		} catch (ProcessException e) {
-			if (process != null)
-				processService.updateFinalStatus(process, e);
-		} catch (Throwable t) {
-			if (process != null) {
-				logger.error("Unhandled exception", t);
-				ProcessException e = new ProcessException(System.currentTimeMillis(), "Unhandled exception", t);
-				processService.updateFinalStatus(process, e);
-			}
-		}
+			return null;
+		});  
 
 		long duration = (System.currentTimeMillis() - startTime);
 		logger.info(format("Process finished after %d millis", duration));
@@ -71,7 +62,8 @@ public class Processor {
 
 	private void runProcess(Process process) {
 		logger.info("Process started");
-
+		Long processId = process.getId();
+		
 		// Leer datos de campo
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 
@@ -90,27 +82,30 @@ public class Processor {
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings);
 		FileBuildResult result = fileBuilder.build();
-		processService.updateStatus(process, ProcessStatus.PROCESSED);
+		processService.updateStatus(processId, ProcessStatus.PROCESSED);
 		verifyResult(result);
 
 		// Persistir txt
-		processService.saveFile(process, result.getFile());
+		processService.saveFile(processId, result.getFile());
 
 		// Subir a FTPServer
 		String fileName = fileName(process.getValuesFrom());
 		ftpConnector.transfer(result.getFile(), fileName);
-		processService.updateStatus(process, ProcessStatus.SENT);
+		processService.updateStatus(processId, ProcessStatus.SENT);
 
 		// Enviar mail de resultado
 		sendNotification(formatDate(process.getValuesFrom()), result.getFile(), fileName);
 
 		// Actualizar el estado final
-		processService.updateFinalStatus(process);
+		processService.updateFinalStatus(processId);
 	}
 
 	private void verifyResult(FileBuildResult result) {
 		if (result.getUnprocessedValues() > 0) {
-			// TODO . Marcar el proceso para finalización con warning, persistir los devices sin mapeos
+			long total = result.getUnprocessedValues() + result.getProcessedValues();
+			// Marcar el proceso para finalización con warning
+			processAlertService.addWarning("Some readings could not be processed", 
+					format("%d readings out of %d could not be processed.", result.getUnprocessedValues(), total));
 
 		}
 
@@ -144,7 +139,9 @@ public class Processor {
 			fieldTagNames.removeAll(tagNames);
 			String notFound = Arrays.toString(fieldTagNames.toArray(new String[0]));
 			logger.info(format("Tag Mappings not found for: %s", notFound));
-			// TODO . Marcar el proceso para finalización con warning
+			
+			// Marcar el proceso para finalización con warning
+			processAlertService.addWarning("Unmapped devices", format("This devices does not have mappings: %s", notFound));
 		}
 	}
 }

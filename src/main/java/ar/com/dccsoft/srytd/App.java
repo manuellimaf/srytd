@@ -37,7 +37,7 @@ public class App {
 				from = DateUtils.truncate(from, Calendar.HOUR_OF_DAY);
 				new Processor().start(from, DEFAULT_USER);
 			} catch (Throwable t) {
-				logger.error("Error found", t);
+				// Errors have been handled
 				exitCode = 1;
 			} finally {
 				 HibernateUtil.closeSessions();

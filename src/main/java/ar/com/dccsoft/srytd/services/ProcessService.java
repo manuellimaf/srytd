@@ -12,18 +12,14 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.daos.ProcessAlertDao;
 import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.Process;
-import ar.com.dccsoft.srytd.model.ProcessAlert;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
-import ar.com.dccsoft.srytd.utils.errors.ProcessException;
 
 public class ProcessService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessService.class);
-	private ProcessAlertDao alertDao = new ProcessAlertDao();
 	private ProcessDao processDao = new ProcessDao();
 
 	public Process create(Date from, String username) {
@@ -35,12 +31,13 @@ public class ProcessService {
 		});
 	}
 
-	public void saveFile(Process process, InputStream is) {
+	public void saveFile(Long processId, InputStream is) {
 		try {
 			logger.info("Persisting file to database");
 			String data = IOUtils.toString(is);
-			process.getResult().setFile(data);
 			transactional(MySQL, (session) -> {
+				Process process = processDao.find(processId);
+				process.getResult().setFile(data);
 				processDao.update(process);
 				return null;
 			});
@@ -50,29 +47,27 @@ public class ProcessService {
 		logger.info("File persisted to database");
 	}
 
-	public void updateStatus(Process process, ProcessStatus status) {
-		process.setStatus(status);
+	public void updateStatus(Long processId, ProcessStatus status) {
 		transactional(MySQL, (session) -> {
+			Process process = processDao.find(processId);
+			process.setStatus(status);
 			processDao.update(process);
 			return null;
 		});
 		logger.info(String.format("Updating process state -> %s", status.toString()));
 	}
 
-	public void updateFinalStatus(Process process, ProcessException e) {
+	public void updateFinalStatus(Long processId) {
 		transactional(MySQL, (session) -> {
-			ProcessAlert error = alertDao.find(e.getErrorId());
+			Process process = processDao.find(processId);
 			ProcessResult result = process.getResult();
-			result.setError(error);
-//			processDao.update(process);
+			result.setStatus(result.getWarnings().isEmpty() ? ProcessStatus.FINISHED_OK.toString() : ProcessStatus.FINISHED_WARN
+					.toString());
+			processDao.update(process);
+
+			updateStatus(processId, ProcessStatus.FINISHED_OK);
 			return null;
 		});
-	}
-
-	public void updateFinalStatus(Process process) {
-		ProcessResult result = process.getResult();
-		result.setStatus(result.getWarnings().isEmpty() ? ProcessStatus.FINISHED_OK.toString() : ProcessStatus.FINISHED_WARN.toString());
-		updateStatus(process, ProcessStatus.FINISHED_OK);
 	}
 
 	public List<Process> getAll() {

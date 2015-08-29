@@ -21,7 +21,7 @@
 			<property name="file">
 				<column name="file" sql-type="longtext"></column>
 			</property>
-			<set name="warnings" fetch="join" lazy="false">
+			<set name="warnings" fetch="join" lazy="false" cascade="all">
 				<key column="process_id" foreign-key="alert_process_id"/>
 				<one-to-many class="ProcessAlert"/>
 			</set>
