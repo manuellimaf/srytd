@@ -30,7 +30,7 @@
 		<mapping resource="hibernate/MappedFieldValue.xml"/>
         <mapping resource="hibernate/Process.xml"/>
         <mapping resource="hibernate/Device.xml"/>
-        <mapping resource="hibernate/ProcessError.xml"/>
+        <mapping resource="hibernate/ProcessAlert.xml"/>
         <mapping resource="hibernate/AppProperty.xml"/>
 
     </session-factory>

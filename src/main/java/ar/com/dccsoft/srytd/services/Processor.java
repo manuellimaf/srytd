@@ -12,7 +12,6 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.FieldValue;
@@ -20,6 +19,9 @@ import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
 import ar.com.dccsoft.srytd.services.FileBuilder.FileBuildResult;
+import ar.com.dccsoft.srytd.utils.MDCUtils;
+import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
+import ar.com.dccsoft.srytd.utils.errors.ProcessException;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 
 import com.google.common.collect.Lists;
@@ -38,7 +40,7 @@ public class Processor {
 	private NotificationsService notificationsService = new NotificationsService();
 
 	public void start(Date from, String username) {
-		MDC.put("user", username);
+		MDCUtils.put(MDCKey.USER, username);
 		long startTime = System.currentTimeMillis();
 
 		Process process = null;
@@ -47,18 +49,24 @@ public class Processor {
 
 			// Iniciar el proceso
 			process = processService.create(from, username);
-			MDC.put("processId", process.getId().toString());
+			MDCUtils.put(MDCKey.PROCESS_ID, process.getId().toString());
 
 			runProcess(process);
 
-		} catch (Throwable t) {
+		} catch (ProcessException e) {
 			if (process != null)
-				processService.updateFinalStatus(process, ProcessStatus.ERROR, 0L, 0L);
+				processService.updateFinalStatus(process, e);
+		} catch (Throwable t) {
+			if (process != null) {
+				logger.error("Unhandled exception", t);
+				ProcessException e = new ProcessException(System.currentTimeMillis(), "Unhandled exception", t);
+				processService.updateFinalStatus(process, e);
+			}
 		}
 
 		long duration = (System.currentTimeMillis() - startTime);
 		logger.info(format("Process finished after %d millis", duration));
-		MDC.clear();
+		MDCUtils.clear();
 	}
 
 	private void runProcess(Process process) {
@@ -97,7 +105,7 @@ public class Processor {
 		sendNotification(formatDate(process.getValuesFrom()), result.getFile(), fileName);
 
 		// Actualizar el estado final
-		processService.updateFinalStatus(process, ProcessStatus.FINISHED_OK, result.getProcessedValues(), result.getUnprocessedValues());
+		processService.updateFinalStatus(process);
 	}
 
 	private void verifyResult(FileBuildResult result) {

@@ -20,7 +20,7 @@ public class TransactionManager {
 			return result;
 		} catch (Throwable t) {
 			tx.rollback();
-			throw new RuntimeException("Error in transaction", t);
+			throw new RuntimeException("Transaction error", t);
 		}
 	}
 

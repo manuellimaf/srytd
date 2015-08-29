@@ -37,6 +37,7 @@ public class ProcessController {
 	public Paginable getMappedValues(@QueryParam("processId") String processId) {
 		logger.info(String.format("Loading all values for process %s", processId));
 
+		// TODO . validate
 		List<MappedFieldValue> values = mfvService.getValuesForProcess(Long.valueOf(processId));
 		return new Paginable(values);
 	}
@@ -47,6 +48,7 @@ public class ProcessController {
 	public ProcessResult getResult(@QueryParam("processId") String processId) {
 		logger.info(String.format("Loading result for process %s", processId));
 
+		// TODO . validate
 //		Process process = service.getProcess(Long.valueOf(processId));
 
 		return null;

@@ -12,17 +12,27 @@
 		<property name="startedBy" column="started_by" not-null="true"/>
 		<property name="startDate" column="start_date" not-null="true"/>
 		<property name="valuesFrom" column="values_from" not-null="true"/>
-		<property name="sentValues" column="sent_values" not-null="true"/>
-		<property name="unsentValues" column="unsent_values" not-null="true"/>
+
+		<component name="result" class="ProcessResult">
+			<property name="sentValues" column="sent_values" not-null="true"/>
+			<property name="unsentValues" column="unsent_values" not-null="true"/>
+			<property name="status" column="final_status"/>
+			<property name="fileName" column="file_name"/>
+			<property name="file">
+				<column name="file" sql-type="longtext"></column>
+			</property>
+			<set name="warnings" fetch="join" lazy="false">
+				<key column="process_id" foreign-key="alert_process_id"/>
+				<one-to-many class="ProcessAlert"/>
+			</set>
+			<many-to-one name="error" column="error_id" foreign-key="process_error_id"/>
+		</component>
 		
 		<property name="status" column="status" not-null="true">
 			<type name="org.hibernate.type.EnumType">
 			   <param name="enumClass">ar.com.dccsoft.srytd.model.ProcessStatus</param>
 			   <param name="type">12</param> <!-- type 12 == varchar(255) -->
 			</type>
-		</property>
-		<property name="file">
-			<column name="file" sql-type="longtext"></column>
 		</property>
 	</class>
 	

@@ -12,13 +12,18 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.daos.ProcessAlertDao;
 import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.Process;
+import ar.com.dccsoft.srytd.model.ProcessAlert;
+import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
+import ar.com.dccsoft.srytd.utils.errors.ProcessException;
 
 public class ProcessService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessService.class);
+	private ProcessAlertDao alertDao = new ProcessAlertDao();
 	private ProcessDao processDao = new ProcessDao();
 
 	public Process create(Date from, String username) {
@@ -34,7 +39,7 @@ public class ProcessService {
 		try {
 			logger.info("Persisting file to database");
 			String data = IOUtils.toString(is);
-			process.setFile(data);
+			process.getResult().setFile(data);
 			transactional(MySQL, (session) -> {
 				processDao.update(process);
 				return null;
@@ -54,10 +59,20 @@ public class ProcessService {
 		logger.info(String.format("Updating process state -> %s", status.toString()));
 	}
 
-	public void updateFinalStatus(Process process, ProcessStatus status, Long sent, Long unsent) {
-		process.setSentValues(sent);
-		process.setUnsentValues(unsent);
-		updateStatus(process, status);
+	public void updateFinalStatus(Process process, ProcessException e) {
+		transactional(MySQL, (session) -> {
+			ProcessAlert error = alertDao.find(e.getErrorId());
+			ProcessResult result = process.getResult();
+			result.setError(error);
+//			processDao.update(process);
+			return null;
+		});
+	}
+
+	public void updateFinalStatus(Process process) {
+		ProcessResult result = process.getResult();
+		result.setStatus(result.getWarnings().isEmpty() ? ProcessStatus.FINISHED_OK.toString() : ProcessStatus.FINISHED_WARN.toString());
+		updateStatus(process, ProcessStatus.FINISHED_OK);
 	}
 
 	public List<Process> getAll() {

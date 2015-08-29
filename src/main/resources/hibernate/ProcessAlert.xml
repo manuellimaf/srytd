@@ -4,15 +4,16 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="ar.com.dccsoft.srytd.model">
-	<class name="ProcessError" table="process_error">
+	<class name="ProcessAlert" table="process_alert">
 		<id name="id">
 			<generator class="native"/>
 		</id>
 		
-		<property name="errorId" column="error_id" not-null="true"/>
+		<property name="identifier" not-null="true"/>
 		<property name="message" not-null="true"/>
-		<property name="errorDate" column="error_date" not-null="true"/>
-		<property name="stacktrace" />
+		<property name="description">
+			<column name="description" sql-type="mediumtext"/>
+		</property>
 		<property name="username" not-null="true"/>
 	</class>
 	

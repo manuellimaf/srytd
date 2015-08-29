@@ -2,8 +2,6 @@ package ar.com.dccsoft.srytd.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Process {
 
 	private Long id;
@@ -11,16 +9,7 @@ public class Process {
 	private Date startDate;
 	private ProcessStatus status;
 	private Date valuesFrom;
-	private Long sentValues = 0L;
-	private Long unsentValues = 0L;
-	private ProcessResult result;
-
-	@JsonIgnore
-	private String file;
-
-	public Long getSentValues() {
-		return sentValues;
-	}
+	private ProcessResult result = new ProcessResult();
 
 	public ProcessResult getResult() {
 		return result;
@@ -30,32 +19,12 @@ public class Process {
 		this.result = result;
 	}
 
-	public void setSentValues(Long sentValues) {
-		this.sentValues = sentValues;
-	}
-
-	public Long getUnsentValues() {
-		return unsentValues;
-	}
-
-	public void setUnsentValues(Long unsentValues) {
-		this.unsentValues = unsentValues;
-	}
-
 	public Date getValuesFrom() {
 		return valuesFrom;
 	}
 
 	public void setValuesFrom(Date valuesFrom) {
 		this.valuesFrom = valuesFrom;
-	}
-
-	public String getFile() {
-		return file;
-	}
-
-	public void setFile(String file) {
-		this.file = file;
 	}
 
 	public Long getId() {
