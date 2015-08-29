@@ -14,7 +14,8 @@ Ext.define('App.view.process.List', {
         { text: 'Corresponde a', dataIndex: 'startDate', flex: 1 },
         { text: 'Enviados', dataIndex: 'sentValues', flex: 1 },
         { text: 'No enviados', dataIndex: 'unsentValues', flex: 1 },
-        { text: 'Estado final', dataIndex: 'status', flex: 1 }
+        { text: 'Estado actual', dataIndex: 'status', flex: 1 },
+        { text: 'Estado final', dataIndex: 'finalStatus', flex: 1 }
     ],
     autoRender: true,
     tbar: {

@@ -12,6 +12,7 @@ import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessAlert;
 import ar.com.dccsoft.srytd.model.ProcessResult;
+import ar.com.dccsoft.srytd.model.ProcessStatus;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 
@@ -19,8 +20,9 @@ import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 public class ProcessAlertService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessAlertService.class);
+	private NotificationsService notificationService = new NotificationsService();
+	private MappedFieldValueService mappingsService = new MappedFieldValueService();
 	private ProcessAlertDao alertDao = new ProcessAlertDao();
-	private NotificationsService alertService = new NotificationsService();
 	private ProcessDao processDao = new ProcessDao();
 	
 	public ProcessAlert getAlert(Long id) {
@@ -55,7 +57,7 @@ public class ProcessAlertService {
 			});
 		} finally {
 			// Alerts must be sent, no matter what
-			alertService.sendAlert(errorId, username);
+			notificationService.sendAlert(errorId, username);
 		}
 	}
 
@@ -70,8 +72,13 @@ public class ProcessAlertService {
 	private void bindToProcess(ProcessAlert error) {
 		Long processId = Long.valueOf(MDCUtils.get(MDCKey.PROCESS_ID));
 		Process process = processDao.find(processId); 
+		process.setStatus(ProcessStatus.ERROR);
+		
+		long mappingsCount = mappingsService.getValuesForProcess(processId).size();
 		ProcessResult result = process.getResult();
 		result.setError(error);
+		result.setStatus(ProcessStatus.ERROR);
+		result.setUnsentValues(mappingsCount);	
 		processDao.update(process);
 	}
 

@@ -5,6 +5,7 @@ import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 
 import ar.com.dccsoft.srytd.model.Process;
@@ -28,7 +29,8 @@ public class ProcessDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Process> getAll() {
-		return MySQL.currentSession().createCriteria(Process.class).addOrder(Order.desc("id")).list();
+		return MySQL.currentSession().createCriteria(Process.class).addOrder(Order.desc("id"))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
 	}
 
 	public void update(Process process) {

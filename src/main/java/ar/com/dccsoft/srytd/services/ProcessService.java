@@ -61,11 +61,10 @@ public class ProcessService {
 		transactional(MySQL, (session) -> {
 			Process process = processDao.find(processId);
 			ProcessResult result = process.getResult();
-			result.setStatus(result.getWarnings().isEmpty() ? ProcessStatus.FINISHED_OK.toString() : ProcessStatus.FINISHED_WARN
-					.toString());
+			result.setStatus(result.getWarnings().isEmpty() ? ProcessStatus.FINISHED_OK : ProcessStatus.FINISHED_WARN);
 			processDao.update(process);
 
-			updateStatus(processId, ProcessStatus.FINISHED_OK);
+			updateStatus(processId, ProcessStatus.FINISHED);
 			return null;
 		});
 	}

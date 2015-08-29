@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProcessResult {
 
-	private String status;
+	private ProcessStatus status;
 	private String fileName;
 	@JsonIgnore
 	private String file;
@@ -53,6 +53,14 @@ public class ProcessResult {
 		return error;
 	}
 
+	public ProcessStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProcessStatus status) {
+		this.status = status;
+	}
+
 	public void setError(ProcessAlert error) {
 		this.error = error;
 	}
@@ -63,14 +71,6 @@ public class ProcessResult {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 }

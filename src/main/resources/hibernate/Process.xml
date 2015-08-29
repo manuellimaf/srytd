@@ -16,7 +16,12 @@
 		<component name="result" class="ProcessResult">
 			<property name="sentValues" column="sent_values" not-null="true"/>
 			<property name="unsentValues" column="unsent_values" not-null="true"/>
-			<property name="status" column="final_status"/>
+			<property name="status" column="final_status">
+				<type name="org.hibernate.type.EnumType">
+				   <param name="enumClass">ar.com.dccsoft.srytd.model.ProcessStatus</param>
+				   <param name="type">12</param> <!-- type 12 == varchar(255) -->
+				</type>
+			</property>
 			<property name="fileName" column="file_name"/>
 			<property name="file">
 				<column name="file" sql-type="longtext"></column>

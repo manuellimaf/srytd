@@ -29,8 +29,8 @@ public class App {
 
 		if (mode.equals(SERVER)) {
 			HttpServer.start();
-			System.out.close();
-			System.err.close();
+//			System.out.close();
+//			System.err.close();
 		} else {
 			int exitCode = 0;
 			try {

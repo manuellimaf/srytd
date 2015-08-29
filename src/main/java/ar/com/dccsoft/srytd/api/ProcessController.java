@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
+import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.services.MappedFieldValueService;
 import ar.com.dccsoft.srytd.services.ProcessService;
@@ -53,5 +55,15 @@ public class ProcessController {
 
 		return result;
 	}
+
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Process getProcess(@PathParam("id") String processId) {
+		logger.debug("Loading process id: " + processId);
+		// TODO . validate
+		return service.getProcess(Long.valueOf(processId));
+	}
+
 
 }
