@@ -49,9 +49,9 @@ public class ProcessController {
 		logger.info(String.format("Loading result for process %s", processId));
 
 		// TODO . validate
-//		Process process = service.getProcess(Long.valueOf(processId));
+		ProcessResult result = service.getProcess(Long.valueOf(processId)).getResult();
 
-		return null;
+		return result;
 	}
 
 }

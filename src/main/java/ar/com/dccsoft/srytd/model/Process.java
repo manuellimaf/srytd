@@ -2,6 +2,8 @@ package ar.com.dccsoft.srytd.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Process {
 
 	private Long id;
@@ -9,6 +11,7 @@ public class Process {
 	private Date startDate;
 	private ProcessStatus status;
 	private Date valuesFrom;
+	@JsonIgnore
 	private ProcessResult result = new ProcessResult();
 
 	public ProcessResult getResult() {

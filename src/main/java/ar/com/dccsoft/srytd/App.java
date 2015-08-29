@@ -22,11 +22,12 @@ public class App {
 	public static void main(String[] args) {
 
 		String mode = args.length == 0 ? SERVER : args[0];
-
+		logger.info("Loading in mode " + mode);
+		
 		Config.init();
 		HibernateUtil.init();
 
-		if (mode == SERVER) {
+		if (mode.equals(SERVER)) {
 			HttpServer.start();
 			System.out.close();
 			System.err.close();

@@ -1,8 +1,11 @@
 package ar.com.dccsoft.srytd.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class MappedFieldValue extends FieldValue {
 
 	private String tag;
+	@JsonIgnore
 	private Process process;
 
 	public Process getProcess() {
