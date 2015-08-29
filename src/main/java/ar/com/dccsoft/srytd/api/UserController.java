@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import jersey.repackaged.com.google.common.collect.Lists;
-import ar.com.dccsoft.srytd.utils.ui.Paginable;
+import ar.com.dccsoft.srytd.utils.ui.Page;
 
 @Path("/user")
 public class UserController {
@@ -17,7 +17,7 @@ public class UserController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Paginable getAll() {
-		return new Paginable(Lists.newArrayList(), 0L);
+	public Page getAll() {
+		return new Page(Lists.newArrayList(), 0L);
 	}
 }

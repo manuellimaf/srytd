@@ -19,6 +19,7 @@ import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
+import ar.com.dccsoft.srytd.utils.ui.Page;
 
 import com.google.common.collect.Lists;
 
@@ -82,6 +83,14 @@ public class MappedFieldValueService {
 	public List<MappedFieldValue> getValuesForProcess(Long processId) {
 		return transactional(MySQL, (session) -> {
 			return dao.filterByProcessId(processId);
+		});
+	}
+
+	public Page getPage(Long processId, Integer start, Integer limit) {
+		return transactional(MySQL, (session) -> {
+			List<MappedFieldValue> elems = dao.getPageForProcessId(processId, start, limit);
+			Long total = dao.countAllForProcessId(processId);
+			return new Page(elems, total);
 		});
 	}
 }

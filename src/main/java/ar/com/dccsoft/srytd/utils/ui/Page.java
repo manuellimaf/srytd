@@ -3,16 +3,16 @@ package ar.com.dccsoft.srytd.utils.ui;
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
-public class Paginable {
+public class Page {
 
 	private List items;
 	private Long total;
 	private Boolean success = true;
 
-	public Paginable() {
-	}
+	/** required by serializer */
+	public Page() {}
 
-	public Paginable(List items, Long results) {
+	public Page(List items, Long results) {
 		this.items = items;
 		this.total = results;
 	}

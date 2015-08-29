@@ -1,7 +1,5 @@
 package ar.com.dccsoft.srytd.api;
 
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -12,12 +10,11 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.services.MappedFieldValueService;
 import ar.com.dccsoft.srytd.services.ProcessService;
-import ar.com.dccsoft.srytd.utils.ui.Paginable;
+import ar.com.dccsoft.srytd.utils.ui.Page;
 
 @Path("/process")
 public class ProcessController {
@@ -28,20 +25,21 @@ public class ProcessController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Paginable getAllProcesses(@QueryParam("start") String start, @QueryParam("limit") String limit) {
-		logger.debug("Loading all processes");
+	public Page getAllProcesses(@QueryParam("start") String start, @QueryParam("limit") String limit) {
+		logger.debug("Loading processes");
 		return service.getPage(Integer.valueOf(start), Integer.valueOf(limit));
 	}
 
 	@GET
 	@Path("/mapped-field-values")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Paginable getMappedValues(@QueryParam("processId") String processId) {
-		logger.info(String.format("Loading all values for process %s", processId));
+	public Page getMappedValues(@QueryParam("processId") String processId, @QueryParam("start") String start, 
+			@QueryParam("limit") String limit) {
+		
+		logger.info(String.format("Loading values for process %s", processId));
 
-		// TODO . validate + Fix Paging
-		List<MappedFieldValue> values = mfvService.getValuesForProcess(Long.valueOf(processId));
-		return new Paginable(values, Long.valueOf(values.size()));
+		// TODO . validate
+		return mfvService.getPage(Long.valueOf(processId), Integer.valueOf(start), Integer.valueOf(limit));
 	}
 
 	@GET

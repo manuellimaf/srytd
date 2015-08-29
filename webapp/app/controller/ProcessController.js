@@ -9,12 +9,12 @@ Ext.define('App.controller.ProcessController', {
         });
 		this.control({
 			'mapped-field-value-list': {
-				afterrender: this.loadFieldValueList
+				beforeadd: this.loadFieldValueList
 			}
 		});
 		this.control({
 			'process-result': {
-				afterrender: this.loadProcessResult
+				beforerender: this.loadProcessResult
 			}
 		});
         this.control({
@@ -43,7 +43,6 @@ Ext.define('App.controller.ProcessController', {
 	    var selected = this.getProcessList().getSelectionModel().selected;
 	    if(selected.getCount() > 0) {
 		    var processId = selected.first().get('id');
-			console.log("processId: " + processId);
 	    
 	    	if(this.currentWindow) {
 	    		this.currentWindow.close();
@@ -54,8 +53,6 @@ Ext.define('App.controller.ProcessController', {
 	    }
     },
     loadFieldValueList: function() {
-    	var list = this.getMappedFieldValueList();
-    	console.log(list);
     	var store = this.getStore('MappedFieldValueStore');
 		store.load({
 			params: { processId: this.currentProcessId }

@@ -7,9 +7,11 @@ Ext.define('App.view.mappedFieldValue.Panel', {
         this.callParent(config);
     },	
 	
-	height: 600,
     width: 1200,
+    constrain: true,
+    modal: true,
     layout: 'anchor',
+    
     items: {
     	xtype: 'tabpanel',
 	    anchor: '100% 100%',
