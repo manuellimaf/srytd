@@ -4,6 +4,7 @@ Ext.define('App.store.Process', {
     model: 'App.model.Process',
 	autoLoad: {start: 0, limit: 20},
 	pageSize: 20,
+	remoteSort: true,
     proxy: {
         type: 'ajax',
         url: '/api/process',

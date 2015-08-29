@@ -18,6 +18,6 @@ public class UserController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Paginable getAll() {
-		return new Paginable(Lists.newArrayList());
+		return new Paginable(Lists.newArrayList(), 0L);
 	}
 }

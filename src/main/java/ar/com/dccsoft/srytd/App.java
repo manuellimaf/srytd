@@ -17,7 +17,7 @@ public class App {
 
 	private static Logger logger = LoggerFactory.getLogger(App.class);
 
-	private static String DEFAULT_USER = "consola";
+	private static String DEFAULT_USER = "automatico";
 
 	public static void main(String[] args) {
 

@@ -6,15 +6,15 @@ import java.util.List;
 public class Paginable {
 
 	private List items;
-	private Integer total;
+	private Long total;
 	private Boolean success = true;
 
 	public Paginable() {
 	}
 
-	public Paginable(List items) {
+	public Paginable(List items, Long results) {
 		this.items = items;
-		this.total = items.size();
+		this.total = results;
 	}
 
 	public List getItems() {
@@ -33,12 +33,13 @@ public class Paginable {
 		this.success = success;
 	}
 
-	public Integer getTotal() {
+	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(Integer total) {
+	public void setTotal(Long total) {
 		this.total = total;
 	}
+
 
 }

@@ -3,7 +3,6 @@ Ext.define('App.view.process.List', {
     alias: 'widget.process-list',
 
     title: 'Env&iacute;os',
-	height: 500,
 	border: false,
     
     store: 'Process',
@@ -24,12 +23,12 @@ Ext.define('App.view.process.List', {
             iconAlign:'left'
         },
     	items: [{
-            text: 'Forzar env&iacute;o',
-            action: 'send',
-            iconCls: 'add16'
-        },'-',{
             text: 'Ver detalle',
             action: 'viewDetail',
+            iconCls: 'add16'
+        }, '->', {
+            text: 'Env&iacute;o manual',
+            action: 'send',
             iconCls: 'add16'
         }]
     },

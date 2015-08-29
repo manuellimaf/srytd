@@ -31,7 +31,7 @@ Ext.define('App.view.layout.BodyPanel', {
             iconCls: 'add16'
         }]
     },
-    items: [{
+    items: {
     	xtype: 'process-panel'
-    }]
+    }
 });

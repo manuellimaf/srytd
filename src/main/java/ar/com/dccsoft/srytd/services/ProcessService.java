@@ -16,6 +16,7 @@ import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
+import ar.com.dccsoft.srytd.utils.ui.Paginable;
 
 public class ProcessService {
 
@@ -69,8 +70,12 @@ public class ProcessService {
 		});
 	}
 
-	public List<Process> getAll() {
-		return transactional(MySQL, (session) -> processDao.getAll());
+	public Paginable getPage(Integer start, Integer limit) {
+		return transactional(MySQL, (session) -> {
+			List<Process> elems = processDao.getPage(start, limit);
+			Long total = processDao.countAll();
+			return new Paginable(elems, total);
+		});
 	}
 
 	public Process getProcess(Long id) {

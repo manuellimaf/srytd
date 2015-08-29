@@ -28,9 +28,9 @@ public class ProcessController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Paginable getAllProcesses() {
+	public Paginable getAllProcesses(@QueryParam("start") String start, @QueryParam("limit") String limit) {
 		logger.debug("Loading all processes");
-		return new Paginable(service.getAll());
+		return service.getPage(Integer.valueOf(start), Integer.valueOf(limit));
 	}
 
 	@GET
@@ -39,9 +39,9 @@ public class ProcessController {
 	public Paginable getMappedValues(@QueryParam("processId") String processId) {
 		logger.info(String.format("Loading all values for process %s", processId));
 
-		// TODO . validate
+		// TODO . validate + Fix Paging
 		List<MappedFieldValue> values = mfvService.getValuesForProcess(Long.valueOf(processId));
-		return new Paginable(values);
+		return new Paginable(values, Long.valueOf(values.size()));
 	}
 
 	@GET
