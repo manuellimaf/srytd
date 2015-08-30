@@ -10,7 +10,7 @@ Ext.define('App.view.process.List', {
         { text: 'C&oacute;digo',  dataIndex: 'id' },
         { text: 'Inicio', dataIndex: 'startDate', flex: 1 },
         { text: 'Iniciado por', dataIndex: 'startedBy', flex: 1 },
-        { text: 'Corresponde a', dataIndex: 'startDate', flex: 1 },
+        { text: 'Corresponde a', dataIndex: 'valuesFrom', flex: 1 },
         { text: 'Enviados', dataIndex: 'sentValues', flex: 1 },
         { text: 'No enviados', dataIndex: 'unsentValues', flex: 1 },
         { text: 'Estado actual', dataIndex: 'status', flex: 1 },

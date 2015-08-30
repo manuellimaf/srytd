@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.daos.ProcessDao;
+import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
@@ -21,6 +22,7 @@ import ar.com.dccsoft.srytd.utils.ui.Page;
 public class ProcessService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessService.class);
+	private MappedFieldValueService mappingsService = new MappedFieldValueService();
 	private ProcessDao processDao = new ProcessDao();
 
 	public Process create(Date from, String username) {
@@ -80,5 +82,17 @@ public class ProcessService {
 
 	public Process getProcess(Long id) {
 		return transactional(MySQL, (session) -> processDao.find(id));
+	}
+
+	public Long resendValues(Long id, String username) {
+		Process process = getProcess(id);
+		logger.info("Cloning process with id " + id);
+		
+		Process newProcess = create(process.getValuesFrom(), username);
+		List<MappedFieldValue> newMappings = mappingsService.cloneMappings(process, newProcess);
+		
+		new Processor().buildFileAndSend(newProcess, newMappings);
+
+		return newProcess.getId();
 	}
 }

@@ -93,4 +93,33 @@ public class MappedFieldValueService {
 			return new Page(elems, total);
 		});
 	}
+
+	public List<MappedFieldValue> cloneMappings(Process origin, Process destination) {
+		BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+
+		List<MappedFieldValue> mappings = getValuesForProcess(origin.getId());
+		logger.info(String.format("Cloning %d mapped values for process %d", mappings.size(), origin.getId()));
+		
+		List<MappedFieldValue> result = Lists.newLinkedList(); 
+		transactional(MySQL, (session) -> {
+			for(MappedFieldValue mapping : mappings) {
+				MappedFieldValue value = new MappedFieldValue();
+				
+				try {
+					BeanUtils.copyProperties(value, mapping);
+				} catch (Exception e) {
+					// This should never happen, it's the same object type.
+					logger.error(String.format("Error cloning field value id: %d", mapping.getId()), e);
+				}
+				
+				value.setId(null);
+				value.setProcess(destination);
+				dao.save(value);
+				result.add(value);
+			}
+			return null;
+		});
+		logger.info(String.format("%d field values cloned", result.size()));
+		return result;
+	}
 }

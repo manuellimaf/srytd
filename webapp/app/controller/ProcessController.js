@@ -13,6 +13,11 @@ Ext.define('App.controller.ProcessController', {
 			}
 		});
 		this.control({
+        	'mapped-field-value-list button[action=resend]': {
+				click: this.resend
+			}
+		});
+		this.control({
 			'process-result': {
 				beforerender: this.loadProcessResult
 			}
@@ -57,6 +62,25 @@ Ext.define('App.controller.ProcessController', {
 		store.load({
 			params: { processId: this.currentProcessId }
 		});
+    },
+
+    resend: function() {
+    	Ext.Msg.confirm('Re enviar?', 
+    		'Realmente desea enviar los datos correspondientes al proceso ' + this.currentProcessId + '? El mismo puede demorar varios minutos.',
+		    function() {
+		    	Ext.Ajax.request({
+				    url: '/api/process/resend/' + this.currentProcessId,
+				    method: 'POST',
+				    success: function(response, opts) {
+				        var id = Ext.decode(response.responseText);
+				        Ext.Msg.alert('Proceso finalizaro', 'Finaliz&oacute; correctamente el proceso de env&iacute;o de datos (nuevo id: ' + id +').');
+				    },
+				    failure: function(response, opts) {
+				        Ext.Msg.alert('Error', 'Se produjo un error al realizar el env&iacute;o.');
+				    }
+				});
+		    },
+		    this);
     },
     
     loadProcessResult: function() {

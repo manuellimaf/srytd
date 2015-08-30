@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -20,8 +21,9 @@ public class MappedFieldValueDao {
 
 	@SuppressWarnings("unchecked")
 	public List<MappedFieldValue> filterByProcessId(Long processId) {
-		Criteria c = MySQL.currentSession().createCriteria(MappedFieldValue.class);
-		c.createCriteria("process").add(Restrictions.idEq(processId));
+		Criteria c = MySQL.currentSession().createCriteria(MappedFieldValue.class)
+			.createCriteria("process").add(Restrictions.idEq(processId))
+			.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		return c.list();
 	}
 
@@ -38,6 +40,7 @@ public class MappedFieldValueDao {
 				.createCriteria(MappedFieldValue.class, "mfv")
 				.createCriteria("process")
 				.add(Restrictions.idEq(processId))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
 				.setProjection(Projections.countDistinct("mfv.id"))
 				.uniqueResult();
 	}

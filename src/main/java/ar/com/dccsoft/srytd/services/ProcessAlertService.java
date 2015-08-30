@@ -36,7 +36,7 @@ public class ProcessAlertService {
 		transactional(MySQL, (session) -> {
 			ProcessAlert warning = buildAlert(errorId, message, username, description);
 			addToProcess(warning);
-			logger.info("Warning persisted in database with id: " + warning.getId());
+			logger.info("Warning persisted in database with");
 			
 			return warning;
 		});
@@ -49,7 +49,7 @@ public class ProcessAlertService {
 			transactional(MySQL, (session) -> {
 				ProcessAlert error = buildAlert(errorId, message, username, ExceptionUtils.getStackTrace(t));
 				alertDao.saveAlert(error);
-				logger.info("Error persisted in database with id: " + error.getId());
+				logger.info("Process alert persisted in database with id: " + error.getId());
 
 				bindToProcess(error);
 
@@ -71,6 +71,7 @@ public class ProcessAlertService {
 
 	private void bindToProcess(ProcessAlert error) {
 		Long processId = Long.valueOf(MDCUtils.get(MDCKey.PROCESS_ID));
+		logger.info("Saving error for process " + processId);
 		Process process = processDao.find(processId); 
 		process.setStatus(ProcessStatus.ERROR);
 		
@@ -80,6 +81,7 @@ public class ProcessAlertService {
 		result.setStatus(ProcessStatus.ERROR);
 		result.setUnsentValues(mappingsCount);	
 		processDao.update(process);
+		logger.info("Process " + processId + " result = " + result.getStatus().toString());
 	}
 
 	private ProcessAlert buildAlert(Long errorId, String message, String username, String description) {

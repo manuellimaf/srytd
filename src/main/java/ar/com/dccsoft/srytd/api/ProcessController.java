@@ -1,6 +1,7 @@
 package ar.com.dccsoft.srytd.api;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -52,6 +53,18 @@ public class ProcessController {
 		ProcessResult result = service.getProcess(Long.valueOf(processId)).getResult();
 
 		return result;
+	}
+
+	@POST
+	@Path("/resend/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Long resendValues(@PathParam("id") String processId) {
+		logger.info(String.format("Starting to send values for process %s", processId));
+		
+		// TODO . validate + username
+		String username = "web";
+		Long newId = service.resendValues(Long.valueOf(processId), username);
+		return newId;
 	}
 
 	@GET

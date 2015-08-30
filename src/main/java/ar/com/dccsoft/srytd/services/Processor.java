@@ -49,9 +49,8 @@ public class Processor {
 
 			// Iniciar el proceso
 			Process process = processService.create(from, username);
-			MDCUtils.put(MDCKey.PROCESS_ID, process.getId().toString());
 
-			runProcess(process);
+			runFullProcess(process);
 			return null;
 		});  
 
@@ -60,10 +59,17 @@ public class Processor {
 		MDCUtils.clear();
 	}
 
-	private void runProcess(Process process) {
+	public void runFullProcess(Process process) {
 		logger.info("Process started");
 		Long processId = process.getId();
+		MDCUtils.put(MDCKey.PROCESS_ID, processId.toString());
 		
+		List<MappedFieldValue> mappings = mapFieldValues(process);
+
+		buildFileAndSend(process, mappings);
+	}
+
+	public List<MappedFieldValue> mapFieldValues(Process process) {
 		// Leer datos de campo
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 
@@ -78,7 +84,13 @@ public class Processor {
 
 		// Leer valores manuales y unirlos a la lista de valores automáticos
 		mappings.addAll(mappedFieldValueService.safetlyGetValuesForProcess(process));
+		return mappings;
+	}
 
+	public void buildFileAndSend(Process process, List<MappedFieldValue> mappings) {
+		Long processId = process.getId();
+		MDCUtils.put(MDCKey.PROCESS_ID, processId.toString());
+		
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings);
 		FileBuildResult result = fileBuilder.build();
