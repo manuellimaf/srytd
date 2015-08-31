@@ -110,6 +110,7 @@ Ext.define('App.view.configProps.Form', {
     	text: 'Guardar',
         formBind: true,
         disabled: true,
-        action: 'update'
+        action: 'update',
+        iconCls: 'icon-save'
     }]
 });

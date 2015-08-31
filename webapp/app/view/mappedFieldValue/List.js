@@ -97,7 +97,7 @@ Ext.define('App.view.mappedFieldValue.List', {
             iconAlign:'left',
             text: 'Reenviar todo',
             action: 'resend',
-            iconCls: 'add16'
+            iconCls: 'icon-resend'
         }]
     },
     dockedItems: [{

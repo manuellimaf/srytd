@@ -11,24 +11,24 @@ Ext.define('App.view.layout.BodyPanel', {
     tbar: {
     	defaults: {
             scale: 'medium',
-            iconAlign:'top'
+            iconAlign:'left	'
         },
     	items: [{
             text: 'Env&iacute;os',
             action: 'showProcesses',
-            iconCls: 'add16'
+            iconCls: 'icon-send'
         },{
-            text: 'Mediciones',
+            text: 'Ingreso manual',
             action: 'showFieldValues',
-            iconCls: 'add16'
+            iconCls: 'icon-manual-value'
         },{
             text: 'Configuraci&oacute;n',
             action: 'showConfig',
-            iconCls: 'add16'
+            iconCls: 'icon-config'
         },'->',{
             text: 'Salir',
             action: 'logout',
-            iconCls: 'add16'
+            iconCls: 'icon-logout'
         }]
     },
     items: {

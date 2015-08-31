@@ -35,7 +35,8 @@ Ext.define('App.view.process.Result', {
 		    	xtype: 'button',
 		    	margin: '0 0 0 10',
 		    	text: 'Descargar',
-		    	action: 'downloadFile'
+		    	action: 'downloadFile',
+		    	iconCls: 'icon-download'
 		    }]
 	    }]        
     },{

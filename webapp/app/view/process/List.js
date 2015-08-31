@@ -25,11 +25,11 @@ Ext.define('App.view.process.List', {
     	items: [{
             text: 'Ver detalle',
             action: 'viewDetail',
-            iconCls: 'add16'
+            iconCls: 'icon-detail'
         }, '->', {
             text: 'Env&iacute;o manual',
             action: 'send',
-            iconCls: 'add16'
+            iconCls: 'icon-manual-send'
         }]
     },
     dockedItems: [{
