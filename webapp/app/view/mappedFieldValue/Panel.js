@@ -8,13 +8,13 @@ Ext.define('App.view.mappedFieldValue.Panel', {
     },	
 	
     width: 1200,
+    height: 500,
     constrain: true,
     modal: true,
-    layout: 'anchor',
+    layout: 'fit',
     
     items: {
     	xtype: 'tabpanel',
-	    anchor: '100% 100%',
 	    items: [{
 	        title: 'Mediciones',
 	        xtype: 'mapped-field-value-list'

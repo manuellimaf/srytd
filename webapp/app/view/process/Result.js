@@ -8,14 +8,20 @@ Ext.define('App.view.process.Result', {
     	xtype:'fieldset',
         title: 'Detalle de finalizaci&oacute;n',
         defaultType: 'displayfield',
-        anchor: '100% 25%',
+        anchor: '100% 35%',
         layout: 'anchor',
 	    items: [{
 	        fieldLabel: 'Estado final',
+	        labelWidth: 85,
 	        name: 'status'
 	    },{
-	        fieldLabel: 'Disp. sin mapeo',
-	        name: 'unmappedDevices'
+	        fieldLabel: 'Valores enviados',
+	        labelWidth: 105,
+	        name: 'sentValues'
+	    },{
+	        fieldLabel: 'Valores no enviados',
+	        labelWidth: 120,
+	        name: 'unsentValues'
 	    },{
 	    	xtype: 'fieldset',
 	    	layout: 'hbox',
@@ -27,6 +33,7 @@ Ext.define('App.view.process.Result', {
 		        name: 'fileName'
 		    }, {
 		    	xtype: 'button',
+		    	margin: '0 0 0 10',
 		    	text: 'Descargar',
 		    	action: 'downloadFile'
 		    }]
@@ -34,12 +41,16 @@ Ext.define('App.view.process.Result', {
     },{
     	xtype:'fieldset',
         title: 'Errores',
-        anchor: '100% 75%',
+        anchor: '100% 65%',
         layout: 'anchor',
 	    items: [{
 	        fieldLabel: 'C&oacute;digo de error',
 	        xtype: 'displayfield',
 	        name: 'errorId'
+	    },{
+	        fieldLabel: 'Mensaje de error',
+	        xtype: 'displayfield',
+	        name: 'errorMessage'
 	    },{
 	        fieldLabel: 'Descripci&oacute;n',
 	        xtype: 'textarea',

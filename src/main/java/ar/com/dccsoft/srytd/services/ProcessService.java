@@ -34,13 +34,14 @@ public class ProcessService {
 		});
 	}
 
-	public void saveFile(Long processId, InputStream is) {
+	public void saveFile(Long processId, InputStream is, String fileName) {
 		try {
 			logger.info("Persisting file to database");
 			String data = IOUtils.toString(is);
 			transactional(MySQL, (session) -> {
 				Process process = processDao.find(processId);
 				process.getResult().setFile(data);
+				process.getResult().setFileName(fileName);
 				processDao.update(process);
 				return null;
 			});

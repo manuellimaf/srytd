@@ -98,10 +98,10 @@ public class Processor {
 		verifyResult(result);
 
 		// Persistir txt
-		processService.saveFile(processId, result.getFile());
+		String fileName = fileName(process.getValuesFrom());
+		processService.saveFile(processId, result.getFile(), fileName);
 
 		// Subir a FTPServer
-		String fileName = fileName(process.getValuesFrom());
 		ftpConnector.transfer(result.getFile(), fileName);
 		processService.updateStatus(processId, ProcessStatus.SENT);
 

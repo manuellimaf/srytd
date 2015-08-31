@@ -1,4 +1,12 @@
 Ext.define('App.model.ProcessResult', {
     extend: 'Ext.data.Model',
-    fields: ['status', 'unmappedDevices', 'errorId', 'errorDesc', 'fileName']
+    fields: [
+    	{ name: 'status' }, 
+    	{ name: 'sentValues' }, 
+    	{ name: 'unsentValues' }, 
+    	{ name: 'fileName' },
+    	{ name: 'errorId', mapping: 'error.identifier' }, 
+    	{ name: 'errorMessage', mapping: 'error.message' }, 
+    	{ name: 'errorDesc', mapping: 'error.description' } 
+    ]
 });
