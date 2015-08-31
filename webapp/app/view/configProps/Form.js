@@ -3,7 +3,8 @@ Ext.define('App.view.configProps.Form', {
     alias: 'widget.config-props',
 	
 	title: 'Variables del sistema',
-	height: 250,
+	border: 0,
+	
 	layout: {
 		type: 'table',
 		columns: 2,
