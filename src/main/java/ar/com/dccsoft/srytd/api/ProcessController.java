@@ -1,12 +1,17 @@
 package ar.com.dccsoft.srytd.api;
 
+import java.io.OutputStream;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +39,9 @@ public class ProcessController {
 	@GET
 	@Path("/mapped-field-values")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Page getMappedValues(@QueryParam("processId") String processId, @QueryParam("start") String start, 
+	public Page getMappedValues(@QueryParam("processId") String processId, @QueryParam("start") String start,
 			@QueryParam("limit") String limit) {
-		
+
 		logger.info(String.format("Loading values for process %s", processId));
 
 		// TODO . validate
@@ -56,15 +61,42 @@ public class ProcessController {
 	}
 
 	@POST
-	@Path("/resend/{id}")
+	@Path("/{id}/resend")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Long resendValues(@PathParam("id") String processId) {
 		logger.info(String.format("Starting to send values for process %s", processId));
-		
+
 		// TODO . validate + username
 		String username = "web";
 		Long newId = service.resendValues(Long.valueOf(processId), username);
 		return newId;
+	}
+
+	@GET
+	@Path("/{id}/file")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getFile(@PathParam("id") String processId) {
+		logger.debug("Downloading file for process id: " + processId);
+		// TODO . validate
+		ProcessResult result = service.getProcess(Long.valueOf(processId)).getResult();
+
+		String file = result.getFile();
+		String fileName = result.getFileName();
+		// TODO . if file does not exists, 404
+
+		StreamingOutput stream = new StreamingOutput() {
+			@Override
+			public void write(OutputStream output) throws WebApplicationException {
+				try {
+					output.write(file.getBytes());
+				} catch (Exception e) {
+					throw new WebApplicationException(e);
+				}
+			}
+		};
+
+		String contentDispostition = String.format("attachment; filename = %s", fileName);
+		return Response.ok(stream).header("content-disposition", contentDispostition).build();
 	}
 
 	@GET
@@ -75,6 +107,5 @@ public class ProcessController {
 		// TODO . validate
 		return service.getProcess(Long.valueOf(processId));
 	}
-
 
 }

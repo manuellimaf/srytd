@@ -5,6 +5,7 @@ Ext.define('App.view.mappedFieldValue.Panel', {
 	constructor: function(config) {
 	    this.title = 'Detalle del env&iacute;o #' + config.processId;
         this.callParent(config);
+        
     },	
 	
     width: 1200,
@@ -20,7 +21,8 @@ Ext.define('App.view.mappedFieldValue.Panel', {
 	        xtype: 'mapped-field-value-list'
 	    }, {
 	        title: 'Resultado',
-	        xtype: 'process-result'
+	        xtype: 'process-result',
+	        processId: 123
 	    }]
     }
 });

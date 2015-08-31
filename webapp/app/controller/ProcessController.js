@@ -69,7 +69,7 @@ Ext.define('App.controller.ProcessController', {
     		'Realmente desea enviar los datos correspondientes al proceso ' + this.currentProcessId + '? El mismo puede demorar varios minutos.',
 		    function() {
 		    	Ext.Ajax.request({
-				    url: '/api/process/resend/' + this.currentProcessId,
+				    url: '/api/process/' + this.currentProcessId + '/resend',
 				    method: 'POST',
 				    success: function(response, opts) {
 				        var id = Ext.decode(response.responseText);
@@ -95,7 +95,26 @@ Ext.define('App.controller.ProcessController', {
     },
     
     downloadFile: function() {
-    	alert("download file for process " + this.currentProcessId);
+	    var downloadUrl = '/api/process/' + this.currentProcessId + '/file';
+	
+		var body = Ext.getBody();
+		
+		var frame = body.createChild({
+			tag: 'iframe',
+			cls: 'x-hidden',
+			id: 'hiddenform-iframe',
+			name: 'iframe'
+		});
+		
+		var form = body.createChild({
+			tag: 'form',
+			cls: 'x-hidden',
+			id: 'hiddenform-form',
+			action: downloadUrl,
+			target: 'iframe'
+		});
+		
+		form.dom.submit();
     }
     
 	
