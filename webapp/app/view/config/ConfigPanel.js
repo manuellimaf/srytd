@@ -4,13 +4,9 @@ Ext.define('App.view.config.ConfigPanel', {
 	
 	title: 'Configuraci&oacute;n',
 	
-	items: [{
-        xtype: 'user-list'
-    },{
-    	title: 'Mapeo de dispositivos',
-        html: 'Mapeos'
-    },{
-        xtype: 'config-props',
-        colspan: 2
-    }]
+	items: [
+		{ xtype: 'user-list' },
+		{ xtype: 'mappings-form' },
+		{ xtype: 'config-props' }
+    ]
 });

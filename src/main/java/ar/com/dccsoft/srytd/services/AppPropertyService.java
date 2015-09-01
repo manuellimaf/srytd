@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 // FIXME - Hacer que tenga un mapa con las propiedades en memoria y que se puedan recargar
 public class AppPropertyService {
 
+	private static final String RECIPIENTS_DELIMITER = ",";
 	private static final String ALERTS_RECIPIENTS = "alerts_recipients";
 	private static final String FINISH_RECIPIENTS = "finish_recipients";
 	private static final String COMPANY_ID = "company_id";
@@ -64,7 +65,7 @@ public class AppPropertyService {
 
 	private List<String> asRecipientsList(AppProperty prop) {
 		if (prop != null) {
-			return Arrays.asList(prop.getValue().split(","));
+			return Arrays.asList(prop.getValue().split(RECIPIENTS_DELIMITER));
 		}
 		return Lists.newArrayList();
 	}

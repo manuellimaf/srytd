@@ -4,7 +4,7 @@ Ext.define('App.view.user.List', {
 
     title: 'Usuarios',
 	layout: 'fit',    
-    store: 'User',
+    store: 'UserStore',
     columns: [
         { text: 'Usuario',  dataIndex: 'username' },
         { text: 'Rol', dataIndex: 'role', flex: 1 },

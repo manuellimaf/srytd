@@ -2,7 +2,7 @@ Ext.define('App.controller.ConfigPropsController', {
     extend: 'Ext.app.Controller',
 	requires: ['App.util.FormSubmit'],
 	
-	views: ['configProps.Form'],
+	views: ['config.ConfigPropsForm'],
     refs: [{
 		selector: 'config-props',
 		ref: 'configForm'

@@ -30,7 +30,7 @@ public class ConfigurationController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateConfig(PropertiesDTO dto) {
-		logger.info("update!!");
+		logger.info("Updating configuration");
 
 		service.updateProperties(dto);
 		return Response.status(200).build();

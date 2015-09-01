@@ -1,4 +1,4 @@
-Ext.define('App.view.configProps.Form', {
+Ext.define('App.view.config.ConfigPropsForm', {
     extend: 'Ext.form.Panel',
     alias: 'widget.config-props',
 	
@@ -31,11 +31,11 @@ Ext.define('App.view.configProps.Form', {
         defaults: {anchor: '100%'},
         layout: 'anchor',
 	    items: [{
-	        fieldLabel: 'C&oacute;digo Empresa',
+	        fieldLabel: 'C&oacute;digo empresa',
 	        name: 'companyCode',
 	        allowBlank: false
 	    },{
-	        fieldLabel: 'Pto. de env&iacute;o',
+	        fieldLabel: 'Punto de env&iacute;o',
 	        name: 'facilityCode',
 	        allowBlank: false
 	    }]        
@@ -101,6 +101,9 @@ Ext.define('App.view.configProps.Form', {
 	    },{
 	        fieldLabel: 'Notificaciones',
 	        name: 'notificationEmails'
+	    }, {
+	    	xtype: 'displayfield',
+	    	value: '* Puede indicar varias direcciones de mail serpar&aacute;ndolas con comas (,)'
 	    }]
     }],
 

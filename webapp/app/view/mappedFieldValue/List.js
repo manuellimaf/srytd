@@ -105,6 +105,15 @@ Ext.define('App.view.mappedFieldValue.List', {
         store: this.store,
         dock: 'bottom',
         displayInfo: true
-    }]
+    }],
+    
+    qRenderer: function(val) {
+        if (val === 'ok') {
+            return '<span style="color:green;">' + val + '</span>';
+        } else {
+            return '<span style="color:red;">' + val + '</span>';
+        }
+        return val;
+    }
 
 });

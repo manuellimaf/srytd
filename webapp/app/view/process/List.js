@@ -5,7 +5,7 @@ Ext.define('App.view.process.List', {
     title: 'Env&iacute;os',
 	border: false,
     autoScroll: true,
-    store: 'Process',
+    store: 'ProcessStore',
     columns: [
         { text: 'C&oacute;digo',  dataIndex: 'id' },
         { text: 'Inicio', dataIndex: 'startDate', flex: 1 },
@@ -38,5 +38,4 @@ Ext.define('App.view.process.List', {
         dock: 'bottom',
         displayInfo: true
     }]
-
 });

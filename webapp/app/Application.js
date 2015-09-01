@@ -19,7 +19,8 @@ Ext.define('App.Application', {
         'App.view.fieldValue.FieldValuePanel',
         'App.view.config.ConfigPanel',
         'App.view.user.List',
-        'App.view.configProps.Form'
+		'App.view.config.MappingsForm',
+        'App.view.config.ConfigPropsForm'
     ],
     
     controllers: [
@@ -27,6 +28,7 @@ Ext.define('App.Application', {
         'MainPanelController',
         'ProcessController',
         'UserController',
+        'MappingsController',
         'ConfigPropsController'
     ],
     

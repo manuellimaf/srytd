@@ -1,4 +1,4 @@
-Ext.define('App.store.User', {
+Ext.define('App.store.UserStore', {
     extend: 'Ext.data.Store',
 
     model: 'App.model.User',

@@ -10,7 +10,7 @@ Ext.define('App.controller.UserController', {
 //   },
     
     views: ['user.List'],
-    stores: ['User'],
+    stores: ['UserStore'],
     models: ['User']
     
 });

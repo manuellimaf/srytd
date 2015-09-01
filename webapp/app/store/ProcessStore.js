@@ -1,4 +1,4 @@
-Ext.define('App.store.Process', {
+Ext.define('App.store.ProcessStore', {
     extend: 'Ext.data.Store',
 
     model: 'App.model.Process',
