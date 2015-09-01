@@ -2,7 +2,9 @@ Ext.define('App.model.Mapping', {
     extend: 'Ext.data.Model',
     fields: [
     	{ name: 'id' }, 
-    	{ name: 'deviceId' }, 
-    	{ name: 'tagName' }
+    	{ name: 'name' }, 
+    	{ name: 'tag' }, 
+    	{ name: 'creationDate' }, 
+    	{ name: 'createdBy' }
     ]
 });

@@ -21,7 +21,7 @@ public class MappingController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page getAllMappings(@QueryParam("start") String start, @QueryParam("limit") String limit) {
-		logger.debug("Loading mappings");
+		logger.info("Loading mappings");
 		return service.getPage(Integer.valueOf(start), Integer.valueOf(limit));
 	}
 
