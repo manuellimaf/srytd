@@ -11,8 +11,8 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.PropertiesDTO;
 import ar.com.dccsoft.srytd.services.AppPropertyService;
-import ar.com.dccsoft.srytd.services.AppPropertyService.PropertiesDTO;
 
 @Path("/config")
 public class ConfigurationController {

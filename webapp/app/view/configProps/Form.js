@@ -9,14 +9,10 @@ Ext.define('App.view.configProps.Form', {
 		type: 'table',
 		columns: 2,
 		tableAttrs: {
-	        style: {
-	            width: '100%'
-	        }
+	        style: { width: '100%' }
 	    },
 	    trAttrs: {
-	        style: {
-	            verticalAlign: 'top'
-	        }
+	        style: { verticalAlign: 'top' }
 	    },
 	    tdAttrs: {
 	        style: {
@@ -56,18 +52,19 @@ Ext.define('App.view.configProps.Form', {
                 xtype: 'container',
                 flex: 1,
                 layout: 'anchor',
+		        defaults: {
+		        	anchor: '95%',
+		        	allowBlank: false
+		        },
                 items: [{
                     xtype:'textfield',
                     fieldLabel: 'IP',
-                    allowBlank: false,
-                    name: 'ip',
-                    anchor:'95%'
+                    name: 'ip'
                 }, {
                     xtype:'textfield',
                     fieldLabel: 'Usuario',
                     allowBlank: false,
-                    name: 'ftpUser',
-                    anchor:'95%'
+                    name: 'ftpUser'
                 }]
             },{
                 xtype: 'container',

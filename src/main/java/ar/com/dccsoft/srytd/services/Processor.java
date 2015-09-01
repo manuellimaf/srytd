@@ -69,7 +69,7 @@ public class Processor {
 		buildFileAndSend(process, mappings);
 	}
 
-	public List<MappedFieldValue> mapFieldValues(Process process) {
+	private List<MappedFieldValue> mapFieldValues(Process process) {
 		// Leer datos de campo
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 

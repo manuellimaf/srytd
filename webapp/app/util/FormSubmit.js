@@ -9,7 +9,8 @@ Ext.define('App.util.FormSubmit', {
 	          	},
 	          	params: Ext.JSON.encode(form.getValues()),
 	          	success: function(response, options) {
-	          		store.reload();
+	          		if(store)
+	          			store.reload();
 	                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
 	            },
 	            failure: function(response, options) {

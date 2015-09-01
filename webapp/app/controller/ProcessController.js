@@ -7,6 +7,16 @@ Ext.define('App.controller.ProcessController', {
         		click: this.showDetail
         	}
         });
+        this.control({
+        	'panel button[action=manualSend]': {
+        		click: this.manualSend
+        	}
+        });
+        this.control({
+        	'manual-send button[action=startProcess]': {
+        		click: this.startProcess
+        	}
+        });
 		this.control({
 			'mapped-field-value-list': {
 				beforeadd: this.loadFieldValueList
@@ -29,7 +39,7 @@ Ext.define('App.controller.ProcessController', {
         });
     },
     
-    views: ['process.List', 'process.Result', 'mappedFieldValue.List'],
+    views: ['process.List', 'process.Result', 'mappedFieldValue.List', 'process.ManualSendView'],
     stores: ['Process', 'MappedFieldValueStore', 'ProcessResultStore'],
     models: ['Process'],
     refs: [{
@@ -41,6 +51,9 @@ Ext.define('App.controller.ProcessController', {
 	},{
 		selector: 'process-result',
 		ref: 'processResult'
+	},{
+		selector: 'manual-send',
+		ref: 'manualSendView'
 	}],    
     currentWindow: undefined,
     currentProcessId: undefined,
@@ -57,6 +70,18 @@ Ext.define('App.controller.ProcessController', {
 			this.currentWindow.show();
 	    }
     },
+    
+    manualSend: function () {
+    	Ext.create('App.view.process.ManualSendView').show();
+    },
+    
+    startProcess: function () {
+    	var window = this.getManualSendView();
+		var form = window.down('form').getForm();
+		App.util.FormSubmit.submit(form, '/api/process/start');
+		window.close();
+    },
+    
     loadFieldValueList: function() {
     	var store = this.getStore('MappedFieldValueStore');
 		store.load({

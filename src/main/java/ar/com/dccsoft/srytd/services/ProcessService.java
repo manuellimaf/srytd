@@ -5,13 +5,17 @@ import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
 import java.io.InputStream;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.StartProcessDTO;
 import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
@@ -96,4 +100,26 @@ public class ProcessService {
 
 		return newProcess.getId();
 	}
+
+	public void startProcess(StartProcessDTO dto, String username) {
+		Date dateFrom = parseDateFrom(dto);
+		Processor processor = new Processor();
+		processor.start(dateFrom, username);
+	}
+
+	public Date parseDateFrom(StartProcessDTO dto) {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumIntegerDigits(2);
+
+		String dateStr = String.format("%s %s:00", dto.getDateFrom(), nf.format(dto.getHourFrom()));
+		Date dateFrom;
+		try {
+			dateFrom = DateUtils.parseDate(dateStr, "dd/MM/yyyy HH:mm");
+		} catch (ParseException e) {
+			// It's soposed to be validated in a previous step
+			throw new RuntimeException(e);
+		}
+		return dateFrom;
+	}
+	
 }

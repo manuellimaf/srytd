@@ -2,6 +2,7 @@ package ar.com.dccsoft.srytd.api;
 
 import java.io.OutputStream;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.StreamingOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.StartProcessDTO;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.services.MappedFieldValueService;
@@ -99,6 +101,17 @@ public class ProcessController {
 		return Response.ok(stream).header("content-disposition", contentDispostition).build();
 	}
 
+	@POST
+	@Path("/start")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void startProcess(StartProcessDTO dto) {
+		logger.info("'Start process' received");
+
+		// TODO . validate + username
+		String username = "web";
+		service.startProcess(dto, username);
+	}
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

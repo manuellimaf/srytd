@@ -28,7 +28,7 @@ Ext.define('App.view.process.List', {
             iconCls: 'icon-detail'
         }, '->', {
             text: 'Env&iacute;o manual',
-            action: 'send',
+            action: 'manualSend',
             iconCls: 'icon-manual-send'
         }]
     },
