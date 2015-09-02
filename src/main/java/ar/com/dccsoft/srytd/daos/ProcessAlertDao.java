@@ -10,7 +10,7 @@ public class ProcessAlertDao {
 	}
 
 	public ProcessAlert find(Long id) {
-		return (ProcessAlert) MySQL.currentSession().load(ProcessAlert.class, id);
+		return (ProcessAlert) MySQL.currentSession().get(ProcessAlert.class, id);
 	}
 
 }

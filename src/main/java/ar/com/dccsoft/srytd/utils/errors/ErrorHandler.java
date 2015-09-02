@@ -10,7 +10,7 @@ public class ErrorHandler {
 	private static Logger logger = LoggerFactory.getLogger(ErrorHandler.class);
 	private static ProcessAlertService errorService = new ProcessAlertService();
 
-	public static <A> A tryAndInform(String errorMessage, ErrorProneTask<A> task) {
+	public static <A> A tryAndInform(String errorMessage, CallableTask<A> task) {
 		try {
 			A result = task.call();
 			return result;

@@ -1,5 +1,8 @@
 package ar.com.dccsoft.srytd.api;
 
+import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrFail;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -32,7 +35,19 @@ public class ConfigurationController {
 	public Response updateConfig(PropertiesDTO dto) {
 		logger.info("Updating configuration");
 
+		validateUpdate(dto);
 		service.updateProperties(dto);
-		return Response.status(200).build();
+		return Response.ok().build();
 	}
+
+	private void validateUpdate(PropertiesDTO dto) {
+		validateOrFail("Código de empresa es requerido", () -> isNotEmpty(dto.getCompanyCode()));
+		validateOrFail("Punto de envío es requerido", () -> isNotEmpty(dto.getFacilityCode()));
+		validateOrFail("IP es requerido", () -> isNotEmpty(dto.getIp()));
+		validateOrFail("Puerto es requerido", () -> dto.getFacilityCode() != null);
+		validateOrFail("Usuario (ftp) es requerido", () -> isNotEmpty(dto.getFtpUser()));
+		validateOrFail("Password (ftp) es requerido", () -> isNotEmpty(dto.getFtpPassword()));
+
+	}
+	
 }

@@ -57,14 +57,50 @@ public class DeviceService {
 	public void updateMapping(MappingDTO dto) {
 		transactional(MySQL, (session) -> {
 			Device device = dao.findDevice(dto.getId());
-			// TODO - Validate device != null + mapeo vàlido
-			
 			device.setName(dto.getName());
 			device.setTag(dto.getTag());
 			dao.update(device);
 			return null;
 		});
 		
+	}
+
+	public Boolean existsMappingForDevice(String name) {
+		return transactional(MySQL, (session) -> !dao.findByName(name).isEmpty());
+	}
+
+	public Boolean existsMappingForTag(String tag) {
+		return transactional(MySQL, (session) -> !dao.findByTag(tag).isEmpty());
+	}
+
+	public Boolean isValidMappingForTag(String tag, String name) {
+		return transactional(MySQL, (session) -> {
+			for(Device d : dao.findByName(name)) {
+				if(!d.getTag().equals(tag)) {
+					// Ya existe un mapeo con ese nombre para el tag que elegimos.
+					return false;
+				}
+			}
+			// No existen mapeos con el nombre seleccionado
+			return true;
+		});
+	}
+
+	public Boolean isValidMappingForDevice(String name, String tag) {
+		return transactional(MySQL, (session) -> {
+			for(Device d : dao.findByTag(tag)) {
+				if(!d.getName().equals(name)) {
+					// Ya existe un mapeo con este tag para otro dispositivo.
+					return false;
+				}
+			}
+			// No existen mapeos con el tag seleccionado
+			return true;
+		});
+	}
+
+	public Boolean existsDevice(Long id) {
+		return transactional(MySQL, (session) -> dao.findDevice(id) != null);
 	}
 
 }

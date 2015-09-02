@@ -5,7 +5,9 @@ import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.Process;
@@ -30,7 +32,7 @@ public class DeviceDao {
 	}
 
 	public Device findDevice(Long id) {
-		return (Device) MySQL.currentSession().load(Device.class, id);
+		return (Device) MySQL.currentSession().get(Device.class, id);
 	}
 	
 	public void delete(Long id) {
@@ -44,6 +46,24 @@ public class DeviceDao {
 
 	public void update(Device device) {
 		MySQL.currentSession().update(device);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Device> findByName(String name) {
+		return MySQL.currentSession()
+				.createCriteria(Device.class)
+				.add(Restrictions.eq("name", name))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Device> findByTag(String tag) {
+		return MySQL.currentSession()
+				.createCriteria(Device.class)
+				.add(Restrictions.eq("tag", tag))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.list();
 	}
 
 }

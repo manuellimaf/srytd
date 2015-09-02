@@ -5,8 +5,8 @@ Ext.define('App.view.config.ConfigPanel', {
 	title: 'Configuraci&oacute;n',
 	
 	items: [
-		{ xtype: 'user-list' },
 		{ xtype: 'mappings-form' },
+		{ xtype: 'user-list' },
 		{ xtype: 'config-props' }
     ]
 });
