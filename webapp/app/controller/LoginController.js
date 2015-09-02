@@ -19,7 +19,7 @@ Ext.define('App.controller.LoginController', {
 
         // This would be the ideal location to verify the user's credentials via
         // a server-side lookup. We'll just move forward for the sake of this example.
-		alert("perform ajax validation!!");
+		// alert("perform ajax validation!!");
 		
         // Set the localStorage value to true
         localStorage.setItem("LoggedIn", true);

@@ -38,13 +38,12 @@ public class HttpServer {
 		ResourceConfig application = new ResourceConfig()
         	.packages("com.fasterxml.jackson.jaxrs.json;"
         			+ "jersey.jetty.embedded;"
+        			// Tells the Jersey Servlet which REST service/class to load.
         			+ "ar.com.dccsoft.srytd.api")
         	.register(JacksonFeature.class);
 		
 		ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(application));
         jerseyServlet.setInitOrder(0);
-        // Tells the Jersey Servlet which REST service/class to load.
-//        jerseyServlet.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "ar.com.dccsoft.srytd.api");
 		
 		context.addServlet(jerseyServlet, "/api/*");
 
