@@ -21,7 +21,7 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
         collapsible: true,
         layout: {
 	        type: 'table',
-	        columns: 3,
+	        columns: 4,
     	    tdAttrs: {
 		        style: { padding: '0 10' }
 		    }
@@ -31,14 +31,14 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 	    },
 	    defaultType: 'textfield',
         items: [
-        	{ fieldLabel: 'Dispositivo', name: 'deviceId' },
-        	{ fieldLabel: 'Tag', name: 'tag' },
-        	{ fieldLabel: 'F. medici&oacute;n', name: 'timestamp' },
-        	{ fieldLabel: 'Vol. neto hoy [M3]', name: 'volumen_neto_hoy' },
-			{ fieldLabel: 'Vol. desplazado [M3]', name: 'volumen_desplazado' },
-			{ fieldLabel: 'Vol. bruto acum. [M3]', name: 'volumen_bruto_acumulado' },
-			{ fieldLabel: 'Vol. acum. 9300 [M3]', name: 'volumen_acumulado_9300' },
-			{ fieldLabel: 'Vol. hoy 9300 [M3]', name: 'volumen_hoy_9300' },
+        	{ fieldLabel: 'Dispositivo', name: 'deviceId', allowBlank: false },
+        	{ fieldLabel: 'Tag', name: 'tag', allowBlank: false },
+        	{ fieldLabel: 'F. medici&oacute;n', name: 'timestamp', allowBlank: false },
+        	{ fieldLabel: 'Vol. neto hoy [m3]', name: 'volumen_neto_hoy' },
+			{ fieldLabel: 'Vol. desplazado [m3]', name: 'volumen_desplazado' },
+			{ fieldLabel: 'Vol. bruto acum. [m3]', name: 'volumen_bruto_acumulado' },
+			{ fieldLabel: 'Vol. acum. 9300 [m3]', name: 'volumen_acumulado_9300' },
+			{ fieldLabel: 'Vol. hoy 9300 [m3]', name: 'volumen_hoy_9300' },
 			{ fieldLabel: 'Temperatura [&ordm;C]', name: 'temperatura' },
 			{ fieldLabel: 'SH2 [%]',  name: 'sh2' },
 			{ fieldLabel: 'Pulsos brutos',  name: 'pulsos_brutos' },
@@ -65,13 +65,41 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 			{ fieldLabel: 'NC5 [%]',  name: 'nc5' },
 			{ fieldLabel: 'Altura l&iacute;quida [m]',  name: 'altura_liquida' },
 			{ fieldLabel: '% agua',  name: 'porcentaje_agua' },
+			{ fieldLabel: 'Densidad [g/cm3]',  name: 'densidad' },
+			{ fieldLabel: 'Vol. bruto hoy [m3]', name: 'volumen_bruto_hoy' },
 			{ fieldLabel: 'Vol. seco ult. transac. [m3]', name: 'volumen_seco' },
 			{ fieldLabel: 'Inicio transac.',  name: 'inicio_transac' },
 			{ fieldLabel: 'Fin transac.',  name: 'fin_transac' },
 			{ fieldLabel: 'Vol. neto acum. [m3]', name: 'volumen_neto_acumulado' },
-			{ fieldLabel: 'Densidad [g/cm3]',  name: 'densidad' },
-			{ fieldLabel: 'Vol. bruto hoy [m3]', name: 'volumen_bruto_hoy' },
-			{ xtype: 'hiddenfield', name: 'id' }
+			{ xtype: 'hiddenfield', name: 'id' },
+			{
+	    		xtype: 'fieldset',
+	    		layout: 'hbox',
+	    		border: 'false',
+	    		colspan: 4,
+			    items: [{
+			        xtype: 'displayfield',
+		    		labelSeparator: '&nbsp;',
+			        fieldLabel: '&nbsp;',
+			        value: '&nbsp;'
+			    },{
+			    	xtype: 'button',
+			    	text: 'Actualizar',
+			    	margin: '0 0 0 10',
+			        formBind: true,
+			        disabled: true,
+			        action: 'update',
+			        iconCls: 'icon-save'
+			    },{
+			    	xtype: 'button',
+			    	text: 'Nuevo',
+			    	margin: '0 0 0 10',
+			        formBind: true,
+			        disabled: true,
+			        action: 'save',
+			        iconCls: 'icon-add'
+			    }]
+			}
 		]
 	},{
         xtype: 'gridpanel',
@@ -96,11 +124,11 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 					{ text: 'Tag',  dataIndex: 'tag' },
 					{ text: 'F. medici&oacute;n',  dataIndex: 'timestamp' },
 					{ text: 'Tipo', width: 50,  dataIndex: 'valueType' },
-					{ text: 'Vol. neto hoy [M3]',  dataIndex: 'volumen_neto_hoy' },
-					{ text: 'Vol. desplazado [M3]', width: 110,  dataIndex: 'volumen_desplazado' },
-					{ text: 'Vol. bruto acum. [M3]', width: 115,  dataIndex: 'volumen_bruto_acumulado' },
-					{ text: 'Vol. acum. 9300 [M3]', width: 110,  dataIndex: 'volumen_acumulado_9300' },
-					{ text: 'Vol. hoy 9300 [M3]',  dataIndex: 'volumen_hoy_9300' },
+					{ text: 'Vol. neto hoy [m3]',  dataIndex: 'volumen_neto_hoy' },
+					{ text: 'Vol. desplazado [m3]', width: 110,  dataIndex: 'volumen_desplazado' },
+					{ text: 'Vol. bruto acum. [m3]', width: 115,  dataIndex: 'volumen_bruto_acumulado' },
+					{ text: 'Vol. acum. 9300 [m3]', width: 110,  dataIndex: 'volumen_acumulado_9300' },
+					{ text: 'Vol. hoy 9300 [m3]',  dataIndex: 'volumen_hoy_9300' },
 					{ text: 'Temperatura [&ordm;C]',  dataIndex: 'temperatura' },
 					{ text: 'SH2 [%]',  dataIndex: 'sh2' },
 					{ text: 'Pulsos brutos',  dataIndex: 'pulsos_brutos' },

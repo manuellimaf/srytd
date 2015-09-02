@@ -3,17 +3,17 @@ Ext.define('App.controller.ManualValuesController', {
 	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
-        this.control('gridpanel#mappings-list', {
+        this.control('gridpanel#manual-value-list', {
         	selectionchange: this.onSelectionChange
         });
-        this.control('gridpanel#mappings-list button[action=deleteMapping]', {
-    		click: this.deleteMapping
+        this.control('gridpanel#manual-value-list button[action=deleteManualValue]', {
+    		click: this.deleteManualValue
         });
-        this.control('mappings-form button[action=update]', {
+        this.control('manual-values-form button[action=update]', {
     		click: this.updateMapping
         });
-        this.control('mappings-form button[action=save]', {
-    		click: this.createMapping
+        this.control('manual-values-form button[action=save]', {
+    		click: this.saveValue
         });
 	},
 	
@@ -34,40 +34,38 @@ Ext.define('App.controller.ManualValuesController', {
 	    	var panel = this.getManualValuesForm();
 			panel.getForm().loadRecord(rec);
         }
-	}
+	},
 	
-	/* ,
-	
-	createMapping: function() {
-	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
+	saveValue: function() {
+	    var store = this.getStore('ManualFieldValueStore');
+	    var form = this.getManualValuesForm().getForm();
 	    if(form.isValid()) {
-	    	App.util.FormSubmit.submit(form, '/api/mapping', store); 
+	    	App.util.FormSubmit.submit(form, '/api/manual-field-values', store); 
 		}
 	},
 	
 	updateMapping: function() {
-	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
+	    var store = this.getStore('ManualFieldValueStore');
+	    var form = this.getManualValuesForm().getForm();
 	    if(form.isValid() && form.getValues().id) {
-	    	App.util.FormSubmit.update(form, '/api/mapping', store); 
+	    	App.util.FormSubmit.update(form, '/api/manual-field-values', store); 
 		}
 	},
-	
-	deleteMapping: function() {
-	    var form = this.getMappingsForm().getForm();
+
+	deleteManualValue: function() {
+	    var form = this.getManualValuesForm().getForm();
 	    if(form.isValid()) {
 	    	var values = form.getValues();
-		    var mappingId = values.id;
-		    var device = values.name;
-		    var tag = values.tag;
-		    var store = this.getStore('MappingStore');
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + name + ' - ' + tag + '?',
+		    var id = values.id;
+		    var device = values.deviceId;
+		    var store = this.getStore('ManualFieldValueStore');
+		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar los datos para el dispositivo ' + device + '?',
 			    function(resp) { 
 			    	if(resp == 'yes') {
-				    	App.util.FormSubmit.delete('/api/mapping/' + mappingId, store); 
+				    	App.util.FormSubmit.delete('/api/manual-field-values/' + id, store); 
 				    }
 				}, this);
 		}
-	} */
+	}
+	
 });

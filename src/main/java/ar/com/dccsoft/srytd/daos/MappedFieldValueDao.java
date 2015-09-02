@@ -45,4 +45,22 @@ public class MappedFieldValueDao {
 				.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<MappedFieldValue> getPageForManualValues(Integer start, Integer limit) {
+		String qStr = "select distinct v from " + MappedFieldValue.class.getName() 
+				+ " v where v.valueType = 'M'"
+				+ " order by v.deviceId";
+		Query query = MySQL.currentSession().createQuery(qStr);
+		return query.setFirstResult(start).setMaxResults(limit).list();
+	}
+
+	public Long countAllManualValues() {
+		return (Long) MySQL.currentSession()
+				.createCriteria(MappedFieldValue.class, "mfv")
+				.add(Restrictions.eq("valueType", "M"))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.setProjection(Projections.countDistinct("mfv.id"))
+				.uniqueResult();
+	}
+
 }
