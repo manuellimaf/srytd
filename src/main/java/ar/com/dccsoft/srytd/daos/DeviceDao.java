@@ -29,9 +29,21 @@ public class DeviceDao {
 				.setProjection(Projections.countDistinct("id")).uniqueResult();
 	}
 
+	public Device findDevice(Long id) {
+		return (Device) MySQL.currentSession().load(Device.class, id);
+	}
+	
 	public void delete(Long id) {
-		Device device = (Device) MySQL.currentSession().load(Device.class, id);
+		Device device = findDevice(id);
 		MySQL.currentSession().delete(device);
+	}
+
+	public void save(Device device) {
+		MySQL.currentSession().save(device);
+	}
+
+	public void update(Device device) {
+		MySQL.currentSession().update(device);
 	}
 
 }

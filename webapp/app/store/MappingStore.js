@@ -2,7 +2,7 @@ Ext.define('App.store.MappingStore', {
     extend: 'Ext.data.Store',
 
     model: 'App.model.Mapping',
-	autoLoad: {start: 0, limit: 20},
+	autoLoad: {start: 0, limit: 15},
 	pageSize: 20,
 	remoteSort: true,
     proxy: {

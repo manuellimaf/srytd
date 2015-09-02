@@ -13,12 +13,25 @@ Ext.define('App.controller.MappingsController', {
         		click: this.deleteMapping
         	}
         });
+        this.control({
+        	'mappings-form button[action=update]': {
+        		click: this.updateMapping
+        	}
+        });
+        this.control({
+        	'mappings-form button[action=save]': {
+        		click: this.createMapping
+        	}
+        });
 	},
 	
 	views: ['config.MappingsForm'],
     refs: [{
 		selector: 'mappings-form',
 		ref: 'mappingsForm'
+	},{
+		selector: 'gridpanel',
+		ref: 'gridPanel'
 	}],
 	stores: ['MappingStore'],
     models: ['Mapping'],
@@ -31,6 +44,22 @@ Ext.define('App.controller.MappingsController', {
         }
 	},
 	
+	createMapping: function() {
+	    var store = this.getStore('MappingStore');
+	    var form = this.getMappingsForm().getForm();
+	    if(form.isValid()) {
+	    	App.util.FormSubmit.submit(form, '/api/mapping', store); 
+		}
+	},
+	
+	updateMapping: function() {
+	    var store = this.getStore('MappingStore');
+	    var form = this.getMappingsForm().getForm();
+	    if(form.isValid() && form.getValues().id) {
+	    	App.util.FormSubmit.update(form, '/api/mapping', store); 
+		}
+	},
+	
 	deleteMapping: function() {
 	    var form = this.getMappingsForm().getForm();
 	    if(form.isValid()) {
@@ -41,7 +70,6 @@ Ext.define('App.controller.MappingsController', {
 		    var store = this.getStore('MappingStore');
 		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + name + ' - ' + tag + '?',
 			    function(resp) { 
-			    	console.log(resp);
 			    	if(resp == 'yes') {
 				    	App.util.FormSubmit.delete('/api/mapping/' + mappingId, store); 
 				    }

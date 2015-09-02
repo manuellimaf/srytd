@@ -91,7 +91,7 @@ Ext.define('App.view.config.MappingsForm', {
 		        iconCls: 'icon-save'
 		    },{
 		    	xtype: 'button',
-		    	text: 'Agregar',
+		    	text: 'Nuevo',
 		    	margin: '0 0 0 10',
 		        formBind: true,
 		        disabled: true,

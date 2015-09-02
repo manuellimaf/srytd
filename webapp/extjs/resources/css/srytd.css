@@ -35,6 +35,14 @@
     background-image:url(images/srytd/save.png) !important;
 }
 
+.icon-add {
+    background-image:url(images/srytd/add.png) !important;
+}
+
+.icon-delete {
+    background-image:url(images/srytd/delete.png) !important;
+}
+
 .icon-user {
     background-image:url(images/srytd/user.png) !important;
 }
