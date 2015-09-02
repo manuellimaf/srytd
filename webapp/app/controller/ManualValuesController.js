@@ -1,4 +1,4 @@
-Ext.define('App.controller.MappingsController', {
+Ext.define('App.controller.ManualValuesController', {
     extend: 'Ext.app.Controller',
 	requires: ['App.util.FormSubmit'],
 	
@@ -17,24 +17,26 @@ Ext.define('App.controller.MappingsController', {
         });
 	},
 	
-	views: ['config.MappingsForm'],
+	views: ['manualFieldValue.ManualFieldValueForm'],
     refs: [{
-		selector: 'mappings-form',
-		ref: 'mappingsForm'
+		selector: 'manual-values-form',
+		ref: 'manualValuesForm'
 	},{
-		selector: 'gridpanel#mappings-list',
+		selector: 'gridpanel#manual-values-list',
 		ref: 'gridPanel'
 	}],
-	stores: ['MappingStore'],
-    models: ['Mapping'],
+	stores: ['ManualFieldValueStore'],
+    models: ['ManualFieldValue'],
 	
 	onSelectionChange: function(model, records) {
         var rec = records[0];
         if (rec) {
-	    	var panel = this.getMappingsForm();
+	    	var panel = this.getManualValuesForm();
 			panel.getForm().loadRecord(rec);
         }
-	},
+	}
+	
+	/* ,
 	
 	createMapping: function() {
 	    var store = this.getStore('MappingStore');
@@ -67,5 +69,5 @@ Ext.define('App.controller.MappingsController', {
 				    }
 				}, this);
 		}
-	}
+	} */
 });

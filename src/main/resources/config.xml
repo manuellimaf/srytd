@@ -2,12 +2,12 @@
 <config>
 
 	<!-- SQLServer datasource properties -->
-	<sqlserver-url>jdbc:mysql://localhost/srytd_sqlserver</sqlserver-url>
+	<sqlserver-url>jdbc:mysql://127.0.0.1/srytd_sqlserver</sqlserver-url>
 	<sqlserver-user>root</sqlserver-user>
 	<sqlserver-password>root</sqlserver-password>
 
 	<!-- MySQL datasource properties -->
-	<mysql-url>jdbc:mysql://localhost/srytd</mysql-url>
+	<mysql-url>jdbc:mysql://127.0.0.1/srytd</mysql-url>
 	<mysql-user>root</mysql-user>
 	<mysql-password>root</mysql-password>
 	
