@@ -4,7 +4,8 @@ Ext.define('App.view.config.ConfigPropsForm', {
 	
 	title: 'Variables del sistema',
 	border: 0,
-	
+	frame: true,
+		
 	layout: {
 		type: 'table',
 		columns: 2,

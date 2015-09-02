@@ -3,7 +3,7 @@ Ext.define('App.view.process.Result', {
     alias: 'widget.process-result',
 	
 	layout: 'anchor',
-	
+	frame: true,
     items: [{
     	xtype:'fieldset',
         title: 'Detalle de finalizaci&oacute;n',

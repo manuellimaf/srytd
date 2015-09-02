@@ -1,15 +1,8 @@
 Ext.define('App.view.config.MappingsForm', {
     extend: 'Ext.form.Panel',
-    
-    requires: [
-        'Ext.grid.*',
-        'Ext.form.*',
-        'Ext.layout.container.Column'
-    ],
-
-    xtype: 'form-grid',
     alias: 'widget.mappings-form',
 
+    xtype: 'form-grid',
    	title: 'Mapeo de dispositivos',
     
     frame: true,
@@ -29,8 +22,19 @@ Ext.define('App.view.config.MappingsForm', {
         xtype: 'gridpanel',
         store: 'MappingStore',
         height: 400,
+		tbar: {
+	    	defaults: {
+	            scale: 'small',
+	            iconAlign:'left'
+	        },
+	    	items: [{
+	            text: 'Borrar',
+	            action: 'deleteMapping',
+	            iconCls: 'icon-delete'
+	        }]
+	    },
         columns: [{
-            text: 'Device',
+            text: 'Dispositivo',
             flex: 1,
             dataIndex: 'name'
         }, {
@@ -54,37 +58,41 @@ Ext.define('App.view.config.MappingsForm', {
         layout: 'anchor',
         defaultType: 'textfield',
         items: [{
-            fieldLabel: 'Device',
+            fieldLabel: 'Dispositivo',
+            allowBlank: false,
             name: 'name'
         },{
             fieldLabel: 'Tag',
+            allowBlank: false,
             name: 'tag'
-        },{
-    		xtype: 'container',
-    		fieldLabel: '&nbsp;',
-    		labelSeparator: '',
-    		anchor: '-50',
+        }, {
+	        xtype: 'hiddenfield',
+	        name: 'id'
+    	},{
+    		xtype: 'fieldset',
     		layout: 'hbox',
+    		border: 'false',
 		    layoutConf : {
-		        pack: 'start'
+		        pack: 'end',
+		        padding: 10
 		    },
 		    items: [{
-		    	text: 'Borrar',
-		    	xtype: 'button',
-		        formBind: true,
-		        disabled: true,
-		        action: 'delete',
-		        iconCls: 'icon-delete'
+		        xtype: 'displayfield',
+	    		labelSeparator: '&nbsp;',
+		        fieldLabel: '&nbsp;',
+		        value: '&nbsp;'
 		    },{
-		    	text: 'Actualizar',
 		    	xtype: 'button',
+		    	text: 'Actualizar',
+		    	margin: '0 0 0 10',
 		        formBind: true,
 		        disabled: true,
 		        action: 'update',
 		        iconCls: 'icon-save'
 		    },{
-		    	text: 'Agregar',
 		    	xtype: 'button',
+		    	text: 'Agregar',
+		    	margin: '0 0 0 10',
 		        formBind: true,
 		        disabled: true,
 		        action: 'save',

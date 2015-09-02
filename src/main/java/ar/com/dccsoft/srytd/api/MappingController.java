@@ -1,10 +1,13 @@
 package ar.com.dccsoft.srytd.api;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,4 +29,14 @@ public class MappingController {
 	}
 
 
+	@DELETE
+	@Path("/{id}")
+	public Response deleteMapping(@PathParam("id") String id) {
+		logger.info("Deleting mapping id " + id);
+
+		// TODO - validate
+		service.deleteMapping(Long.valueOf(id));
+		
+		return Response.status(200).build();
+	}
 }

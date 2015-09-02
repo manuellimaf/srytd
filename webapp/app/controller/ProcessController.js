@@ -92,18 +92,20 @@ Ext.define('App.controller.ProcessController', {
     resend: function() {
     	Ext.Msg.confirm('Re enviar?', 
     		'Realmente desea enviar los datos correspondientes al proceso ' + this.currentProcessId + '? El mismo puede demorar varios minutos.',
-		    function() {
-		    	Ext.Ajax.request({
-				    url: '/api/process/' + this.currentProcessId + '/resend',
-				    method: 'POST',
-				    success: function(response, opts) {
-				        var id = Ext.decode(response.responseText);
-				        Ext.Msg.alert('Proceso finalizaro', 'Finaliz&oacute; correctamente el proceso de env&iacute;o de datos (nuevo id: ' + id +').');
-				    },
-				    failure: function(response, opts) {
-				        Ext.Msg.alert('Error', 'Se produjo un error al realizar el env&iacute;o.');
-				    }
-				});
+		    function(resp) {
+		    	if(resp == 'yes') {
+			    	Ext.Ajax.request({
+					    url: '/api/process/' + this.currentProcessId + '/resend',
+					    method: 'POST',
+					    success: function(response, opts) {
+					        var id = Ext.decode(response.responseText);
+					        Ext.Msg.alert('Proceso finalizado', 'Finaliz&oacute; correctamente el proceso de env&iacute;o de datos (nuevo id: ' + id +').');
+					    },
+					    failure: function(response, opts) {
+					        Ext.Msg.alert('Error', 'Se produjo un error al realizar el env&iacute;o.');
+					    }
+					});
+				}
 		    },
 		    this);
     },

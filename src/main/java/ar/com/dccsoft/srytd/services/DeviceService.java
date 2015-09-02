@@ -33,4 +33,11 @@ public class DeviceService {
 		});
 	}
 
+	public void deleteMapping(Long id) {
+		transactional(MySQL, (session) -> {
+			dao.delete(id);
+			return null;
+		});
+	}
+
 }
