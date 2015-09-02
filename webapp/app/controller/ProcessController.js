@@ -2,40 +2,26 @@ Ext.define('App.controller.ProcessController', {
     extend: 'Ext.app.Controller',
 
 	init: function() {
-        this.control({
-        	'panel button[action=viewDetail]': {
-        		click: this.showDetail
-        	}
+        this.control('panel button[action=viewDetail]', {
+    		click: this.showDetail
         });
-        this.control({
-        	'panel button[action=manualSend]': {
-        		click: this.manualSend
-        	}
+        this.control('panel button[action=manualSend]', {
+    		click: this.manualSend
         });
-        this.control({
-        	'manual-send button[action=startProcess]': {
-        		click: this.startProcess
-        	}
+        this.control('manual-send button[action=startProcess]', {
+    		click: this.startProcess
         });
-		this.control({
-			'mapped-field-value-list': {
-				beforeadd: this.loadFieldValueList
-			}
+		this.control('mapped-field-value-list', {
+			beforeadd: this.loadFieldValueList
 		});
-		this.control({
-        	'mapped-field-value-list button[action=resend]': {
-				click: this.resend
-			}
+		this.control('mapped-field-value-list button[action=resend]', {
+			click: this.resend
 		});
-		this.control({
-			'process-result': {
-				beforerender: this.loadProcessResult
-			}
+		this.control('process-result', {
+			beforerender: this.loadProcessResult
 		});
-        this.control({
-        	'process-result button[action=downloadFile]': {
-        		click: this.downloadFile
-        	}
+        this.control('process-result button[action=downloadFile]', {
+    		click: this.downloadFile
         });
     },
     
@@ -78,7 +64,9 @@ Ext.define('App.controller.ProcessController', {
     startProcess: function () {
     	var window = this.getManualSendView();
 		var form = window.down('form').getForm();
-		App.util.FormSubmit.submit(form, '/api/process/start');
+		var store = this.getStore('ProcessStore');
+		App.util.FormSubmit.submit(form, '/api/process/start', store);
+		store.reload();
 		window.close();
     },
     

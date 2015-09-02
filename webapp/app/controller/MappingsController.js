@@ -3,25 +3,17 @@ Ext.define('App.controller.MappingsController', {
 	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
-        this.control({
-        	'gridpanel': {
-        		selectionchange: this.onSelectionChange
-        	}
+        this.control('gridpanel#mappings-list', {
+        	selectionchange: this.onSelectionChange
         });
-        this.control({
-        	'gridpanel button[action=deleteMapping]': {
-        		click: this.deleteMapping
-        	}
+        this.control('gridpanel#mappings-list button[action=deleteMapping]', {
+    		click: this.deleteMapping
         });
-        this.control({
-        	'mappings-form button[action=update]': {
-        		click: this.updateMapping
-        	}
+        this.control('mappings-form button[action=update]', {
+    		click: this.updateMapping
         });
-        this.control({
-        	'mappings-form button[action=save]': {
-        		click: this.createMapping
-        	}
+        this.control('mappings-form button[action=save]', {
+    		click: this.createMapping
         });
 	},
 	

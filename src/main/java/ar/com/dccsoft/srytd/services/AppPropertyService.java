@@ -28,8 +28,6 @@ public class AppPropertyService {
 	private AppPropertyDao dao = new AppPropertyDao();
 
 	public void updateProperties(PropertiesDTO dto) {
-		// TODO . validate
-
 		transactional(MySQL, (s) -> {
 			dao.upsert(COMPANY_ID, dto.getCompanyCode());
 			dao.upsert(FACILITY_ID, dto.getFacilityCode());

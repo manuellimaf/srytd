@@ -1,6 +1,10 @@
 package ar.com.dccsoft.srytd.api;
 
+import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrFail;
+import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrNotFound;
+
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +50,9 @@ public class ProcessController {
 			@QueryParam("limit") String limit) {
 
 		logger.info(String.format("Loading values for process %s", processId));
-
-		// TODO . validate
+		
+		validateId(processId);
+		
 		return mfvService.getPage(Long.valueOf(processId), Integer.valueOf(start), Integer.valueOf(limit));
 	}
 
@@ -56,7 +62,7 @@ public class ProcessController {
 	public ProcessResult getResult(@QueryParam("processId") String processId) {
 		logger.info(String.format("Loading result for process %s", processId));
 
-		// TODO . validate
+		validateId(processId);
 		ProcessResult result = service.getProcess(Long.valueOf(processId)).getResult();
 
 		return result;
@@ -68,8 +74,10 @@ public class ProcessController {
 	public Long resendValues(@PathParam("id") String processId) {
 		logger.info(String.format("Starting to send values for process %s", processId));
 
-		// TODO . validate + username
+		// TODO username
 		String username = "web";
+
+		validateId(processId);
 		Long newId = service.resendValues(Long.valueOf(processId), username);
 		return newId;
 	}
@@ -79,13 +87,14 @@ public class ProcessController {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getFile(@PathParam("id") String processId) {
 		logger.debug("Downloading file for process id: " + processId);
-		// TODO . validate
+
+		validateId(processId);
 		ProcessResult result = service.getProcess(Long.valueOf(processId)).getResult();
 
 		String file = result.getFile();
 		String fileName = result.getFileName();
-		// TODO . if file does not exists, 404
-
+		validateOrNotFound(() -> file != null);
+		
 		StreamingOutput stream = new StreamingOutput() {
 			@Override
 			public void write(OutputStream output) throws WebApplicationException {
@@ -107,7 +116,8 @@ public class ProcessController {
 	public void startProcess(StartProcessDTO dto) {
 		logger.info("'Start process' received");
 
-		// TODO . validate + username
+		// TODO . username
+		validateStartProcess(dto);
 		String username = "web";
 		service.startProcess(dto, username);
 	}
@@ -117,8 +127,24 @@ public class ProcessController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Process getProcess(@PathParam("id") String processId) {
 		logger.debug("Loading process id: " + processId);
-		// TODO . validate
+
+		validateId(processId);
 		return service.getProcess(Long.valueOf(processId));
 	}
+
+	
+	private void validateId(String id) {
+		validateOrFail(id + " no es un id válido", () -> StringUtils.isNumeric(id));		
+		validateOrNotFound(() -> service.getProcess(Long.valueOf(id)) != null);
+	}
+	
+	private void validateStartProcess(StartProcessDTO dto) {
+		validateOrFail("La fecha no puede ser posterior a la actual", () -> {
+			Date from = service.parseDateFrom(dto);
+			return from.before(new Date());
+		});		
+		
+	}
+
 
 }

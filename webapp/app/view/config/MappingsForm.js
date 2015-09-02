@@ -20,6 +20,7 @@ Ext.define('App.view.config.MappingsForm', {
     items: [{
         columnWidth: 0.45,
         xtype: 'gridpanel',
+        itemId: 'mappings-list',
         store: 'MappingStore',
         height: 400,
 		tbar: {
