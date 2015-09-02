@@ -14,12 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.daos.MappedFieldValueDao;
 import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
-import ar.com.dccsoft.srytd.utils.ui.Page;
 
 import com.google.common.collect.Lists;
 

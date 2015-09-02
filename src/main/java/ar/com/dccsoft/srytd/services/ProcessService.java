@@ -15,13 +15,13 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.api.dto.StartProcessDTO;
 import ar.com.dccsoft.srytd.daos.ProcessDao;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
-import ar.com.dccsoft.srytd.utils.ui.Page;
 
 public class ProcessService {
 

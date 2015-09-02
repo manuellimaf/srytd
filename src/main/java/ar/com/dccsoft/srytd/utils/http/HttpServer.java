@@ -3,7 +3,8 @@ package ar.com.dccsoft.srytd.utils.http;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,18 @@ public class HttpServer {
 		context.setWar("webapp");
 		server.setHandler(context);
 
-		ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/api/*");
-		jerseyServlet.setInitOrder(0);
-
-		// Tells the Jersey Servlet which REST service/class to load.
-		jerseyServlet.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "ar.com.dccsoft.srytd.api");
+		ResourceConfig application = new ResourceConfig()
+        	.packages("com.fasterxml.jackson.jaxrs.json;"
+        			+ "jersey.jetty.embedded;"
+        			+ "ar.com.dccsoft.srytd.api")
+        	.register(JacksonFeature.class);
+		
+		ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(application));
+        jerseyServlet.setInitOrder(0);
+        // Tells the Jersey Servlet which REST service/class to load.
+//        jerseyServlet.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "ar.com.dccsoft.srytd.api");
+		
+		context.addServlet(jerseyServlet, "/api/*");
 
 		return server;
 	}

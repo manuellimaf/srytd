@@ -9,8 +9,8 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.services.DeviceService;
-import ar.com.dccsoft.srytd.utils.ui.Page;
 
 @Path("/mapping")
 public class MappingController {

@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import jersey.repackaged.com.google.common.collect.Lists;
-import ar.com.dccsoft.srytd.utils.ui.Page;
+import ar.com.dccsoft.srytd.api.dto.Page;
 
 @Path("/user")
 public class UserController {

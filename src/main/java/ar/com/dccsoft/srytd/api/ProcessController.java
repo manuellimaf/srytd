@@ -17,12 +17,12 @@ import javax.ws.rs.core.StreamingOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.api.dto.StartProcessDTO;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.services.MappedFieldValueService;
 import ar.com.dccsoft.srytd.services.ProcessService;
-import ar.com.dccsoft.srytd.utils.ui.Page;
 
 @Path("/process")
 public class ProcessController {

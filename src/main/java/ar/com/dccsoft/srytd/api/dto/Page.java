@@ -1,4 +1,4 @@
-package ar.com.dccsoft.srytd.utils.ui;
+package ar.com.dccsoft.srytd.api.dto;
 
 import java.util.List;
 

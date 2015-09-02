@@ -6,8 +6,12 @@ import java.text.SimpleDateFormat;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 @Provider
 public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
@@ -25,10 +29,19 @@ public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	}
 
 	private static ObjectMapper createDefaultMapper() {
-		final ObjectMapper result = new ObjectMapper();
-		result.configure(SerializationFeature.INDENT_OUTPUT, true);
-		result.setDateFormat(df);
-
-		return result;
+		final ObjectMapper mapper = new ObjectMapper()
+		.configure(SerializationFeature.INDENT_OUTPUT, true)
+		.setDateFormat(df)
+        .setAnnotationIntrospector(createJaxbJacksonAnnotationIntrospector());
+		
+		return mapper;
 	}
+	
+    private static AnnotationIntrospector createJaxbJacksonAnnotationIntrospector() {
+
+        final AnnotationIntrospector jaxbIntrospector = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
+        final AnnotationIntrospector jacksonIntrospector = new JacksonAnnotationIntrospector();
+
+        return AnnotationIntrospector.pair(jacksonIntrospector, jaxbIntrospector);
+    }
 }

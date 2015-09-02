@@ -9,9 +9,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.daos.DeviceDao;
 import ar.com.dccsoft.srytd.model.Device;
-import ar.com.dccsoft.srytd.utils.ui.Page;
 
 public class DeviceService {
 
