@@ -50,7 +50,13 @@ Ext.define('App.view.config.MappingsForm', {
             text: 'Fecha de creaci&oacute;n',
             flex: 1,
             dataIndex: 'creationDate'
-        }]
+        }],
+	    dockedItems: [{
+	        xtype: 'pagingtoolbar',
+	        store: 'MappingStore',
+	        dock: 'bottom',
+	        displayInfo: true
+	    }]
     }, {
         columnWidth: 0.35,
         margin: '0 0 0 10',

@@ -72,9 +72,8 @@ Ext.define('App.controller.ProcessController', {
     
     loadFieldValueList: function() {
     	var store = this.getStore('MappedFieldValueStore');
-		store.load({
-			params: { processId: this.currentProcessId }
-		});
+		store.proxy.extraParams = { processId: this.currentProcessId };
+		store.load();
     },
 
     resend: function() {

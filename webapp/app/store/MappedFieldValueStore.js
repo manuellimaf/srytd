@@ -11,5 +11,5 @@ Ext.define('App.store.MappedFieldValueStore', {
             totalProperty: 'total'
         }
 	},		
-	pageSize: 20
+	pageSize: 15
 });

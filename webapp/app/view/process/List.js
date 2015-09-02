@@ -34,7 +34,7 @@ Ext.define('App.view.process.List', {
     },
     dockedItems: [{
         xtype: 'pagingtoolbar',
-        store: this.store,
+        store: 'ProcessStore',
         dock: 'bottom',
         displayInfo: true
     }]

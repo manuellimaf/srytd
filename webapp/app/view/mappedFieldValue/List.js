@@ -102,7 +102,7 @@ Ext.define('App.view.mappedFieldValue.List', {
     },
     dockedItems: [{
         xtype: 'pagingtoolbar',
-        store: this.store,
+        store: 'MappedFieldValueStore',
         dock: 'bottom',
         displayInfo: true
     }],

@@ -9,7 +9,7 @@ Ext.define('App.view.mappedFieldValue.Panel', {
     },	
 	
     width: 1200,
-    height: 500,
+    height: 468	,
     constrain: true,
     modal: true,
     layout: 'fit',
