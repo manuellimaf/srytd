@@ -19,6 +19,14 @@ public class MappedFieldValueDao {
 		return value;
 	}
 
+	public void udpate(MappedFieldValue mapped) {
+		MySQL.currentSession().update(mapped);
+	}
+
+	public void delete(MappedFieldValue value) {
+		MySQL.currentSession().delete(value);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<MappedFieldValue> filterByProcessId(Long processId) {
 		Criteria c = MySQL.currentSession().createCriteria(MappedFieldValue.class)
@@ -49,7 +57,7 @@ public class MappedFieldValueDao {
 	public List<MappedFieldValue> getPageForManualValues(Integer start, Integer limit) {
 		String qStr = "select distinct v from " + MappedFieldValue.class.getName() 
 				+ " v where v.valueType = 'M'"
-				+ " order by v.deviceId";
+				+ " order by v.id desc";
 		Query query = MySQL.currentSession().createQuery(qStr);
 		return query.setFirstResult(start).setMaxResults(limit).list();
 	}
@@ -63,4 +71,16 @@ public class MappedFieldValueDao {
 				.uniqueResult();
 	}
 
+	public MappedFieldValue findManualValue(Long id) {
+		return findValue(id, "M");
+	}
+
+	public MappedFieldValue findValue(Long id, String type) {
+		return (MappedFieldValue) MySQL.currentSession()
+				.createCriteria(MappedFieldValue.class, "mfv")
+				.add(Restrictions.idEq(id))
+				.add(Restrictions.eq("valueType", type))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.uniqueResult();
+	}
 }

@@ -11,84 +11,86 @@
 
 		<many-to-one name="process"/>
 		
-		<property name="deviceId" column="device_id"/>
-		<property name="tag" column="tag"/>
-		<property name="timestamp" column="ts"/>
-		<property name="valueType" column="value_type" length="1"/>
+		<property name="deviceId" column="device_id" not-null="true"/>
+		<property name="tag" column="tag" not-null="true"/>
+		<property name="timestamp" column="ts" not-null="true"/>
+		<property name="valueType" column="value_type" length="1" not-null="true"/>
+		<property name="dateCreated" column="date_created" not-null="true"/>
+		<property name="createdBy" column="created_by" not-null="true"/>
 
-		<property name="presion"/>
+		<property name="presion" scale="12"/>
 		<property name="presion_q" length="2"/>
-		<property name="temperatura"/>
+		<property name="temperatura" scale="12"/>
 		<property name="temperatura_q" length="2"/>
-		<property name="caudal_horario"/>
+		<property name="caudal_horario" scale="12"/>
 		<property name="caudal_horario_q" length="2"/>
-		<property name="volumen_bruto_acumulado"/>
+		<property name="volumen_bruto_acumulado" scale="12"/>
 		<property name="volumen_bruto_acumulado_q" length="2"/>
-		<property name="volumen_neto_hoy"/>
+		<property name="volumen_neto_hoy" scale="12"/>
 		<property name="volumen_neto_hoy_q" length="2"/>
-		<property name="caudal_horario_9300"/>
+		<property name="caudal_horario_9300" scale="12"/>
 		<property name="caudal_horario_9300_q" length="2"/>
-		<property name="volumen_acumulado_9300"/>
+		<property name="volumen_acumulado_9300" scale="12"/>
 		<property name="volumen_acumulado_9300_q" length="2"/>
-		<property name="volumen_desplazado"/>
+		<property name="volumen_desplazado" scale="12"/>
 		<property name="volumen_desplazado_q" length="2"/>
-		<property name="altura_liquida"/>
+		<property name="altura_liquida" scale="12"/>
 		<property name="altura_liquida_q" length="2"/>
-		<property name="mf"/>
+		<property name="mf" scale="12"/>
 		<property name="mf_q" length="2"/>
-		<property name="ctl"/>
+		<property name="ctl" scale="12"/>
 		<property name="ctl_q" length="2"/>
-		<property name="cpl"/>
+		<property name="cpl" scale="12"/>
 		<property name="cpl_q" length="2"/>
-		<property name="factor_k"/>
+		<property name="factor_k" scale="12"/>
 		<property name="factor_k_q" length="2"/>
-		<property name="pulsos_brutos"/>
+		<property name="pulsos_brutos" scale="12"/>
 		<property name="pulsos_brutos_q" length="2"/>
-		<property name="fcv"/>
+		<property name="fcv" scale="12"/>
 		<property name="fcv_q" length="2"/>
-		<property name="ctsh"/>
+		<property name="ctsh" scale="12"/>
 		<property name="ctsh_q" length="2"/>
-		<property name="porcentaje_agua"/>
+		<property name="porcentaje_agua" scale="12"/>
 		<property name="porcentaje_agua_q" length="2"/>
-		<property name="poder_calorifico"/>
+		<property name="poder_calorifico" scale="12"/>
 		<property name="poder_calorifico_q" length="2"/>
-		<property name="densidad_relativa"/>
+		<property name="densidad_relativa" scale="12"/>
 		<property name="densidad_relativa_q" length="2"/>
-		<property name="co2"/>
+		<property name="co2" scale="12"/>
 		<property name="co2_q" length="2"/>
-		<property name="n2"/>
+		<property name="n2" scale="12"/>
 		<property name="n2_q" length="2"/>
-		<property name="sh2"/>
+		<property name="sh2" scale="12"/>
 		<property name="sh2_q" length="2"/>
-		<property name="c1"/>
+		<property name="c1" scale="12"/>
 		<property name="c1_q" length="2"/>
-		<property name="c2"/>
+		<property name="c2" scale="12"/>
 		<property name="c2_q" length="2"/>
-		<property name="c3"/>
+		<property name="c3" scale="12"/>
 		<property name="c3_q" length="2"/>
-		<property name="ic4"/>
+		<property name="ic4" scale="12"/>
 		<property name="ic4_q" length="2"/>
-		<property name="nc4"/>
+		<property name="nc4" scale="12"/>
 		<property name="nc4_q" length="2"/>
-		<property name="ic5"/>
+		<property name="ic5" scale="12"/>
 		<property name="ic5_q" length="2"/>
-		<property name="nc5"/>
+		<property name="nc5" scale="12"/>
 		<property name="nc5_q" length="2"/>
-		<property name="c6"/>
+		<property name="c6" scale="12"/>
 		<property name="c6_q" length="2"/>
-		<property name="volumen_seco"/>
+		<property name="volumen_seco" scale="12"/>
 		<property name="volumen_seco_q" length="2"/>
 		<property name="inicio_transac"/>
 		<property name="inicio_transac_q" length="2"/>
 		<property name="fin_transac"/>
 		<property name="fin_transac_q" length="2"/>
-		<property name="volumen_hoy_9300"/>
+		<property name="volumen_hoy_9300" scale="12"/>
 		<property name="volumen_hoy_9300_q" length="2"/>
-		<property name="densidad"/>
+		<property name="densidad" scale="12"/>
 		<property name="densidad_q" length="2"/>
-		<property name="volumen_bruto_hoy"/>
+		<property name="volumen_bruto_hoy" scale="12"/>
 		<property name="volumen_bruto_hoy_q" length="2"/>
-		<property name="volumen_neto_acumulado"/>
+		<property name="volumen_neto_acumulado" scale="12"/>
 		<property name="volumen_neto_acumulado_q" length="2"/>
 		
 	</class>

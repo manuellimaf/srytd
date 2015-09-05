@@ -4,6 +4,7 @@ import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class MappedFieldValueService {
 	private static Logger logger = LoggerFactory.getLogger(MappedFieldValueService.class);
 	private MappedFieldValueDao dao = new MappedFieldValueDao();
 
-	public List<MappedFieldValue> mapAndSave(Process process, List<FieldValue> fieldValues, List<Device> mappings) {
+	public List<MappedFieldValue> mapAndSave(Process process, List<FieldValue> fieldValues, List<Device> mappings, String username) {
 
 		logger.info("Mapping field values devices names to tags");
 		/*
@@ -64,7 +65,8 @@ public class MappedFieldValueService {
 				}
 				mapped.setProcess(process);
 				mapped.setId(null);
-
+				mapped.setCreatedBy(username);
+				mapped.setDateCreated(new Date());
 				dao.save(mapped);
 				result.add(mapped);
 			}
@@ -114,6 +116,8 @@ public class MappedFieldValueService {
 				
 				value.setId(null);
 				value.setProcess(destination);
+				value.setCreatedBy(destination.getStartedBy());
+				value.setDateCreated(new Date());
 				dao.save(value);
 				result.add(value);
 			}

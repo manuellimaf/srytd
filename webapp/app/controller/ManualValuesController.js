@@ -76,7 +76,8 @@ Ext.define('App.controller.ManualValuesController', {
 		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar los datos para el dispositivo ' + device + '?',
 			    function(resp) { 
 			    	if(resp == 'yes') {
-				    	App.util.FormSubmit.delete('/api/manual-field-values/' + id, store); 
+				    	App.util.FormSubmit.delete('/api/manual-field-values/' + id, store);
+				    	form.reset();
 				    }
 				}, this);
 		}

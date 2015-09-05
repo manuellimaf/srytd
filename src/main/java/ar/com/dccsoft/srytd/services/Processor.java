@@ -64,12 +64,12 @@ public class Processor {
 		Long processId = process.getId();
 		MDCUtils.put(MDCKey.PROCESS_ID, processId.toString());
 		
-		List<MappedFieldValue> mappings = mapFieldValues(process);
+		List<MappedFieldValue> mappings = mapFieldValues(process, process.getStartedBy());
 
 		buildFileAndSend(process, mappings);
 	}
 
-	private List<MappedFieldValue> mapFieldValues(Process process) {
+	private List<MappedFieldValue> mapFieldValues(Process process, String username) {
 		// Leer datos de campo
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
 
@@ -80,7 +80,7 @@ public class Processor {
 		performValidations(fieldValues, devices);
 
 		// Persistir valores mapeados
-		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices);
+		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices, username);
 
 		// Leer valores manuales y unirlos a la lista de valores automáticos
 		mappings.addAll(mappedFieldValueService.safetlyGetValuesForProcess(process));
