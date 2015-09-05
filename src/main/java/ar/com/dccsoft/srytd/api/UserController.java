@@ -11,13 +11,16 @@ import ar.com.dccsoft.srytd.api.dto.Page;
 @Path("/user")
 public class UserController {
 
-	public boolean authenticate() {
-		return true;
-	}
-
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page getAll() {
+		// TODO
 		return new Page(Lists.newArrayList(), 0L);
 	}
+
+	public boolean authenticate() {
+		// TODO
+		return true;
+	}
+
 }

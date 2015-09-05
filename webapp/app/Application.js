@@ -20,8 +20,8 @@ Ext.define('App.Application', {
         'App.view.process.List',
         'App.view.manualFieldValue.ManualFieldValueForm',
         'App.view.config.ConfigPanel',
-        'App.view.user.List',
 		'App.view.config.MappingsForm',
+        'App.view.config.UsersForm',
         'App.view.config.ConfigPropsForm'
     ],
     
@@ -30,7 +30,7 @@ Ext.define('App.Application', {
         'MainPanelController',
         'ProcessController',
         'ManualValuesController',
-        'UserController',
+        'UsersController',
         'MappingsController',
         'ConfigPropsController'
     ],
