@@ -1,3 +1,5 @@
+Ext.form.DateField.prototype.format = 'd/m/Y';
+
 Ext.define('App.Application', {
     extend: 'Ext.app.Application',
     

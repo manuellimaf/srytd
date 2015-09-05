@@ -32,10 +32,24 @@ Ext.define('App.controller.ManualValuesController', {
         var rec = records[0];
         if (rec) {
 	    	var panel = this.getManualValuesForm();
-			panel.getForm().loadRecord(rec);
+	    	var form = panel.getForm()
+	    	form.loadRecord(rec);
+	    	this.parseAndSetDate(form, 'valueDate', 'valueTime', rec.get('timestamp'));
+	    	this.parseAndSetDate(form, 'itDate', 'itTime', rec.get('inicio_transac'));
+	    	this.parseAndSetDate(form, 'ftDate', 'ftTime', rec.get('fin_transac'));
         }
 	},
-	
+	parseAndSetDate: function(form, dateId, timeId, timestamp) {
+    	if(timestamp) {
+    		var datetime = timestamp.split(" ");
+    		vDate = datetime[0];
+    		vTime = datetime[1];
+    		form.setValues([
+    			{id: dateId, value: vDate}, 
+    			{id: timeId, value: vTime}
+    		]);
+    	}
+	},	
 	saveValue: function() {
 	    var store = this.getStore('ManualFieldValueStore');
 	    var form = this.getManualValuesForm().getForm();

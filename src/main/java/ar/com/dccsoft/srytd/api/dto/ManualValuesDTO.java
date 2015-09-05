@@ -6,25 +6,11 @@ import java.util.Date;
 public class ManualValuesDTO {
 	private Long id;
 	private String tag;
-
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	private String deviceId;
 	private Date timestamp;
+	private String valueDate;
+	private String valueTime;
+	
 	private String valueType;
 
 	private BigDecimal presion;
@@ -58,12 +44,32 @@ public class ManualValuesDTO {
 	private BigDecimal nc5;
 	private BigDecimal c6;
 	private BigDecimal volumen_seco;
-	private String inicio_transac;
-	private String fin_transac;
+	private Date inicio_transac;
+	private String itDate;
+	private String itTime;
+	private Date fin_transac;
+	private String ftDate;
+	private String ftTime;
 	private BigDecimal volumen_hoy_9300;
 	private BigDecimal densidad;
 	private BigDecimal volumen_bruto_hoy;
 	private BigDecimal volumen_neto_acumulado;
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getDeviceId() {
 		return deviceId;
@@ -337,19 +343,19 @@ public class ManualValuesDTO {
 		this.volumen_seco = volumen_seco;
 	}
 
-	public String getInicio_transac() {
+	public Date getInicio_transac() {
 		return inicio_transac;
 	}
 
-	public void setInicio_transac(String inicio_transac) {
+	public void setInicio_transac(Date inicio_transac) {
 		this.inicio_transac = inicio_transac;
 	}
 
-	public String getFin_transac() {
+	public Date getFin_transac() {
 		return fin_transac;
 	}
 
-	public void setFin_transac(String fin_transac) {
+	public void setFin_transac(Date fin_transac) {
 		this.fin_transac = fin_transac;
 	}
 
@@ -383,6 +389,54 @@ public class ManualValuesDTO {
 
 	public void setVolumen_neto_acumulado(BigDecimal volumen_neto_acumulado) {
 		this.volumen_neto_acumulado = volumen_neto_acumulado;
+	}
+
+	public String getValueDate() {
+		return valueDate;
+	}
+
+	public void setValueDate(String valueDate) {
+		this.valueDate = valueDate;
+	}
+
+	public String getValueTime() {
+		return valueTime;
+	}
+
+	public void setValueTime(String valueTime) {
+		this.valueTime = valueTime;
+	}
+
+	public String getItDate() {
+		return itDate;
+	}
+
+	public void setItDate(String itDate) {
+		this.itDate = itDate;
+	}
+
+	public String getItTime() {
+		return itTime;
+	}
+
+	public void setItTime(String itTime) {
+		this.itTime = itTime;
+	}
+
+	public String getFtDate() {
+		return ftDate;
+	}
+
+	public void setFtDate(String ftDate) {
+		this.ftDate = ftDate;
+	}
+
+	public String getFtTime() {
+		return ftTime;
+	}
+
+	public void setFtTime(String ftTime) {
+		this.ftTime = ftTime;
 	}
 	
 }

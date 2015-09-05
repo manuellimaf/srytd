@@ -26,14 +26,21 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 		        style: { padding: '0 10' }
 		    }
 	    },
-	    defaults: {
-	    	labelWidth: 150
-	    },
+	    defaults: { labelWidth: 150 },
 	    defaultType: 'textfield',
         items: [
         	{ fieldLabel: 'Dispositivo', name: 'deviceId', allowBlank: false },
         	{ fieldLabel: 'Tag', name: 'tag', allowBlank: false },
-        	{ fieldLabel: 'F. medici&oacute;n', name: 'timestamp', allowBlank: false },
+        	{ 
+        		xtype: 'fieldset',
+		    	layout: 'hbox',
+		    	border: false,
+		    	style: { padding: 0 },
+        		items: [
+		        	{ fieldLabel: 'Fecha medici&oacute;n', xtype: 'datefield', name: 'valueDate', allowBlank: false, labelWidth: 101, width: 196 },
+		        	{ fieldLabel: '', xtype: 'timefield', name: 'valueTime', format: 'H:i', allowBlank: false, margin: '0 0 0 10', labelWidth: 0, width: 90 }
+        		]
+        	},
         	{ fieldLabel: 'Vol. neto hoy [m3]', name: 'volumen_neto_hoy' },
 			{ fieldLabel: 'Vol. desplazado [m3]', name: 'volumen_desplazado' },
 			{ fieldLabel: 'Vol. bruto acum. [m3]', name: 'volumen_bruto_acumulado' },
@@ -68,8 +75,26 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 			{ fieldLabel: 'Densidad [g/cm3]',  name: 'densidad' },
 			{ fieldLabel: 'Vol. bruto hoy [m3]', name: 'volumen_bruto_hoy' },
 			{ fieldLabel: 'Vol. seco ult. transac. [m3]', name: 'volumen_seco' },
-			{ fieldLabel: 'Inicio transac.',  name: 'inicio_transac' },
-			{ fieldLabel: 'Fin transac.',  name: 'fin_transac' },
+        	{ 
+        		xtype: 'fieldset',
+		    	layout: 'hbox',
+		    	border: false,
+		    	style: { padding: 0 },
+        		items: [
+		        	{ fieldLabel: 'Inicio transacci&oacute;n', xtype: 'datefield', name: 'itDate', labelWidth: 101, width: 196 },
+		        	{ fieldLabel: '', xtype: 'timefield', name: 'itTime', format: 'H:i', margin: '0 0 0 10', labelWidth: 0, width: 90 }
+        		]
+        	},
+        	{ 
+        		xtype: 'fieldset',
+		    	layout: 'hbox',
+		    	border: false,
+		    	style: { padding: 0 },
+        		items: [
+		        	{ fieldLabel: 'Fin transacci&oacute;n', xtype: 'datefield', name: 'ftDate', labelWidth: 101, width: 196 },
+		        	{ fieldLabel: '', xtype: 'timefield', name: 'ftTime', format: 'H:i', margin: '0 0 0 10', labelWidth: 0, width: 90 }
+        		]
+        	},
 			{ fieldLabel: 'Vol. neto acum. [m3]', name: 'volumen_neto_acumulado' },
 			{ xtype: 'hiddenfield', name: 'id' },
 			{
@@ -105,7 +130,7 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
         xtype: 'gridpanel',
         itemId: 'manual-value-list',
         store: 'ManualFieldValueStore',
-        height: 300,
+        height: 200,
 		tbar: {
 	    	items: [{
 	            text: 'Borrar',
