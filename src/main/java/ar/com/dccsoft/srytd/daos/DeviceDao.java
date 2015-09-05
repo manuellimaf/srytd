@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -16,7 +17,7 @@ public class DeviceDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Device> getAll() {
-		return MySQL.currentSession().createCriteria(Device.class).list();
+		return MySQL.currentSession().createCriteria(Device.class).addOrder(Order.asc("name")).list();
 	}
 
 	@SuppressWarnings("unchecked")

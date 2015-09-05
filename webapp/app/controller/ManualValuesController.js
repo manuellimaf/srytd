@@ -9,6 +9,9 @@ Ext.define('App.controller.ManualValuesController', {
         this.control('gridpanel#manual-value-list button[action=deleteManualValue]', {
     		click: this.deleteManualValue
         });
+        this.control('manual-values-form combobox[name=deviceId]', {
+        	select: this.onComboSelection
+        });
         this.control('manual-values-form button[action=update]', {
     		click: this.updateMapping
         });
@@ -25,14 +28,14 @@ Ext.define('App.controller.ManualValuesController', {
 		selector: 'gridpanel#manual-values-list',
 		ref: 'gridPanel'
 	}],
-	stores: ['ManualFieldValueStore'],
-    models: ['ManualFieldValue'],
+	stores: ['ManualFieldValueStore', 'DeviceStore'],
+    models: ['ManualFieldValue', 'Device'],
 	
 	onSelectionChange: function(model, records) {
         var rec = records[0];
         if (rec) {
 	    	var panel = this.getManualValuesForm();
-	    	var form = panel.getForm()
+	    	var form = panel.getForm();
 	    	form.loadRecord(rec);
 	    	this.parseAndSetDate(form, 'valueDate', 'valueTime', rec.get('timestamp'));
 	    	this.parseAndSetDate(form, 'itDate', 'itTime', rec.get('inicio_transac'));
@@ -50,6 +53,18 @@ Ext.define('App.controller.ManualValuesController', {
     		]);
     	}
 	},	
+	onComboSelection: function(combo, records) {
+    	var panel = this.getManualValuesForm();
+    	var form = panel.getForm();
+    	var tag = "";
+		if(records.length > 0) {
+			var rec = records[0].data;
+			console.log(rec);
+			tag = rec.tag;
+		} 
+		form.setValues([{id: 'tag', value: tag}]);
+		
+	},
 	saveValue: function() {
 	    var store = this.getStore('ManualFieldValueStore');
 	    var form = this.getManualValuesForm().getForm();

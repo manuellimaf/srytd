@@ -32,9 +32,18 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 	    	width: 300 
 	    },
 	    defaultType: 'numberfield',
-        items: [
-        	{ fieldLabel: 'Dispositivo', name: 'deviceId', xtype: 'textfield', allowBlank: false },
-        	{ fieldLabel: 'Tag', name: 'tag', xtype: 'textfield', allowBlank: false },
+        items: [{ 
+	    		fieldLabel: 'Dispositivo', 
+	    		xtype: 'combobox', 
+	    		name: 'deviceId',  
+	    		valueField: 'name',
+	    		displayField: 'name',
+				editable: false,
+				selectOnTab: true,
+				store: 'DeviceStore', 
+				allowBlank: false
+			},
+        	{ fieldLabel: 'Tag', name: 'tag', xtype: 'textfield', allowBlank: false, readOnly: true },
         	{ 
         		xtype: 'fieldset',
 		    	layout: 'hbox',
