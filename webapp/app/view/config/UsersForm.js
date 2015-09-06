@@ -53,9 +53,12 @@ Ext.define('App.view.config.UsersForm', {
         }, {
             text: 'Fecha de creaci&oacute;n',
             flex: 1,
-            dataIndex: 'creationDate'
+            dataIndex: 'dateCreated'
         }, {
+            xtype: 'booleancolumn', 
             text: 'Habilitado?',
+            trueText: 'Si',
+            falseText: 'No', 
             flex: 1,
             dataIndex: 'enabled'
         }],
@@ -75,12 +78,28 @@ Ext.define('App.view.config.UsersForm', {
         items: [{
             fieldLabel: 'Usuario',
             allowBlank: false,
-            name: 'name'
+            name: 'username'
         },{
-            fieldLabel: 'Rol',
+            fieldLabel: 'Contrase&nacute;a',
             allowBlank: false,
-            name: 'tag'
-        }, {
+            inputType: 'password',
+            name: 'password'
+        },{
+            fieldLabel: 'Confirmar contrase&nacute;a',
+            allowBlank: false,
+            inputType: 'password',
+            name: 'passwordConf'
+        },{ 
+    		fieldLabel: 'Rol', 
+    		xtype: 'combobox', 
+    		name: 'role',  
+    		valueField: 'id',
+    		displayField: 'name',
+			editable: false,
+			selectOnTab: true,
+			store: 'RoleStore', 
+			allowBlank: false
+		}, {
 	        xtype: 'hiddenfield',
 	        name: 'id'
     	},{

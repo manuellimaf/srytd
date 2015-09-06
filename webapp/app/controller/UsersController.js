@@ -6,17 +6,19 @@ Ext.define('App.controller.UsersController', {
         this.control('gridpanel#users-list', {
         	selectionchange: this.onSelectionChange
         });
-/*
-        this.control('gridpanel#mappings-list button[action=deleteMapping]', {
-    		click: this.deleteMapping
+        this.control('gridpanel#users-list button[action=disable]', {
+    		click: this.disableUser
         });
-        this.control('mappings-form button[action=update]', {
-    		click: this.updateMapping
+        this.control('gridpanel#users-list button[action=enable]', {
+    		click: this.enableUser
         });
-        this.control('mappings-form button[action=save]', {
-    		click: this.createMapping
+        this.control('users-form button[action=update]', {
+    		click: this.updateUser
         });
-*/	},
+        this.control('users-form button[action=save]', {
+    		click: this.createUser
+        });
+	},
 	
 	views: ['config.UsersForm'],
     refs: [{
@@ -26,47 +28,56 @@ Ext.define('App.controller.UsersController', {
 		selector: 'gridpanel#users-list',
 		ref: 'gridPanel'
 	}],
-	stores: ['UserStore'],
-    models: ['User'],
+	stores: ['UserStore', 'RoleStore'],
+    models: ['User', 'Role'],
 	
 	onSelectionChange: function(model, records) {
         var rec = records[0];
         if (rec) {
 	    	var panel = this.getUsersForm();
 			panel.getForm().loadRecord(rec);
+	    	var form = panel.getForm();
+			form.setValues([{id: 'passwordConf', value: rec.data.password}]);			
         }
-	} /*,
+	},
 	
-	createMapping: function() {
-	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
-	    if(form.isValid()) {
-	    	App.util.FormSubmit.submit(form, '/api/mapping', store); 
+	disableUser: function() { this.changeState('disable') },
+	enableUser: function() { this.changeState('enable') },
+	changeState: function(action) {
+	    var selected = this.getGridPanel().getSelectionModel().selected;
+	    if(selected.getCount() > 0) {
+		    var userId = selected.first().get('id');
+            Ext.Ajax.request({
+	            url: '/api/user/' + userId + '/' + action,
+	            method: 'PUT',
+	            headers: {
+	              'Content-Type': 'application/json;charset=utf-8'
+	          	},
+	          	params: { 'enabled': false },
+	          	success: function(response, options) {
+				    var store = this.getStore('UserStore');
+          			store.reload();
+	                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
+	            },
+	            failure: App.util.FormSubmit.failureHandler,
+	            scope: this
+			});
 		}
 	},
 	
-	updateMapping: function() {
-	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
+	createUser: function() {
+	    var store = this.getStore('UserStore');
+	    var form = this.getUsersForm().getForm();
+	    if(form.isValid()) {
+	    	App.util.FormSubmit.submit(form, '/api/user', store); 
+		}
+	},
+	
+	updateUser: function() {
+	    var store = this.getStore('UserStore');
+	    var form = this.getUsersForm().getForm();
 	    if(form.isValid() && form.getValues().id) {
-	    	App.util.FormSubmit.update(form, '/api/mapping', store); 
+	    	App.util.FormSubmit.update(form, '/api/user', store); 
 		}
-	},
-	
-	deleteMapping: function() {
-	    var form = this.getMappingsForm().getForm();
-	    if(form.isValid()) {
-	    	var values = form.getValues();
-		    var mappingId = values.id;
-		    var device = values.name;
-		    var tag = values.tag;
-		    var store = this.getStore('MappingStore');
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + name + ' - ' + tag + '?',
-			    function(resp) { 
-			    	if(resp == 'yes') {
-				    	App.util.FormSubmit.delete('/api/mapping/' + mappingId, store); 
-				    }
-				}, this);
-		}
-	}*/
+	}
 });
