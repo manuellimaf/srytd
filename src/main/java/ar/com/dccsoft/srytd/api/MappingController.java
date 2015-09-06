@@ -4,6 +4,7 @@ import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrFail;
 import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrNotFound;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -39,11 +41,10 @@ public class MappingController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createMapping(MappingDTO dto) {
+	public Response createMapping(MappingDTO dto, @Context HttpServletRequest request) {
 		logger.info("Creating new mapping");
 
-		// TODO - username
-		String username = "web";
+		String username = request.getRemoteUser();
 		validateCreation(dto);
 		service.createMapping(dto, username);
 		

@@ -7,6 +7,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -66,11 +68,10 @@ public class UserController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser(UserDTO dto) {
+	public Response createUser(UserDTO dto, @Context HttpServletRequest request) {
 		logger.info("Creating new user");
 
-		// TODO - username
-		String username = "web";
+		String username = request.getRemoteUser();
 		validateCreation(dto);
 		service.createUser(dto, username);
 		

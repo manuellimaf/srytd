@@ -46,13 +46,19 @@ Ext.define('App.controller.MainPanelController', {
     }, 
     
     onLogout: function () {
-        // Remove the localStorage key/value
-        localStorage.removeItem('LoggedIn');
-
-        // Remove Main View
-        this.getView().destroy();
-
-        // Add the Login Window
-        Ext.create('login');
+        Ext.Ajax.request({
+            url: '/api/auth/invalidate',
+            method: 'POST',
+          	success: function(response, options) {
+		        location.href = 'login.html';
+            },
+            failure: function(response, options) {
+	        	if(response.status <= 0) {
+    	    		Ext.Msg.alert('Error', 'No es posible conectarse al servidor');
+        		} else {
+	                Ext.Msg.alert('Error ' + response.status, response.responseText);
+	        	}
+	        }
+		}, this);
     }
 });

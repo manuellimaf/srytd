@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -45,11 +47,10 @@ public class ManualFieldValuesController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveValue(ManualValuesDTO dto) {
+	public Response saveValue(ManualValuesDTO dto, @Context HttpServletRequest request) {
 		logger.info("Persisting manual value");
 
-		// TODO - username
-		String username = "web";
+		String username = request.getRemoteUser();
 		createValidations(dto);
 		service.createManualValue(dto, username);
 		

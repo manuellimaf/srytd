@@ -6,6 +6,7 @@ import static ar.com.dccsoft.srytd.utils.errors.Validator.validateOrNotFound;
 import java.io.OutputStream;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
@@ -71,11 +73,10 @@ public class ProcessController {
 	@POST
 	@Path("/{id}/resend")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Long resendValues(@PathParam("id") String processId) {
+	public Long resendValues(@PathParam("id") String processId, @Context HttpServletRequest request) {
 		logger.info(String.format("Starting to send values for process %s", processId));
 
-		// TODO username
-		String username = "web";
+		String username = request.getRemoteUser();
 
 		validateId(processId);
 		Long newId = service.resendValues(Long.valueOf(processId), username);
@@ -113,12 +114,11 @@ public class ProcessController {
 	@POST
 	@Path("/start")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void startProcess(StartProcessDTO dto) {
+	public void startProcess(StartProcessDTO dto, @Context HttpServletRequest request) {
 		logger.info("'Start process' received");
 
-		// TODO . username
 		validateStartProcess(dto);
-		String username = "web";
+		String username = request.getRemoteUser();
 		service.startProcess(dto, username);
 	}
 	

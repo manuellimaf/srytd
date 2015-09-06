@@ -28,7 +28,16 @@ Ext.define('App.controller.LoginController', {
 	          	params: form.getValues(true),
 	          	success: function(response, options) {
 			        location.href = 'index.html';
-	            }
+	            },
+	            failure: function(response, options) {
+		        	if(response.status <= 0) {
+	    	    		Ext.Msg.alert('Error', 'No es posible conectarse al servidor');
+	        		} else if(response.status == 401) {
+		        		Ext.Msg.alert('No autorizado', 'Usuario/Contrase&nacute;a inv&aacute;lidos');
+		        	} else {
+		                Ext.Msg.alert('Error ' + response.status, response.responseText);
+		        	}
+		        }
 			});
 		}
     }
