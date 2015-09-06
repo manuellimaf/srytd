@@ -7,28 +7,28 @@ Ext.define('App.view.login.Login', {
     ],
     
     bodyPadding: 10,
-    title: 'Login Window',
+    title: 'Login',
     closable: false,
     autoShow: true, 
-    
+	    
     items: {
         xtype: 'form',
         reference: 'form',
         frame: true,
         items: [{
             xtype: 'textfield',
-            name: 'username',
-            fieldLabel: 'Username',
+            name: 'j_username',
+            fieldLabel: 'Usuario',
             allowBlank: false
         }, {
             xtype: 'textfield',
-            name: 'password',
+            name: 'j_password',
             inputType: 'password',
-            fieldLabel: 'Password',
+            fieldLabel: 'Contrase&nacute;a',
             allowBlank: false
         }],
         buttons: [{
-            text: 'Login',
+            text: 'Ingresar',
             action: 'doLogin',
             formBind: true
         }]

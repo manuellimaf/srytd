@@ -49,6 +49,8 @@ Ext.define('App.util.FormSubmit', {
         		Ext.Msg.alert('Error', 'No es posible conectarse al servidor');
         	} else if(response.status == 450) {
         		Ext.Msg.alert('Error de usaurio', response.responseText);
+        	} else if(response.status == 401) {
+        		Ext.Msg.alert('No autorizado', response.responseText);
         	} else {
                 Ext.Msg.alert('Error ' + response.status, response.responseText);
         	}

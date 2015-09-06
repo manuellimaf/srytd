@@ -56,4 +56,21 @@ public class User {
 		this.role = role;
 	}
 	
+	/**
+	 * Role hierarchy (X -> Y reads X is Y)
+	 * ADMIN -> USER -> READ_ONLY
+	 *       
+	 */
+	public boolean hasRole(String someRoleName) {
+		Role someRole = Role.valueOf(someRoleName);
+		if(Role.ADMIN.equals(role))
+			return true;
+		if(Role.USER.equals(role) && !Role.ADMIN.equals(someRole))
+			return true;
+		if(Role.READ_ONLY.equals(role) && Role.READ_ONLY.equals(someRole))
+			return true;
+		
+		return false;
+	}
+	
 }

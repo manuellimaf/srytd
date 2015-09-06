@@ -36,11 +36,7 @@ Ext.define('App.Application', {
     ],
     
     launch: function () {
-        var loggedIn = localStorage.getItem("LoggedIn");
-		console.log("Logged in? " + loggedIn);
-		
-		var name = loggedIn ? 'App.view.layout.MainPanel' : 'App.view.login.Login'
-        Ext.create(name);
+        Ext.create('App.view.layout.MainPanel');
     }
 
 });

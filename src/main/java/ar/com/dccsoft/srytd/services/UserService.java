@@ -77,7 +77,18 @@ public class UserService {
 	}
 
 	public boolean userExists(String username) {
-		return transactional(MySQL, (s) -> dao.findByName(username) != null);
+		return findByName(username) != null;
+	}
+
+	public boolean isValidUser(UserDTO dto) {
+		return transactional(MySQL, (s) -> {
+			User user = findByName(dto.getUsername());
+			return user != null && user.getEnabled() && user.getPassword().equals(dto.getPassword());
+		});
+	}
+
+	public User findByName(String username) {
+		return transactional(MySQL, (s) -> dao.findByName(username));
 	}
 
 }

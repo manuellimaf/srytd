@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE securityfilter-config PUBLIC
+    "-//SecurityFilter.org//DTD Security Filter Configuration 1.1//EN"
+    "http://www.securityfilter.org/dtd/securityfilter-config_1_1.dtd">
+
+<securityfilter-config>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Secure Actions</web-resource-name>
+         <url-pattern>*.html</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>READ_ONLY</role-name>
+      </auth-constraint>
+   </security-constraint>
+
+   <login-config>
+      <auth-method>FORM</auth-method>
+      <form-login-config>
+         <!-- login form -->
+         <form-login-page>/login.html</form-login-page>
+         <!-- login error page -->
+         <form-error-page>/login.html?error=true</form-error-page>
+         <!-- send users here on spontaneous login submittal -->
+         <form-default-page>/index.html</form-default-page>
+      </form-login-config>
+   </login-config>
+
+   <realm className="ar.com.dccsoft.srytd.utils.security.SecurityRealm"/>
+</securityfilter-config>

@@ -97,13 +97,6 @@ public class UserController {
 	}
 
 	
-	@POST
-	@Path("/auth")
-	public Response authenticate() {
-		// Si llegó hasta acá es porque pasó correctamente por los filtros de autenticación.
-		return Response.ok().build();
-	}
-
 	private void validateUpdate(UserDTO dto) {
 		validateOrNotFound(() -> service.userExists(dto.getId()));
 		genericValidations(dto);

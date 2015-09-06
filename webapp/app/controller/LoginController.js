@@ -1,5 +1,6 @@
 Ext.define('App.controller.LoginController', {
     extend: 'Ext.app.Controller',
+	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
         this.control({
@@ -13,22 +14,22 @@ Ext.define('App.controller.LoginController', {
 	refs: [{
 		selector: 'login',
 		ref: 'loginView'
+	},{
+		selector: 'login form',
+		ref: 'loginForm'
 	}],
 	
     onLoginClick: function() {
-
-        // This would be the ideal location to verify the user's credentials via
-        // a server-side lookup. We'll just move forward for the sake of this example.
-		// alert("perform ajax validation!!");
-		
-        // Set the localStorage value to true
-        localStorage.setItem("LoggedIn", true);
-
-        // Remove Login Window
-        this.getLoginView().destroy();
-
-        // Add the main view to the viewport
-        Ext.create('App.view.layout.MainPanel');
-
+	    var form = this.getLoginForm();
+	    if(form.isValid()) {
+            Ext.Ajax.request({
+	            url: '/api/auth',
+	            method: 'POST',
+	          	params: form.getValues(true),
+	          	success: function(response, options) {
+			        location.href = 'index.html';
+	            }
+			});
+		}
     }
 });
