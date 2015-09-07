@@ -62,6 +62,19 @@ public class ProcessService {
 		logger.info(String.format("Updating process state -> %s", status.toString()));
 	}
 
+	public void updateSentStatus(Long processId, Long sent, Long unsent) {
+		transactional(MySQL, (session) -> {
+			Process p = processDao.find(processId);
+			ProcessResult pr = p.getResult();
+			pr.setSentValues(sent);
+			pr.setUnsentValues(unsent);
+			processDao.update(p);
+
+			updateStatus(processId, ProcessStatus.SENT);
+			return null;
+		});
+	}
+
 	public void updateFinalStatus(Long processId) {
 		transactional(MySQL, (session) -> {
 			Process process = processDao.find(processId);

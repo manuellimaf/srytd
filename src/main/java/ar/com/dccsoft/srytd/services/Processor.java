@@ -6,8 +6,12 @@ import static java.lang.String.format;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import jersey.repackaged.com.google.common.collect.Maps;
+
+import org.apache.commons.collections.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +19,6 @@ import ar.com.dccsoft.srytd.model.Device;
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
-import ar.com.dccsoft.srytd.model.ProcessStatus;
 import ar.com.dccsoft.srytd.services.FileBuilder.FileBuildResult;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
@@ -30,6 +33,7 @@ public class Processor {
 
 	private FieldValueService fieldValueService = new FieldValueService();
 	private MappedFieldValueService mappedFieldValueService = new MappedFieldValueService();
+	private ManualFieldValueService manualFieldValueService = new ManualFieldValueService();
 	private DeviceService deviceService = new DeviceService();
 	private ProcessService processService = new ProcessService();
 	private FTPConnector ftpConnector = new FTPConnector();
@@ -69,7 +73,11 @@ public class Processor {
 	private List<MappedFieldValue> mapFieldValues(Process process, String username) {
 		// Leer datos de campo
 		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
-
+		// Leer valores manuales
+		List<MappedFieldValue> manualValues = manualFieldValueService.readOneHourValues(process.getValuesFrom());
+		// Unir ambas listas de valores y perservar solo los que tengan fecha más cercana al final de la hora
+		List<FieldValue> unprocessed = removeDuplicates(ListUtils.sum(fieldValues, manualValues));
+		
 		// Leer mapeos de tags
 		List<Device> devices = deviceService.getAllDevices();
 
@@ -79,8 +87,6 @@ public class Processor {
 		// Persistir valores mapeados
 		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices, username);
 
-		// Leer valores manuales y unirlos a la lista de valores automáticos
-		mappings.addAll(mappedFieldValueService.safetlyGetValuesForProcess(process));
 		return mappings;
 	}
 
@@ -91,7 +97,6 @@ public class Processor {
 		// Generar txt (csv)
 		FileBuilder fileBuilder = new FileBuilder().withMappings(mappings);
 		FileBuildResult result = fileBuilder.build();
-		processService.updateStatus(processId, ProcessStatus.PROCESSED);
 		verifyResult(result);
 
 		// Persistir txt
@@ -100,7 +105,7 @@ public class Processor {
 
 		// Subir a FTPServer
 		ftpConnector.transfer(result.getFile(), fileName);
-		processService.updateStatus(processId, ProcessStatus.SENT);
+		processService.updateSentStatus(processId, result.getProcessedValues(), result.getUnprocessedValues());
 
 		// Enviar mail de resultado
 		sendNotification(formatDate(process.getValuesFrom()), result.getFile(), fileName);
@@ -153,4 +158,22 @@ public class Processor {
 			processAlertService.addWarning("Unmapped devices", format("This devices does not have mappings: %s", notFound));
 		}
 	}
+	
+	private List<FieldValue> removeDuplicates(List<FieldValue> values) {
+		Map<String, FieldValue> valuesByDevice = Maps.newHashMap();
+		for(FieldValue fieldValue : values) {
+			String device = fieldValue.getDeviceId();
+			FieldValue currMax = valuesByDevice.get(device);
+			if(currMax != null) {
+				currMax = currMax.getTimestamp().after(fieldValue.getTimestamp()) ? currMax : fieldValue;
+			} else {
+				currMax = fieldValue;
+			}
+			valuesByDevice.put(device, currMax);
+		}
+		
+		return Lists.newLinkedList(valuesByDevice.values());
+	}
+
+
 }

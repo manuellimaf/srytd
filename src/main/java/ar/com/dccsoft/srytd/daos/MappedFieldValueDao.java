@@ -2,6 +2,7 @@ package ar.com.dccsoft.srytd.daos;
 
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -27,6 +28,14 @@ public class MappedFieldValueDao {
 		MySQL.currentSession().delete(value);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<MappedFieldValue> readManualValues(Date from, Date to) {
+		return MySQL.currentSession().createCriteria(MappedFieldValue.class)
+			.add(Restrictions.between("timestamp", from, to))
+			.add(Restrictions.eq("valueType", "M"))
+			.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<MappedFieldValue> filterByProcessId(Long processId) {
 		Criteria c = MySQL.currentSession().createCriteria(MappedFieldValue.class)

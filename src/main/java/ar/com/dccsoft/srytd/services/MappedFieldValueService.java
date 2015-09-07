@@ -1,6 +1,5 @@
 package ar.com.dccsoft.srytd.services;
 
-import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
@@ -74,12 +73,6 @@ public class MappedFieldValueService {
 			return result;
 		});
 
-	}
-
-	public List<MappedFieldValue> safetlyGetValuesForProcess(Process process) {
-		return tryAndInform("Error reading values for process", () -> {
-			return getValuesForProcess(process.getId());
-		});
 	}
 
 	public List<MappedFieldValue> getValuesForProcess(Long processId) {

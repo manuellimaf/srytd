@@ -34,7 +34,7 @@ public class App {
 		} else {
 			int exitCode = 0;
 			try {
-				Date from = DateUtils.parseDate("2015-08-27 11:01:35", "yyyy-MM-dd HH:mm:ss");
+				Date from = DateUtils.parseDate(args[1], "yyyy-MM-dd HH:mm:ss");
 				from = DateUtils.truncate(from, Calendar.HOUR_OF_DAY);
 				new Processor().start(from, DEFAULT_USER);
 			} catch (Throwable t) {

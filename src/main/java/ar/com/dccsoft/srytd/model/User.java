@@ -2,6 +2,8 @@ package ar.com.dccsoft.srytd.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 
 	private Long id;
@@ -54,6 +56,10 @@ public class User {
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	@JsonProperty("roleDesc")
+	public String getRoleDesc() {
+		return role.toString();
 	}
 	
 	/**

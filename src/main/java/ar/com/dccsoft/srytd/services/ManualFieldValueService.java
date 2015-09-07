@@ -1,7 +1,9 @@
 package ar.com.dccsoft.srytd.services;
 
+import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
+import static java.lang.String.format;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -22,6 +24,18 @@ public class ManualFieldValueService {
 
 	private static Logger logger = LoggerFactory.getLogger(ManualFieldValueService.class);
 	private MappedFieldValueDao dao = new MappedFieldValueDao();
+
+	public List<MappedFieldValue> readOneHourValues(Date from) {
+		return tryAndInform("Error reading manual field values", () -> {
+			return transactional(MySQL, (session) -> {
+				Date to = DateUtils.addHours(from, 1);
+				logger.info(format("Reading manual values for: %tY-%tm-%td (%tH:%tM - %tH:%tM)", from, from, from, from, from, to, to));
+				List<MappedFieldValue> manualValues = dao.readManualValues(from, to);
+				logger.info(format("%d manual values read", manualValues.size()));
+				return manualValues;
+			});
+		});
+	}
 
 	public Page getPage(Integer start, Integer limit) {
 		return transactional(MySQL, (session) -> {

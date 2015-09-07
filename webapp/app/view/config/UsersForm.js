@@ -45,7 +45,12 @@ Ext.define('App.view.config.UsersForm', {
         }, {
             text: 'Rol',
             flex: 1,
-            dataIndex: 'role'
+            dataIndex: 'role',
+            hidden: true
+        }, {
+            text: 'Rol',
+            flex: 1,
+            dataIndex: 'roleDesc'
         }, {
             text: 'Creado por',
             flex: 1,
