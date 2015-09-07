@@ -76,11 +76,11 @@ public class MappingController {
 	
 	private void validateCreation(MappingDTO dto) {
 		requiredValidations(dto);
-		validateOrFail("El Tag ya se encuentra asociado a otro dispositivo", () -> {
-			return service.existsMappingForDevice(dto.getName());
-		});
 		validateOrFail("El dispositivo ya se encuentra mapeado", () -> {
-			return service.existsMappingForTag(dto.getName());
+			return !service.existsMappingForDevice(dto.getName());
+		});
+		validateOrFail("El Tag ya se encuentra asociado a otro dispositivo", () -> {
+			return !service.existsMappingForTag(dto.getTag());
 		});
 		
 	}
@@ -92,11 +92,13 @@ public class MappingController {
 	
 	private void validateUpdate(MappingDTO dto) {
 		requiredValidations(dto);
+		validateOrNotFound(() -> service.existsDevice(dto.getId()));
+		
 		validateOrFail("El dispositivo ya posee un mapeo", () -> {
-			return service.isValidMappingForDevice(dto.getTag(), dto.getName());
+			return service.isValidDevice(dto.getId(), dto.getName());
 		});
 		validateOrFail("Ya existe un dispositivo con este tag", () -> {
-			return service.isValidMappingForTag(dto.getTag(), dto.getName());
+			return service.isValidTag(dto.getId(), dto.getTag());
 		});
 		
 	}
