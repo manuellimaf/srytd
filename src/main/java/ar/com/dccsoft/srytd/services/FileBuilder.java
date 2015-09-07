@@ -3,7 +3,6 @@ package ar.com.dccsoft.srytd.services;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -15,7 +14,6 @@ import jersey.repackaged.com.google.common.collect.Lists;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +79,7 @@ public class FileBuilder {
 					}
 				}
 
-				result.setFile(IOUtils.toInputStream(sb.toString()));
+				result.setFile(sb.toString());
 				logger.info(String.format("File built (%d values total, %d values with missing mappings)", result.getProcessedValues(),
 						result.getUnprocessedValues()));
 				return result;
@@ -123,16 +121,16 @@ public class FileBuilder {
 	}
 
 	public static class FileBuildResult {
-		private InputStream file;
+		private String file;
 		private Long processedValues = 0L;
 		private Long unprocessedValues = 0L;
 		private List<String> missingMappings = Lists.newLinkedList();
 
-		public InputStream getFile() {
+		public String getFile() {
 			return file;
 		}
 
-		public void setFile(InputStream file) {
+		public void setFile(String file) {
 			this.file = file;
 		}
 

@@ -3,14 +3,11 @@ package ar.com.dccsoft.srytd.services;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static java.lang.String.format;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,10 +120,10 @@ public class Processor {
 
 	}
 
-	private void sendNotification(String dateStr, InputStream is, String fileName) {
+	private void sendNotification(String dateStr, String data, String fileName) {
 		try {
-			notificationsService.sendFinishMessage(dateStr, IOUtils.toByteArray(is), fileName);
-		} catch (IOException e) {
+			notificationsService.sendFinishMessage(dateStr, data.getBytes(), fileName);
+		} catch (Exception e) {
 			logger.error("Error trying to send after process notifications", e);
 		}
 	}

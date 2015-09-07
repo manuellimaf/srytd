@@ -4,13 +4,11 @@ import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
-import java.io.InputStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +36,9 @@ public class ProcessService {
 		});
 	}
 
-	public void saveFile(Long processId, InputStream is, String fileName) {
+	public void saveFile(Long processId, String data, String fileName) {
 		try {
 			logger.info("Persisting file to database");
-			String data = IOUtils.toString(is);
 			transactional(MySQL, (session) -> {
 				Process process = processDao.find(processId);
 				process.getResult().setFile(data);

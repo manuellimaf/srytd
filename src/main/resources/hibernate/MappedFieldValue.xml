@@ -12,7 +12,7 @@
 		<many-to-one name="process"/>
 		
 		<property name="deviceId" column="device_id" not-null="true"/>
-		<property name="tag" column="tag" not-null="true"/>
+		<property name="tag" column="tag"/>
 		<property name="timestamp" column="ts" not-null="true"/>
 		<property name="valueType" column="value_type" length="1" not-null="true"/>
 		<property name="dateCreated" column="date_created" not-null="true"/>

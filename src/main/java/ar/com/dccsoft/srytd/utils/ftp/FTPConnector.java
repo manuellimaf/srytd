@@ -5,6 +5,7 @@ import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
@@ -18,10 +19,10 @@ public class FTPConnector {
 	private static final Logger logger = LoggerFactory.getLogger(FTPConnector.class);
 	private AppPropertyService propertyService = new AppPropertyService();
 
-	public void transfer(InputStream inputStream, String fileName) {
+	public void transfer(String data, String fileName) {
 		FTPClient ftp = null;
 		try {
-			ftp = doTransfer(inputStream, fileName);
+			ftp = doTransfer(IOUtils.toInputStream(data), fileName);
 		} finally {
 			if (ftp != null) {
 				if (ftp.isConnected()) {

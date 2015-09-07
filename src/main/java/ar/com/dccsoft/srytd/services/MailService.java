@@ -45,7 +45,10 @@ public class MailService {
 
 	private void send(Message message) {
 		try {
+			
+			log.debug("About to send email");
 			Transport.send(message);
+			log.debug("Email sent");
 		} catch (MessagingException e) {
 			log.error("Error sending mail message", e);
 		}

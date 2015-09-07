@@ -45,11 +45,16 @@ public class Config {
 			mailProperties.put("mail.from", config.getString("mail-from"));
 			mailProperties.put("mail.smtp.host", config.getString("mail-smtp-host"));
 			mailProperties.put("mail.smtp.port", config.getInt("mail-smtp-port"));
+			mailProperties.put("mail.smtp.socketFactory.port", config.getInt("mail-smtp-socketFactory-port"));
+			mailProperties.put("mail.smtp.socketFactory.class", config.getString("mail-smtp-socketFactory-class"));
+			mailProperties.put("mail.smtp.auth", config.getBoolean("mail-smtp-auth"));
+
 			mailUser = config.getString("mail-user");
 			mailPassword = config.getString("mail-password");
 
 			alertSubject = config.getString("alert-subject");
 			alertBody = config.getString("alert-body");
+			logger.debug("Alert body: " + alertBody);
 			finishEmailSubject = config.getString("finish-subject");
 			finishEmailBody = config.getString("finish-body");
 

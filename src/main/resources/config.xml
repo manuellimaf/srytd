@@ -12,25 +12,28 @@
 	<mysql-password>root</mysql-password>
 	
 	<!-- Mail properties -->
-	<mail-from>srytd@gmail.com</mail-from>
-	<mail-user>srytd@gmail.com</mail-user>
-	<mail-password>srytd1234!!</mail-password>
-	<mail-smtp-host>smtp.google.com</mail-smtp-host>
-	<mail-smtp-port>123</mail-smtp-port>
+	<mail-from>mlima.despegar@gmail.com</mail-from>
+	<mail-user>mlima.despegar@gmail.com</mail-user>
+	<mail-password>Intermilan1</mail-password>
+	<mail-smtp-host>smtp.gmail.com</mail-smtp-host>
+	<mail-smtp-port>465</mail-smtp-port>
+	<mail-smtp-socketFactory-port>465</mail-smtp-socketFactory-port>
+	<mail-smtp-socketFactory-class>javax.net.ssl.SSLSocketFactory</mail-smtp-socketFactory-class>
+	<mail-smtp-auth>true</mail-smtp-auth>
 	
 	<!-- Alert mail -->
 	<alert-subject>[SRyTD] Error durante el proceso de envío de mediciones de campo</alert-subject>
 	<alert-body>
-		Se produjo un error cuando el usuario %s realizó el procesamiento de las mediciones 
-		de campo a enviar a la secretaría de energía.
-		Si necesita más información, contáctese con un administrador con este código de error: %s
+Se produjo un error cuando el usuario %s realizó el procesamiento de las mediciones 
+de campo a enviar a la secretaría de energía.
+Si necesita más información\, contáctese con un administrador con este código de error: %s
 	</alert-body>
 
 	<!-- Process finished notification email -->
 	<finish-subject>[SRyTD][%s] Proceso de envío de mediciones de campo finalizado</finish-subject>
 	<finish-body>
-		El proceso correspondiente a la hora %s finalizó correctamente. 
-		Se adjunta el archivo envíado a la secretaría de energía.
+El proceso correspondiente a la fecha %s hs. finalizó correctamente. 
+Se adjunta el archivo envíado a la secretaría de energía.
 	</finish-body>
 	
 	<!-- File format -->
