@@ -27,6 +27,7 @@ import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.api.dto.RoleDTO;
 import ar.com.dccsoft.srytd.api.dto.UserDTO;
 import ar.com.dccsoft.srytd.model.Role;
+import ar.com.dccsoft.srytd.model.User;
 import ar.com.dccsoft.srytd.services.UserService;
 
 import com.google.common.base.Enums;
@@ -100,6 +101,11 @@ public class UserController {
 	
 	private void validateUpdate(UserDTO dto) {
 		validateOrNotFound(() -> service.userExists(dto.getId()));
+		validateOrFail("Ya existe un usuario con este nombre", () -> {
+			User userByName = service.findByName(dto.getUsername());
+			User toUpdate = service.getUser(dto.getId());
+			return userByName == null || userByName.getId().equals(toUpdate.getId());
+		});
 		genericValidations(dto);
 	}
 
