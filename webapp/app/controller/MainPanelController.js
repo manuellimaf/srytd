@@ -3,6 +3,9 @@ Ext.define('App.controller.MainPanelController', {
     
     init: function() {
         this.control({
+			'body-panel': {
+				afterrender: this.addMenu
+			},
             'panel button[action=showProcesses]': {
                 click: this.onShowProcesses
             },
@@ -22,8 +25,39 @@ Ext.define('App.controller.MainPanelController', {
     refs: [{
 		selector: 'body-panel',
 		ref: 'bodyPanel'
+	},{
+		selector: '#header-menu',
+		ref: 'headerMenu'
 	}],
     
+    addMenu: function() {
+    	var role = localStorage.getItem('ROLE');
+		var menuBar = this.getHeaderMenu();
+		menuBar.add({
+            text: 'Env&iacute;os',
+            action: 'showProcesses',
+            iconCls: 'icon-send'
+        });
+        if(role == 'ADMIN' || role == 'USER' ) {
+	        menuBar.add({
+	            text: 'Ingreso manual',
+	            action: 'showFieldValues',
+	            iconCls: 'icon-manual-value'
+	        });
+	        menuBar.add({
+	            text: 'Configuraci&oacute;n',
+	            action: 'showConfig',
+	            iconCls: 'icon-config'
+	        });
+        }
+        menuBar.add('->');
+        menuBar.add({
+            text: 'Salir',
+            action: 'logout',
+            iconCls: 'icon-logout'
+        });
+		
+	},
     clearBody: function() {
     	var panel = this.getBodyPanel();
     	panel.removeAll();

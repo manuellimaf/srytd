@@ -41,7 +41,8 @@ public class HttpServer {
 		context.setContextPath(Config.getContextPath());
 		context.setServer(server);
 		context.setWar("webapp");
-
+		context.setWelcomeFiles(new String[] {"/login.html"});
+		
 		FilterHolder securityFilterHolder = new FilterHolder(SecurityFilter.class);
 		securityFilterHolder.setInitParameter("validate", "true");
 		securityFilterHolder.setInitParameter(FormAuthenticator.LOGIN_SUBMIT_PATTERN_KEY, "/api/auth");

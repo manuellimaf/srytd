@@ -8,7 +8,7 @@
    <security-constraint>
       <web-resource-collection>
          <web-resource-name>Secure Actions</web-resource-name>
-         <url-pattern>*.html</url-pattern>
+         <url-pattern>*</url-pattern>
       </web-resource-collection>
       <auth-constraint>
          <role-name>READ_ONLY</role-name>

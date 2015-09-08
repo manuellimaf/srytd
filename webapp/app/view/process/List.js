@@ -22,15 +22,7 @@ Ext.define('App.view.process.List', {
             scale: 'small',
             iconAlign:'left'
         },
-    	items: [{
-            text: 'Ver detalle',
-            action: 'viewDetail',
-            iconCls: 'icon-detail'
-        }, '->', {
-            text: 'Env&iacute;o manual',
-            action: 'manualSend',
-            iconCls: 'icon-manual-send'
-        }]
+        itemId: 'process-list-toolbar'
     },
     dockedItems: [{
         xtype: 'pagingtoolbar',

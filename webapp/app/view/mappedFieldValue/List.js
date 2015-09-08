@@ -91,15 +91,7 @@ Ext.define('App.view.mappedFieldValue.List', {
 	    ]
     },
     autoRender: true,
-    tbar: {
-    	items: [{
-            scale: 'small',
-            iconAlign:'left',
-            text: 'Reenviar todo',
-            action: 'resend',
-            iconCls: 'icon-resend'
-        }]
-    },
+    tbar: { itemId: 'mapped-values-toolbar' },
     dockedItems: [{
         xtype: 'pagingtoolbar',
         store: 'MappedFieldValueStore',

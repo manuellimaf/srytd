@@ -2,28 +2,41 @@ Ext.define('App.controller.ConfigPropsController', {
     extend: 'Ext.app.Controller',
 	requires: ['App.util.FormSubmit'],
 	
-	views: ['config.ConfigPropsForm'],
+	views: ['config.ConfigPropsForm', 'config.ConfigPanel'],
     refs: [{
 		selector: 'config-props',
 		ref: 'configForm'
+	},{
+		selector: 'config-panel',
+		ref: 'configPanel'
 	}],
 	stores: ['ConfigPropsStore'],
     models: ['ConfigProps'],
 	
 	init: function() {
 		this.control({
+			'config-panel': {
+				afterrender: this.addChild
+			},
 			'config-props': {
 				afterrender: this.loadConfig
-			}
-		});
-		
-		this.control({
-            'config-props button[action=update]': {
+			},
+			'config-props button[action=update]': {
                 click: this.update
             }
         });
+        
 	},
-	
+	addChild: function() {
+		var panel = this.getConfigPanel();
+		panel.add({ xtype: 'mappings-form' });
+        if(localStorage.getItem('ROLE') == 'ADMIN') {
+	        panel.add({ xtype: 'users-form' });
+			panel.add({ xtype: 'config-props'});
+        }
+        panel.setActiveTab(0);
+		
+	},	
 	loadConfig: function() {
 		var form = this.getConfigForm().getForm();
 		var data = this.getStore('ConfigPropsStore').getAt(0);

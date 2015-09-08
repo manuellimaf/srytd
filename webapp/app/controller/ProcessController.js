@@ -2,27 +2,33 @@ Ext.define('App.controller.ProcessController', {
     extend: 'Ext.app.Controller',
 
 	init: function() {
-        this.control('panel button[action=viewDetail]', {
-    		click: this.showDetail
-        });
-        this.control('panel button[action=manualSend]', {
-    		click: this.manualSend
-        });
-        this.control('manual-send button[action=startProcess]', {
-    		click: this.startProcess
-        });
-		this.control('mapped-field-value-list', {
-			beforeadd: this.loadFieldValueList
+        this.control({
+	        'process-list': {
+	        	afterrender: this.addToolbarButtons
+	        },
+	        'panel button[action=viewDetail]': {
+	    		click: this.showDetail
+	        }
+	        ,'panel button[action=manualSend]': {
+	    		click: this.manualSend
+	        },
+	        'manual-send button[action=startProcess]': {
+	    		click: this.startProcess
+	        },
+	        'mapped-field-value-list': {
+				beforeadd: this.loadFieldValueList,
+	        	afterrender: this.addToolbar
+			},
+			'mapped-field-value-list button[action=resend]': {
+				click: this.resend
+			},
+			'process-result': {
+				beforerender: this.loadProcessResult
+			},
+			'process-result button[action=downloadFile]': {
+	    		click: this.downloadFile
+	        }
 		});
-		this.control('mapped-field-value-list button[action=resend]', {
-			click: this.resend
-		});
-		this.control('process-result', {
-			beforerender: this.loadProcessResult
-		});
-        this.control('process-result button[action=downloadFile]', {
-    		click: this.downloadFile
-        });
     },
     
     views: ['process.List', 'process.Result', 'mappedFieldValue.List', 'process.ManualSendView'],
@@ -32,6 +38,9 @@ Ext.define('App.controller.ProcessController', {
 		selector: 'process-list',
 		ref: 'processList'
 	},{
+		selector: '#process-list-toolbar',
+		ref: 'processListTb'
+	},{
 		selector: 'mapped-field-value-list',
 		ref: 'mappedFieldValueList'
 	},{
@@ -40,7 +49,39 @@ Ext.define('App.controller.ProcessController', {
 	},{
 		selector: 'manual-send',
 		ref: 'manualSendView'
+	},{
+		selector: '#mapped-values-toolbar',
+		ref: 'mappedValueListTb'
 	}],    
+	addToolbarButtons: function() {
+		var role = localStorage.getItem('ROLE');
+		this.getProcessListTb().add({
+            text: 'Ver detalle',
+            action: 'viewDetail',
+            iconCls: 'icon-detail'
+        });
+        
+        if(role == 'ADMIN' || role == 'USER') {
+	        this.getProcessListTb().add('->');
+	        this.getProcessListTb().add({
+	            text: 'Env&iacute;o manual',
+	            action: 'manualSend',
+	            iconCls: 'icon-manual-send'
+	        });
+		}
+	},
+	addToolbar: function() {
+		var role = localStorage.getItem('ROLE');
+        if(role == 'ADMIN' || role == 'USER') {
+			this.getMappedValueListTb().add({
+	            scale: 'small',
+	            iconAlign:'left',
+	            text: 'Reenviar todo',
+	            action: 'resend',
+	            iconCls: 'icon-resend'
+	        });
+		}
+	},
     currentWindow: undefined,
     currentProcessId: undefined,
     showDetail: function () {

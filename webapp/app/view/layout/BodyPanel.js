@@ -13,23 +13,7 @@ Ext.define('App.view.layout.BodyPanel', {
             scale: 'medium',
             iconAlign:'left	'
         },
-    	items: [{
-            text: 'Env&iacute;os',
-            action: 'showProcesses',
-            iconCls: 'icon-send'
-        },{
-            text: 'Ingreso manual',
-            action: 'showFieldValues',
-            iconCls: 'icon-manual-value'
-        },{
-            text: 'Configuraci&oacute;n',
-            action: 'showConfig',
-            iconCls: 'icon-config'
-        },'->',{
-            text: 'Salir',
-            action: 'logout',
-            iconCls: 'icon-logout'
-        }]
+        itemId: 'header-menu'
     },
     items: {
     	xtype: 'process-panel'
