@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ar.com.dccsoft.srytd.model">
+	<class name="TagValue" table="history">
+		<id name="tagname" column="tagname">
+			<generator class="native"/>
+		</id>
+
+		<property name="retrievalMode" column="wwRetrievalMode"/>
+		<property name="cycleCount" column="wwCycleCount"/>
+		<property name="version" column="wwVersion"/>
+		<property name="datetime" />
+		<property name="startDatetime" column="StartDateTime" />
+		<property name="value"/>
+		<property name="vvalue"/>
+		<property name="quality" length="2"/>
+	</class>
+	
+</hibernate-mapping>
