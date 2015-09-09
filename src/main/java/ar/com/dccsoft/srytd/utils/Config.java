@@ -55,7 +55,6 @@ public class Config {
 
 			alertSubject = config.getString("alert-subject");
 			alertBody = config.getString("alert-body");
-			logger.debug("Alert body: " + alertBody);
 			finishEmailSubject = config.getString("finish-subject");
 			finishEmailBody = config.getString("finish-body");
 
