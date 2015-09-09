@@ -5,7 +5,7 @@
 <!-- 	<sqlserver-url>jdbc:mysql://127.0.0.1/srytd_sqlserver</sqlserver-url> -->
 <!-- 	<sqlserver-user>root</sqlserver-user> -->
 <!-- 	<sqlserver-password>root</sqlserver-password> -->
-	<sqlserver-url>jdbc:sqlserver://52.27.187.116/srytd_sqlserver</sqlserver-url>
+	<sqlserver-url>jdbc:sqlserver://52.27.187.116:1433;database=srytd_sqlserver</sqlserver-url>
 	<sqlserver-user>sa</sqlserver-user>
 	<sqlserver-password>SQLs3rv3r</sqlserver-password>
 

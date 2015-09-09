@@ -19,4 +19,14 @@
 		<property name="quality" length="2"/>
 	</class>
 	
+	<query name="tag.value">
+		 <![CDATA[
+		 	from TagValue tv 
+		 	where tv.retrievalMode = 'Cyclic'
+		 		and tv.cycleCount = 100
+		 		and tv.version = 'Latest'
+		 		and tagname = :tagname
+		 		and datetime between :from and :to
+		 		and startDatetime >= :from]]>
+	</query>
 </hibernate-mapping>

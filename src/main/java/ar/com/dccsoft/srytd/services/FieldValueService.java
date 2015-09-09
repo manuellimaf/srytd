@@ -53,7 +53,7 @@ public class FieldValueService {
 				Date to = DateUtils.addHours(from, 1);
 				// TODO - tagname
 				List<TagValue> tagValues = tagDao.readTagValue(from, to, "");
-				logger.info(format("%d field values read", tagValues.size()));
+				logger.info(format("%d tag values read", tagValues.size()));
 				return tagValues;
 			});
 		});
