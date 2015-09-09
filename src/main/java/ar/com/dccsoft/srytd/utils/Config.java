@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class Config {
 	public static void init() {
 		Configuration config;
 		try {
-			config = new XMLConfiguration("config.xml");
+			config = new XMLConfiguration(configLocation());
 
 			sqlServerUrl = config.getString("sqlserver-url");
 			sqlServerUser = config.getString("sqlserver-user");
@@ -70,6 +71,11 @@ public class Config {
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading configuration file", e);
 		}
+	}
+
+	public static String configLocation() {
+		String location = System.getProperty("r318.configLocation");
+		return StringUtils.isNoneBlank(location) ? location : "config.xml";
 	}
 
 	public static String getJobExpression() {
