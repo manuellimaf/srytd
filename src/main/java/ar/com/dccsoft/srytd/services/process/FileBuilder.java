@@ -1,4 +1,4 @@
-package ar.com.dccsoft.srytd.services;
+package ar.com.dccsoft.srytd.services.process;
 
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 
@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
+import ar.com.dccsoft.srytd.services.AppPropertyService;
 import ar.com.dccsoft.srytd.utils.Config;
 
 public class FileBuilder {

@@ -20,6 +20,7 @@ import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
 import ar.com.dccsoft.srytd.model.ProcessResult;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
+import ar.com.dccsoft.srytd.services.process.Processor;
 
 public class ProcessService {
 

@@ -28,6 +28,7 @@ public class Config {
 	private static char decimalSeparator;
 	private static Integer httpPort;
 	private static String contextPath;
+	private static String jobExpression;
 
 	public static void init() {
 		Configuration config;
@@ -64,12 +65,18 @@ public class Config {
 			httpPort = config.getInteger("http-port", 80);
 			contextPath = config.getString("context-path", "/srytd");
 
+			jobExpression = config.getString("job-expression");
+			
 			logger.info("Configuration successfully loaded");
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading configuration file", e);
 		}
 	}
 
+	public static String getJobExpression() {
+		return jobExpression;
+	}
+	
 	public static String getContextPath() {
 		return contextPath;
 	}
