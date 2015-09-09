@@ -10,6 +10,13 @@
 	<name>srytd</name>
 
 	<url>http://maven.apache.org</url>
+	<repositories>
+		<repository>
+			<id>lib</id>
+			<url>file://${basedir}/lib</url>
+		</repository>
+	</repositories>
+	
  	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -117,9 +124,7 @@
 		<dependency>
 		    <groupId>com.microsoft.sqlserver</groupId>
 		    <artifactId>sqljdbc4</artifactId>
-		    <version>3.0</version>
-		    <scope>system</scope>
-		    <systemPath>${basedir}/lib/sqljdbc4.jar</systemPath>
+		    <version>4.0</version>
 		</dependency>
 	</dependencies>
 	
