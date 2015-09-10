@@ -5,7 +5,7 @@ Ext.define('App.view.layout.BodyPanel', {
         xtype: 'box',
         id: 'header',
         region: 'north',
-        html: '<h1> SRyTD</h1>',
+        html: '<h1> R318</h1>',
         height: 30
     },
     tbar: {

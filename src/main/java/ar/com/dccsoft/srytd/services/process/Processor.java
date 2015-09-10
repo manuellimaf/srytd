@@ -31,6 +31,7 @@ import ar.com.dccsoft.srytd.services.process.FileBuilder.FileBuildResult;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
+import ar.com.dccsoft.srytd.utils.ftp.FTPConnectorType;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -44,7 +45,6 @@ public class Processor {
 	private ManualFieldValueService manualFieldValueService = new ManualFieldValueService();
 	private DeviceService deviceService = new DeviceService();
 	private ProcessService processService = new ProcessService();
-	private FTPConnector ftpConnector = new FTPConnector();
 	private AppPropertyService propService = new AppPropertyService();
 	private NotificationsService notificationsService = new NotificationsService();
 	private ProcessAlertService processAlertService = new ProcessAlertService();
@@ -112,6 +112,7 @@ public class Processor {
 		processService.saveFile(processId, result.getFile(), fileName);
 
 		// Subir a FTPServer
+		FTPConnector ftpConnector = FTPConnectorType.valueOf(propService.getFTPConfig().getType()).getInstance();
 		ftpConnector.transfer(result.getFile(), fileName);
 		processService.updateSentStatus(processId, result.getProcessedValues(), result.getUnprocessedValues());
 

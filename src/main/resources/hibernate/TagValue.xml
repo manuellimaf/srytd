@@ -5,9 +5,7 @@
 
 <hibernate-mapping package="ar.com.dccsoft.srytd.model">
 	<class name="TagValue" table="history">
-		<id name="tagname" column="tagname">
-			<generator class="native"/>
-		</id>
+		<id name="tagname" column="tagname"/>
 
 		<property name="retrievalMode" column="wwRetrievalMode"/>
 		<property name="cycleCount" column="wwCycleCount"/>

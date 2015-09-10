@@ -24,6 +24,7 @@ public class AppPropertyService {
 	private static final String FTP_PORT = "ftp_port";
 	private static final String FTP_USER = "ftp_user";
 	private static final String FTP_PASSWORD = "ftp_password";
+	private static final String FTP_TYPE = "ftp_type";
 
 	private AppPropertyDao dao = new AppPropertyDao();
 
@@ -35,6 +36,7 @@ public class AppPropertyService {
 			dao.upsert(FTP_PORT, dto.getPort().toString());
 			dao.upsert(FTP_USER, dto.getFtpUser());
 			dao.upsert(FTP_PASSWORD, dto.getFtpPassword());
+			dao.upsert(FTP_TYPE, dto.getFtpType());
 			dao.upsert(ALERTS_RECIPIENTS, dto.getAlertEmails());
 			dao.upsert(FINISH_RECIPIENTS, dto.getNotificationEmails());
 			return null;
@@ -75,12 +77,19 @@ public class AppPropertyService {
 		return "";
 	}
 
+	private Integer asInt(AppProperty prop) {
+		if (prop != null) {
+			return Integer.valueOf(prop.getValue());
+		}
+		return null;
+	}
+
 	public String getCompanyId() {
-		return dao.getProperty(COMPANY_ID).getValue();
+		return asStr(dao.getProperty(COMPANY_ID));
 	}
 
 	public String getFacilityId() {
-		return dao.getProperty(FACILITY_ID).getValue();
+		return asStr(dao.getProperty(FACILITY_ID));
 	}
 
 	public FTPConfig getFTPConfig() {
@@ -88,11 +97,16 @@ public class AppPropertyService {
 	}
 
 	public class FTPConfig {
-		private String server = dao.getProperty(FTP_SERVER).getValue();
-		private Integer port = Integer.valueOf(dao.getProperty(FTP_PORT).getValue());
-		private String username = dao.getProperty(FTP_USER).getValue();
-		private String password = dao.getProperty(FTP_PASSWORD).getValue();
+		private String server = asStr(dao.getProperty(FTP_SERVER));
+		private Integer port = asInt(dao.getProperty(FTP_PORT));
+		private String username = asStr(dao.getProperty(FTP_USER));
+		private String password = asStr(dao.getProperty(FTP_PASSWORD));
+		private String type = asStr(dao.getProperty(FTP_TYPE));
 
+		public String getType() {
+			return type;
+		}
+		
 		public String getServer() {
 			return server;
 		}
@@ -119,6 +133,7 @@ public class AppPropertyService {
 		dto.setPort(config.getPort());
 		dto.setFtpUser(config.getUsername());
 		dto.setFtpPassword(config.getPassword());
+		dto.setFtpType(config.getType());
 		dto.setAlertEmails(getAlertsRecipientsStr());
 		dto.setNotificationEmails(getFinishEmailRecipientsStr());
 		return dto;

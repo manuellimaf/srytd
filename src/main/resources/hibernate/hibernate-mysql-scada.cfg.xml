@@ -28,6 +28,7 @@
 
 		<!-- Mappings -->
         <mapping resource="hibernate/FieldValue.xml"/>
+        <mapping resource="hibernate/TagValue.xml"/>
 
     </session-factory>
 

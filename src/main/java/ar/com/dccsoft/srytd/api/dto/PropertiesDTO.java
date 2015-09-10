@@ -7,8 +7,19 @@ public class PropertiesDTO {
 	private Integer port;
 	private String ftpUser;
 	private String ftpPassword;
+	private String ftpType;
 	private String alertEmails;
 	private String notificationEmails;
+
+	
+	
+	public String getFtpType() {
+		return ftpType;
+	}
+
+	public void setFtpType(String ftpType) {
+		this.ftpType = ftpType;
+	}
 
 	public String getCompanyCode() {
 		return companyCode;

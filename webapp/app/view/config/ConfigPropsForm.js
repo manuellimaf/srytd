@@ -58,10 +58,25 @@ Ext.define('App.view.config.ConfigPropsForm', {
 		        	allowBlank: false
 		        },
                 items: [{
-                    xtype:'textfield',
-                    fieldLabel: 'IP',
-                    name: 'ip'
-                }, {
+					xtype: 'fieldcontainer',
+		            fieldLabel: 'Tipo',
+		            defaultType: 'radiofield',
+		            defaults: {
+			            allowBlank: false,
+		                flex: 1
+		            },
+		            layout: 'hbox',
+		            items:[{
+	                    boxLabel  : 'FTP',
+	                    name      : 'ftpType',
+	                    inputValue: 'FTP',
+	                    checked: true
+	                },{
+	                    boxLabel  : 'SFTP',
+	                    name      : 'ftpType',
+	                    inputValue: 'SFTP'
+	                }]
+	            },{
                     xtype:'textfield',
                     fieldLabel: 'Usuario',
                     allowBlank: false,
@@ -71,15 +86,16 @@ Ext.define('App.view.config.ConfigPropsForm', {
                 xtype: 'container',
                 flex: 1,
                 layout: 'anchor',
-                items: [{
-                    xtype:'numberfield',
-                    fieldLabel: 'Puerto',
-                    allowBlank: false,
-                    name: 'port',
-                    anchor:'100%',
-                    maxValue: 65535,
-        			minValue: 0
-                },{
+                items: [{ 
+	        		xtype: 'fieldset',
+			    	layout: 'hbox',
+			    	border: false,
+			    	style: { padding: 0 },
+	        		items: [
+			        	{ fieldLabel: 'IP y puerto', xtype: 'textfield', name: 'ip', allowBlank: false, width: 208 },
+			        	{ fieldLabel: '', xtype: 'numberfield', name: 'port', allowBlank: false, maxValue: 65535, minValue: 0, margin: '0 0 0 10', labelWidth: 0, width: 90 }
+	        		]
+	        	},{
                     xtype:'textfield',
                     fieldLabel: 'Password',
                     allowBlank: false,

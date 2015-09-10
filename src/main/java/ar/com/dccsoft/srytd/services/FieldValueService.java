@@ -17,8 +17,6 @@ import ar.com.dccsoft.srytd.daos.TagValueDao;
 import ar.com.dccsoft.srytd.model.FieldValue;
 import ar.com.dccsoft.srytd.model.TagValue;
 
-import com.google.common.collect.Lists;
-
 public class FieldValueService {
 
 	private static Logger logger = LoggerFactory.getLogger(FieldValueService.class);
@@ -38,9 +36,9 @@ public class FieldValueService {
 				fv.setTimestamp(from);
 				fv.setValueType("A");
 				fv.setId(0L);
-				List<FieldValue> fieldValues = Lists.newArrayList(fv);
+//				List<FieldValue> fieldValues = Lists.newArrayList(fv);
 				
-//				List<FieldValue> fieldValues = dao.readFieldValues(from, to);
+				List<FieldValue> fieldValues = dao.readFieldValues(from, to);
 				logger.info(format("%d field values read", fieldValues.size()));
 				return fieldValues;
 			});
