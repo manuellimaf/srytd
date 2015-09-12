@@ -5,8 +5,8 @@ Ext.define('App.view.layout.BodyPanel', {
         xtype: 'box',
         id: 'header',
         region: 'north',
-        html: '<h1> R318</h1>',
-        height: 30
+        html: '<img style="vertical-align: middle; margin-bottom: 5px; margin-left: 10px; margin-top: 3px;" src="logo.png"/><div style="display: inline-block; margin-bottom: 4px; margin-left: 15px; vertical-align: bottom; font-size: 15;font-weight: bold;">R318</div>',
+        style: "background: none !important;"
     },
     tbar: {
     	defaults: {
