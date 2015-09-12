@@ -1,11 +1,11 @@
-Ext.define('App.store.DeviceStore', {
+Ext.define('App.store.DeviceMappingStore', {
     extend: 'Ext.data.Store',
 
-    model: 'App.model.Device',
+    model: 'App.model.DeviceMapping',
 	autoLoad: true,
 	proxy: {
         type: 'ajax',
-		url: '/api/device',
+		url: '/api/device-mapping',
         reader: {
             type: 'json'
         }

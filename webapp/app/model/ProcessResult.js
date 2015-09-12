@@ -3,7 +3,6 @@ Ext.define('App.model.ProcessResult', {
     fields: [
     	{ name: 'status' }, 
     	{ name: 'sentValues' }, 
-    	{ name: 'unsentValues' }, 
     	{ name: 'fileName' },
     	{ name: 'errorId', mapping: 'error.identifier' }, 
     	{ name: 'errorMessage', mapping: 'error.message' }, 

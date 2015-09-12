@@ -1,4 +1,4 @@
-Ext.define('App.view.process.List', {
+Ext.define('App.view.process.ProcessList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.process-list',
 
@@ -12,7 +12,6 @@ Ext.define('App.view.process.List', {
         { text: 'Iniciado por', dataIndex: 'startedBy', flex: 1 },
         { text: 'Corresponde a', dataIndex: 'valuesFrom', flex: 1 },
         { text: 'Enviados', dataIndex: 'sentValues', flex: 1 },
-        { text: 'No enviados', dataIndex: 'unsentValues', flex: 1 },
         { text: 'Estado', dataIndex: 'status', flex: 1 },
         { text: 'Resultado', dataIndex: 'finalStatus', flex: 1 }
     ],

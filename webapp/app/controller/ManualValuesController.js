@@ -28,8 +28,8 @@ Ext.define('App.controller.ManualValuesController', {
 		selector: 'gridpanel#manual-values-list',
 		ref: 'gridPanel'
 	}],
-	stores: ['ManualFieldValueStore', 'DeviceStore'],
-    models: ['ManualFieldValue', 'Device'],
+	stores: ['ManualFieldValueStore', 'DeviceMappingStore'],
+    models: ['ManualFieldValue', 'DeviceMapping'],
 	
 	onSelectionChange: function(model, records) {
         var rec = records[0];
@@ -38,8 +38,6 @@ Ext.define('App.controller.ManualValuesController', {
 	    	var form = panel.getForm();
 	    	form.loadRecord(rec);
 	    	this.parseAndSetDate(form, 'valueDate', 'valueTime', rec.get('timestamp'));
-	    	this.parseAndSetDate(form, 'itDate', 'itTime', rec.get('inicio_transac'));
-	    	this.parseAndSetDate(form, 'ftDate', 'ftTime', rec.get('fin_transac'));
         }
 	},
 	parseAndSetDate: function(form, dateId, timeId, timestamp) {
@@ -56,13 +54,13 @@ Ext.define('App.controller.ManualValuesController', {
 	onComboSelection: function(combo, records) {
     	var panel = this.getManualValuesForm();
     	var form = panel.getForm();
-    	var tag = "";
+    	var code = "";
 		if(records.length > 0) {
 			var rec = records[0].data;
 			console.log(rec);
-			tag = rec.tag;
+			code = rec.code;
 		} 
-		form.setValues([{id: 'tag', value: tag}]);
+		form.setValues([{id: 'code', value: code}]);
 		
 	},
 	saveValue: function() {

@@ -31,7 +31,7 @@ Ext.define('App.controller.ProcessController', {
 		});
     },
     
-    views: ['process.List', 'process.Result', 'mappedFieldValue.List', 'process.ManualSendView'],
+    views: ['process.ProcessList', 'process.Result', 'mappedFieldValue.List', 'process.ManualSendView'],
     stores: ['ProcessStore', 'MappedFieldValueStore', 'ProcessResultStore'],
     models: ['Process'],
     refs: [{

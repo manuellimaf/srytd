@@ -39,9 +39,9 @@ Ext.define('App.view.config.MappingsForm', {
             flex: 1,
             dataIndex: 'name'
         }, {
-            text: 'Tag',
+            text: 'C&oacute;digo',
             flex: 1,
-            dataIndex: 'tag'
+            dataIndex: 'code'
         }, {
             text: 'Creado por',
             flex: 1,
@@ -69,9 +69,9 @@ Ext.define('App.view.config.MappingsForm', {
             allowBlank: false,
             name: 'name'
         },{
-            fieldLabel: 'Tag',
+            fieldLabel: 'C&oacute;digo',
             allowBlank: false,
-            name: 'tag'
+            name: 'code'
         }, {
 	        xtype: 'hiddenfield',
 	        name: 'id'

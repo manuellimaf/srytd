@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class ManualValuesDTO {
 	private Long id;
-	private String tag;
+	private String code;
 	private String deviceId;
 	private Date timestamp;
 	private String valueDate;
@@ -44,23 +44,19 @@ public class ManualValuesDTO {
 	private BigDecimal nc5;
 	private BigDecimal c6;
 	private BigDecimal volumen_seco;
-	private Date inicio_transac;
-	private String itDate;
-	private String itTime;
-	private Date fin_transac;
-	private String ftDate;
-	private String ftTime;
+	private BigDecimal inicio_transac;
+	private BigDecimal fin_transac;
 	private BigDecimal volumen_hoy_9300;
 	private BigDecimal densidad;
 	private BigDecimal volumen_bruto_hoy;
 	private BigDecimal volumen_neto_acumulado;
 
-	public String getTag() {
-		return tag;
+	public String getCode() {
+		return code;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Long getId() {
@@ -343,22 +339,6 @@ public class ManualValuesDTO {
 		this.volumen_seco = volumen_seco;
 	}
 
-	public Date getInicio_transac() {
-		return inicio_transac;
-	}
-
-	public void setInicio_transac(Date inicio_transac) {
-		this.inicio_transac = inicio_transac;
-	}
-
-	public Date getFin_transac() {
-		return fin_transac;
-	}
-
-	public void setFin_transac(Date fin_transac) {
-		this.fin_transac = fin_transac;
-	}
-
 	public BigDecimal getVolumen_hoy_9300() {
 		return volumen_hoy_9300;
 	}
@@ -407,36 +387,20 @@ public class ManualValuesDTO {
 		this.valueTime = valueTime;
 	}
 
-	public String getItDate() {
-		return itDate;
+	public BigDecimal getInicio_transac() {
+		return inicio_transac;
 	}
 
-	public void setItDate(String itDate) {
-		this.itDate = itDate;
+	public void setInicio_transac(BigDecimal inicio_transac) {
+		this.inicio_transac = inicio_transac;
 	}
 
-	public String getItTime() {
-		return itTime;
+	public BigDecimal getFin_transac() {
+		return fin_transac;
 	}
 
-	public void setItTime(String itTime) {
-		this.itTime = itTime;
+	public void setFin_transac(BigDecimal fin_transac) {
+		this.fin_transac = fin_transac;
 	}
 
-	public String getFtDate() {
-		return ftDate;
-	}
-
-	public void setFtDate(String ftDate) {
-		this.ftDate = ftDate;
-	}
-
-	public String getFtTime() {
-		return ftTime;
-	}
-
-	public void setFtTime(String ftTime) {
-		this.ftTime = ftTime;
-	}
-	
 }

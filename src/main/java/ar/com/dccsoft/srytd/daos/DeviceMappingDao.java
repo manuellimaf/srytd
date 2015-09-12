@@ -58,13 +58,4 @@ public class DeviceMappingDao {
 				.list();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<DeviceMapping> findByTag(String tag) {
-		return MySQL.currentSession()
-				.createCriteria(DeviceMapping.class)
-				.add(Restrictions.eq("tag", tag))
-				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-				.list();
-	}
-
 }

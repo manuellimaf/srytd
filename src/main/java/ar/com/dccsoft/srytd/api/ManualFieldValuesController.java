@@ -115,20 +115,11 @@ public class ManualFieldValuesController {
 
 	public void genericValidations(ManualValuesDTO dto) {
 		validateOrFail("Dispositivo es requerido", () -> isNotEmpty(dto.getDeviceId()));
-		validateOrFail("Tag es requerido", () -> isNotEmpty(dto.getTag()));
+		validateOrFail("Código es requerido", () -> isNotEmpty(dto.getCode()));
 		validateOrFail("Fecha y hora de medición son requeridos", () -> 
 			isNotEmpty(dto.getValueDate()) && isNotEmpty(dto.getValueDate()));
-		validateOrFail("Debe ingresar la hora de inicio de la transacción", () -> 
-			isNotEmpty(dto.getItDate()) ? isNotEmpty(dto.getItTime()) : true);
-		validateOrFail("Debe ingresar la hora de fin de la transacción", () -> 
-			isNotEmpty(dto.getFtDate()) ? isNotEmpty(dto.getFtTime()) : true);
-		
-		validateOrFail("Formato inválido de fecha y hora de medición (o fechas en el futuro)", () -> 
+		validateOrFail("Formato inválido de fecha y hora de medición (o fecha en el futuro)", () -> 
 			isValidDate(dto.getValueDate() + " " + dto.getValueTime(), "dd/MM/yyyy HH:mm"));
-		validateOrFail("Formato inválido de fecha y hora de inicio de transacción (o fechas en el futuro)", () -> 
-			isNotEmpty(dto.getItDate()) ? isValidDate(dto.getItDate() + " " + dto.getItTime(), "dd/MM/yyyy HH:mm") : true);
-		validateOrFail("Formato inválido de fecha y hora de fin de transacción (o fechas en el futuro)", () -> 
-			isNotEmpty(dto.getFtDate()) ? isValidDate(dto.getFtDate() + " " + dto.getFtTime(), "dd/MM/yyyy HH:mm") : true);
 	}
 
 	private boolean isValidDate(String dateStr, String... formats) {

@@ -3,7 +3,7 @@ Ext.define('App.model.Mapping', {
     fields: [
     	{ name: 'id' }, 
     	{ name: 'name' }, 
-    	{ name: 'tag' }, 
+    	{ name: 'code' }, 
     	{ name: 'creationDate' }, 
     	{ name: 'createdBy' }
     ]

@@ -13,16 +13,16 @@ import org.slf4j.LoggerFactory;
 import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.services.DeviceMappingService;
 
-@Path("/device")
-public class DeviceController {
+@Path("/device-mapping")
+public class DeviceMappingController {
 
-	private static Logger logger = LoggerFactory.getLogger(DeviceController.class);
+	private static Logger logger = LoggerFactory.getLogger(DeviceMappingController.class);
 	private DeviceMappingService service = new DeviceMappingService();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<DeviceMapping> getAllDevices() {
-		logger.debug("Loading all devices");
+		logger.debug("Loading all device mappings");
 		return service.getAllDeviceMappings();
 	}
 

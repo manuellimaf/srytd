@@ -45,7 +45,7 @@ public class DeviceMappingService {
 	public void createMapping(MappingDTO dto, String username) {
 		DeviceMapping device = new DeviceMapping();
 		device.setName(dto.getName());
-		device.setCode(dto.getTag());
+		device.setCode(dto.getCode());
 		device.setCreatedBy(username);
 		device.setCreationDate(new Date());
 		transactional(MySQL, (session) -> {
@@ -58,7 +58,7 @@ public class DeviceMappingService {
 		transactional(MySQL, (session) -> {
 			DeviceMapping device = dao.findDevice(dto.getId());
 			device.setName(dto.getName());
-			device.setCode(dto.getTag());
+			device.setCode(dto.getCode());
 			dao.update(device);
 			return null;
 		});
@@ -69,29 +69,12 @@ public class DeviceMappingService {
 		return transactional(MySQL, (session) -> !dao.findByName(name).isEmpty());
 	}
 
-	public Boolean existsMappingForTag(String tag) {
-		return transactional(MySQL, (session) -> !dao.findByTag(tag).isEmpty());
-	}
-
 	public Boolean isValidDevice(Long id, String name) {
 		return transactional(MySQL, (session) -> {
 			DeviceMapping device = dao.findDevice(id);
 			for(DeviceMapping d : dao.findByName(name)) {
 				if(!device.getId().equals(d.getId())) {
 					// Ya existe otro dispositivo con este nombre.
-					return false;
-				}
-			}
-			return true;
-		});
-	}
-
-	public Boolean isValidTag(Long id, String tag) {
-		return transactional(MySQL, (session) -> {
-			DeviceMapping device = dao.findDevice(id);
-			for(DeviceMapping d : dao.findByTag(tag)) {
-				if(!device.getId().equals(d.getId())) {
-					// Ya existe un mapeo con este tag para otro dispositivo.
 					return false;
 				}
 			}

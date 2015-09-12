@@ -11,7 +11,7 @@ Ext.define('App.view.mappedFieldValue.List', {
     	},
     	items: [
 			{ text: 'Dispositivo',  dataIndex: 'deviceId' },
-			{ text: 'Tag',  dataIndex: 'tag' },
+			{ text: 'C&oacute;digo',  dataIndex: 'code' },
 			{ text: 'F. medici&oacute;n',  dataIndex: 'timestamp' },
 			{ text: 'Tipo', width: 50,  dataIndex: 'valueType' },
 			{ text: 'Vol. neto hoy [M3]',  dataIndex: 'volumen_neto_hoy' },

@@ -60,7 +60,7 @@ Ext.define('App.controller.MappingsController', {
 		    var device = values.name;
 		    var tag = values.tag;
 		    var store = this.getStore('MappingStore');
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + name + ' - ' + tag + '?',
+		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + device + ' - ' + tag + '?',
 			    function(resp) { 
 			    	if(resp == 'yes') {
 				    	App.util.FormSubmit.delete('/api/mapping/' + mappingId, store); 

@@ -4,7 +4,7 @@ public class MappingDTO {
 
 	private Long id;
 	private String name;
-	private String tag;
+	private String code;
 
 	
 	public Long getId() {
@@ -19,11 +19,11 @@ public class MappingDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getTag() {
-		return tag;
+	public String getCode() {
+		return code;
 	}
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }

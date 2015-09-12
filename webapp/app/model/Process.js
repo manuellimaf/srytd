@@ -6,7 +6,6 @@ Ext.define('App.model.Process', {
     	{ name: 'startedBy' }, 
     	{ name: 'valuesFrom' }, 
     	{ name: 'sentValues', mapping: 'result.sentValues' },
-    	{ name: 'unsentValues', mapping: 'result.unsentValues' }, 
     	{ name: 'status' }, 
     	{ name: 'finalStatus', mapping: 'result.status' }
     ]

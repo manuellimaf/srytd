@@ -27,7 +27,6 @@
         <property name="hbm2ddl.auto">update</property>
 
 		<!-- Mappings -->
-        <mapping resource="hibernate/FieldValue.xml"/>
         <mapping resource="hibernate/TagValue.xml"/>
 
     </session-factory>

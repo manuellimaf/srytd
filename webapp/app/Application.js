@@ -21,7 +21,7 @@ Ext.define('App.Application', {
         'App.view.process.ManualSendView',
         'App.view.mappedFieldValue.Panel',
         'App.view.mappedFieldValue.List',
-        'App.view.process.List',
+        'App.view.process.ProcessList',
         'App.view.manualFieldValue.ManualFieldValueForm',
         'App.view.config.ConfigPanel',
 		'App.view.config.MappingsForm',
@@ -44,8 +44,8 @@ Ext.define('App.Application', {
 			verbose: true,
 //			maxInactive:  (1000 * 60 * 15), // 15 minutes
 			
-			interval: (1000 * 5), //1 minute
-			maxInactive:  (1000 * 10), // 10 seconds
+//			interval: (1000 * 5), //1 minute
+//			maxInactive:  (1000 * 10), // 10 seconds
 			isInactive: function () {
 				Ext.MessageBox.alert('Sesi&oacuten expirada',
 					'El tiempo de la sesi&oacuten actual expir&oacute. Debe reloguearse para poder continuar.',

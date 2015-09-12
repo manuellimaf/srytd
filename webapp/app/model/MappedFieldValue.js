@@ -2,7 +2,7 @@ Ext.define('App.model.MappedFieldValue', {
     extend: 'Ext.data.Model',
     fields: [
     	'deviceId',
-    	'tag',
+    	'code',
 		'timestamp',
 		'valueType',
 		'presion',

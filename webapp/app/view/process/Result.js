@@ -8,20 +8,16 @@ Ext.define('App.view.process.Result', {
     	xtype:'fieldset',
         title: 'Detalle de finalizaci&oacute;n',
         defaultType: 'displayfield',
-        anchor: '100% 35%',
+        anchor: '100% 30%',
         layout: 'anchor',
 	    items: [{
 	        fieldLabel: 'Estado final',
 	        labelWidth: 85,
 	        name: 'status'
 	    },{
-	        fieldLabel: 'Valores enviados',
-	        labelWidth: 105,
+	        fieldLabel: 'Registros enviados',
+	        labelWidth: 115,
 	        name: 'sentValues'
-	    },{
-	        fieldLabel: 'Valores no enviados',
-	        labelWidth: 120,
-	        name: 'unsentValues'
 	    },{
 	    	xtype: 'fieldset',
 	    	layout: 'hbox',

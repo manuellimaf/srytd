@@ -40,10 +40,10 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 	    		displayField: 'name',
 				editable: false,
 				selectOnTab: true,
-				store: 'DeviceStore', 
+				store: 'DeviceMappingStore', 
 				allowBlank: false
 			},
-        	{ fieldLabel: 'Tag', name: 'tag', xtype: 'textfield', allowBlank: false, readOnly: true },
+        	{ fieldLabel: 'C&oacute;digo', name: 'code', xtype: 'textfield', allowBlank: false, readOnly: true },
         	{ 
         		xtype: 'fieldset',
 		    	layout: 'hbox',
@@ -89,26 +89,8 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 			{ fieldLabel: 'Vol. bruto hoy [m3]', name: 'volumen_bruto_hoy' },
 			{ fieldLabel: 'Vol. neto acum. [m3]', name: 'volumen_neto_acumulado' },
 			{ fieldLabel: 'Vol. seco ult. transac. [m3]', name: 'volumen_seco' },
-        	{ 
-        		xtype: 'fieldset',
-		    	layout: 'hbox',
-		    	border: false,
-		    	style: { padding: 0 },
-        		items: [
-		        	{ fieldLabel: 'Inicio transacci&oacute;n', xtype: 'datefield', name: 'itDate', labelWidth: 103, width: 198 },
-		        	{ fieldLabel: '', xtype: 'timefield', name: 'itTime', format: 'H:i', margin: '0 0 0 10', labelWidth: 0, width: 90 }
-        		]
-        	},
-        	{ 
-        		xtype: 'fieldset',
-		    	layout: 'hbox',
-		    	border: false,
-		    	style: { padding: 0 },
-        		items: [
-		        	{ fieldLabel: 'Fin transacci&oacute;n', xtype: 'datefield', name: 'ftDate', labelWidth: 103, width: 198 },
-		        	{ fieldLabel: '', xtype: 'timefield', name: 'ftTime', format: 'H:i', margin: '0 0 0 10', labelWidth: 0, width: 90 }
-        		]
-        	},
+			{ fieldLabel: 'Inicio transacci&oacute;n', name: 'inicio_transac' },
+			{ fieldLabel: 'Fin transacci&oacute;n', name: 'fin_transac' },
 			{ xtype: 'hiddenfield', name: 'id' },
 			{
 	    		xtype: 'fieldset',
@@ -159,7 +141,7 @@ Ext.define('App.view.manualFieldValue.ManualFieldValueForm', {
 		    	},
 		    	items: [
 					{ text: 'Dispositivo',  dataIndex: 'deviceId' },
-					{ text: 'Tag',  dataIndex: 'tag' },
+					{ text: 'C&ocaute;digo',  dataIndex: 'code' },
 					{ text: 'F. medici&oacute;n',  dataIndex: 'timestamp' },
 					{ text: 'Tipo', width: 50,  dataIndex: 'valueType' },
 					{ text: 'Vol. neto hoy [m3]',  dataIndex: 'volumen_neto_hoy' },
