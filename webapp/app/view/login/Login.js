@@ -7,11 +7,16 @@ Ext.define('App.view.login.Login', {
     ],
     
     bodyPadding: 10,
-    title: 'Login',
+    title: 'R318 - Login',
     closable: false,
     autoShow: true, 
-	    
-    items: {
+	height: 195,
+	resizable: false,		    
+    items: [{
+    	xtype: 'image',
+    	src: 'logo.png',
+    	margin: '0 0 10 80'
+    },{
         xtype: 'form',
         reference: 'form',
         frame: true,
@@ -32,5 +37,5 @@ Ext.define('App.view.login.Login', {
             action: 'doLogin',
             formBind: true
         }]
-    }
+    }]
 });
