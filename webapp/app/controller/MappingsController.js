@@ -3,38 +3,24 @@ Ext.define('App.controller.MappingsController', {
 	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
-        this.control('gridpanel#mappings-list', {
-        	selectionchange: this.onSelectionChange
-        });
-        this.control('gridpanel#mappings-list button[action=deleteMapping]', {
+        this.control('mappings-list button[action=deleteMapping]', {
     		click: this.deleteMapping
         });
-        this.control('mappings-form button[action=update]', {
-    		click: this.updateMapping
+        this.control('mappings-list', {
+    		edit: this.updateMapping
         });
-        this.control('mappings-form button[action=save]', {
+        this.control('mappings-list button[action=save]', {
     		click: this.createMapping
         });
 	},
 	
 	views: ['config.MappingsForm'],
     refs: [{
-		selector: 'mappings-form',
-		ref: 'mappingsForm'
-	},{
-		selector: 'gridpanel#mappings-list',
+		selector: 'mappings-list',
 		ref: 'gridPanel'
 	}],
 	stores: ['MappingStore'],
     models: ['Mapping'],
-	
-	onSelectionChange: function(model, records) {
-        var rec = records[0];
-        if (rec) {
-	    	var panel = this.getMappingsForm();
-			panel.getForm().loadRecord(rec);
-        }
-	},
 	
 	createMapping: function() {
 	    var store = this.getStore('MappingStore');
@@ -44,26 +30,44 @@ Ext.define('App.controller.MappingsController', {
 		}
 	},
 	
-	updateMapping: function() {
-	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
-	    if(form.isValid() && form.getValues().id) {
-	    	App.util.FormSubmit.update(form, '/api/mapping', store); 
-		}
+	updateMapping: function(editor, e) {
+		console.log(e.record);
+	    Ext.Ajax.request({
+            url: '/api/mapping',
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          	},
+          	params: Ext.JSON.encode(e.record.data),
+          	success: function(response, options) {
+				e.record.commit();
+            },
+            failure: App.util.FormSubmit.failureHandler
+		});
 	},
 	
 	deleteMapping: function() {
-	    var form = this.getMappingsForm().getForm();
-	    if(form.isValid()) {
-	    	var values = form.getValues();
-		    var mappingId = values.id;
-		    var device = values.name;
-		    var tag = values.tag;
-		    var store = this.getStore('MappingStore');
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo ' + device + ' - ' + tag + '?',
+	
+	    var selected = this.getGridPanel().getSelectionModel().selected;
+	    if(selected.getCount() > 0) {
+	    	var row = selected.first();
+		    var mappingId = row.get('id');
+		    var device = row.name;
+		    var code = row.code;
+
+		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo para el dispositivo ' + device + '?',
 			    function(resp) { 
 			    	if(resp == 'yes') {
-				    	App.util.FormSubmit.delete('/api/mapping/' + mappingId, store); 
+					    var store = this.getStore('MappingStore');
+			            Ext.Ajax.request({
+				            url: '/api/mapping/' + mappingId,
+				            method: 'DELETE',
+				          	success: function(response, options) {
+			          			store.reload();
+				                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
+				            },
+				            failure: App.util.FormSubmit.failureHandler
+						});
 				    }
 				}, this);
 		}

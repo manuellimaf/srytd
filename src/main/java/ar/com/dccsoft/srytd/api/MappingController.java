@@ -94,6 +94,7 @@ public class MappingController {
 			return service.isValidDevice(dto.getId(), dto.getName());
 		});
 		
+		// TODO - validar que no se repitan los mapeos
 	}
 
 	public void requiredValidations(MappingDTO dto) {

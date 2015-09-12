@@ -29,7 +29,7 @@ Ext.define('App.controller.ConfigPropsController', {
 	},
 	addChild: function() {
 		var panel = this.getConfigPanel();
-		panel.add({ xtype: 'mappings-form' });
+		panel.add({ xtype: 'mappings-list' });
         if(localStorage.getItem('ROLE') == 'ADMIN') {
 	        panel.add({ xtype: 'users-form' });
 			panel.add({ xtype: 'config-props'});

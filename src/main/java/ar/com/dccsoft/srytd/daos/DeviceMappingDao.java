@@ -11,7 +11,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.dccsoft.srytd.model.DeviceMapping;
-import ar.com.dccsoft.srytd.model.Process;
 
 public class DeviceMappingDao {
 
@@ -21,7 +20,7 @@ public class DeviceMappingDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Process> getPage(Integer start, Integer limit) {
+	public List<DeviceMapping> getPage(Integer start, Integer limit) {
 		String qStr = "select distinct d from " + DeviceMapping.class.getName() + " d order by d.name";
 		Query query = MySQL.currentSession().createQuery(qStr);
 		return query.setFirstResult(start).setMaxResults(limit).list();

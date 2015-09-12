@@ -7,6 +7,7 @@ import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactio
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,8 +58,11 @@ public class DeviceMappingService {
 	public void updateMapping(MappingDTO dto) {
 		transactional(MySQL, (session) -> {
 			DeviceMapping device = dao.findDevice(dto.getId());
-			device.setName(dto.getName());
-			device.setCode(dto.getCode());
+			try {
+				BeanUtils.copyProperties(device, dto);
+			} catch (Exception e) {
+				throw new RuntimeException("Error updating device mapping", e);
+			}
 			dao.update(device);
 			return null;
 		});

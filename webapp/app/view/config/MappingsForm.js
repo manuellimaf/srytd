@@ -1,110 +1,75 @@
 Ext.define('App.view.config.MappingsForm', {
-    extend: 'Ext.form.Panel',
-    alias: 'widget.mappings-form',
+    extend: 'Ext.grid.Panel',
+    alias: 'widget.mappings-list',
 
-    xtype: 'form-grid',
    	title: 'Mapeo de dispositivos',
-    
-    frame: true,
-    bodyPadding: 5,
-    layout: 'column',
-    width: 880,
-    
-    fieldDefaults: {
-        labelAlign: 'left',
-        labelWidth: 90,
-        anchor: '100%',
-        msgTarget: 'side'
+    store: 'MappingStore',
+    height: 525,
+	tbar: {
+    	defaults: {
+            scale: 'small',
+            iconAlign:'left'
+        },
+    	items: [{
+            text: 'Borrar',
+            action: 'deleteMapping',
+            iconCls: 'icon-delete'
+        }]
     },
-
-    items: [{
-        columnWidth: 0.45,
-        xtype: 'gridpanel',
-        itemId: 'mappings-list',
+    selType: 'rowmodel',
+    plugins: [
+        Ext.create('Ext.grid.plugin.RowEditing', {
+            clicksToEdit: 2,
+            itemId: 'row-editor'
+        })
+    ],
+    columns: [
+        { text: 'Dispositivo', width: 130, dataIndex: 'name', editor: { xtype: 'textfield', allowBlank: false } },
+        { text: 'C&oacute;digo', width: 130, dataIndex: 'code', editor: { xtype: 'textfield', allowBlank: false } },
+		{ text: 'Vol. neto hoy [m3]',  dataIndex: 'volumen_neto_hoy', editor: 'textfield' },
+		{ text: 'Vol. desplazado [m3]', width: 110,  dataIndex: 'volumen_desplazado', editor: 'textfield' },
+		{ text: 'Vol. bruto acum. [m3]', width: 115,  dataIndex: 'volumen_bruto_acumulado', editor: 'textfield' },
+		{ text: 'Vol. acum. 9300 [m3]', width: 110,  dataIndex: 'volumen_acumulado_9300', editor: 'textfield' },
+		{ text: 'Vol. hoy 9300 [m3]',  dataIndex: 'volumen_hoy_9300', editor: 'textfield' },
+		{ text: 'Temperatura [&ordm;C]',  dataIndex: 'temperatura', editor: 'textfield' },
+		{ text: 'SH2 [%]',  dataIndex: 'sh2', editor: 'textfield' },
+		{ text: 'Pulsos brutos',  dataIndex: 'pulsos_brutos', editor: 'textfield' },
+		{ text: 'Presi&oacute;n [Kg/cm2]',  dataIndex: 'presion', editor: 'textfield' },
+		{ text: 'Poder calor&iacute;fico [Kcal/m3]', width: 135,  dataIndex: 'poder_calorifico', editor: 'textfield' },
+		{ text: 'N2 [%]',  dataIndex: 'n2', editor: 'textfield' },
+		{ text: 'C6 [%]',  dataIndex: 'c6', editor: 'textfield' },
+		{ text: 'MF',  dataIndex: 'mf', editor: 'textfield' },
+		{ text: 'FCV',  dataIndex: 'fcv', editor: 'textfield' },
+		{ text: 'Factor K [P/lt]',  dataIndex: 'factor_k', editor: 'textfield' },
+		{ text: 'Densidad relativa',  dataIndex: 'densidad_relativa', editor: 'textfield' },
+		{ text: 'CTSH',  dataIndex: 'ctsh', editor: 'textfield' },
+		{ text: 'CTL',  dataIndex: 'ctl', editor: 'textfield' },
+		{ text: 'CPL',  dataIndex: 'cpl', editor: 'textfield' },
+		{ text: 'CO2',  dataIndex: 'co2', editor: 'textfield' },
+		{ text: 'Caudal horario 9300 [m3/h]', width: 140,  dataIndex: 'caudal_horario_9300', editor: 'textfield' },
+		{ text: 'Caudal horario [m3/h]', width: 115,  dataIndex: 'caudal_horario', editor: 'textfield' },
+		{ text: 'C1 [%]',  dataIndex: 'c1', editor: 'textfield' },
+		{ text: 'C2 [%]',  dataIndex: 'c2', editor: 'textfield' },
+		{ text: 'C3 [%]',  dataIndex: 'c3', editor: 'textfield' },
+		{ text: 'IC4 [%]',  dataIndex: 'ic4', editor: 'textfield' },
+		{ text: 'NC4 [%]',  dataIndex: 'nc4', editor: 'textfield' },
+		{ text: 'IC5 [%]',  dataIndex: 'ic5', editor: 'textfield' },
+		{ text: 'NC5 [%]',  dataIndex: 'nc5', editor: 'textfield' },
+		{ text: 'Altura l&iacute;quida [m]',  dataIndex: 'altura_liquida', editor: 'textfield' },
+		{ text: '% agua',  dataIndex: 'porcentaje_agua', editor: 'textfield' },
+		{ text: 'Vol. seco ult. transac. [m3]', width: 150,  dataIndex: 'volumen_seco', editor: 'textfield' },
+		{ text: 'Inicio transac.',  dataIndex: 'inicio_transac', editor: 'textfield' },
+		{ text: 'Fin transac.',  dataIndex: 'fin_transac', editor: 'textfield' },
+		{ text: 'Vol. neto acum. [m3]', width: 110,  dataIndex: 'volumen_neto_acumulado', editor: 'textfield' },
+		{ text: 'Densidad [g/cm3]',  dataIndex: 'densidad', editor: 'textfield' },
+		{ text: 'Vol. bruto hoy [m3]', width: 105,  dataIndex: 'volumen_bruto_hoy', editor: 'textfield' },
+        { text: 'Creado por', dataIndex: 'createdBy' },
+		{ text: 'Fecha de creaci&oacute;n', dataIndex: 'creationDate'}
+	],
+    dockedItems: [{
+        xtype: 'pagingtoolbar',
         store: 'MappingStore',
-        height: 400,
-		tbar: {
-	    	defaults: {
-	            scale: 'small',
-	            iconAlign:'left'
-	        },
-	    	items: [{
-	            text: 'Borrar',
-	            action: 'deleteMapping',
-	            iconCls: 'icon-delete'
-	        }]
-	    },
-        columns: [{
-            text: 'Dispositivo',
-            flex: 1,
-            dataIndex: 'name'
-        }, {
-            text: 'C&oacute;digo',
-            flex: 1,
-            dataIndex: 'code'
-        }, {
-            text: 'Creado por',
-            flex: 1,
-            dataIndex: 'createdBy'
-        }, {
-            text: 'Fecha de creaci&oacute;n',
-            flex: 1,
-            dataIndex: 'creationDate'
-        }],
-	    dockedItems: [{
-	        xtype: 'pagingtoolbar',
-	        store: 'MappingStore',
-	        dock: 'bottom',
-	        displayInfo: true
-	    }]
-    }, {
-        columnWidth: 0.35,
-        margin: '0 0 0 10',
-        xtype: 'fieldset',
-        title:'Mapeo de dispositivos',
-        layout: 'anchor',
-        defaultType: 'textfield',
-        items: [{
-            fieldLabel: 'Dispositivo',
-            allowBlank: false,
-            name: 'name'
-        },{
-            fieldLabel: 'C&oacute;digo',
-            allowBlank: false,
-            name: 'code'
-        }, {
-	        xtype: 'hiddenfield',
-	        name: 'id'
-    	},{
-    		xtype: 'fieldset',
-    		layout: 'hbox',
-    		border: 'false',
-		    layoutConf : {
-		        pack: 'end',
-		        padding: 10
-		    },
-		    items: [{
-		        xtype: 'displayfield',
-	    		labelSeparator: '&nbsp;',
-		        fieldLabel: '&nbsp;',
-		        value: '&nbsp;'
-		    },{
-		    	xtype: 'button',
-		    	text: 'Actualizar',
-		    	margin: '0 0 0 10',
-		        formBind: true,
-		        disabled: true,
-		        action: 'update',
-		        iconCls: 'icon-save'
-		    },{
-		    	xtype: 'button',
-		    	text: 'Nuevo',
-		    	margin: '0 0 0 10',
-		        formBind: true,
-		        disabled: true,
-		        action: 'save',
-		        iconCls: 'icon-add'
-		    }]
-		}]
-	}]
+        dock: 'bottom',
+        displayInfo: true
+    }]
 });

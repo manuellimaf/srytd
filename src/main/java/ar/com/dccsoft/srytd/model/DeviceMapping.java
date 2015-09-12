@@ -51,8 +51,6 @@ public class DeviceMapping {
 	private String volumen_bruto_hoy;
 	private String volumen_neto_acumulado;
 	
-	
-	
 	public String getPresion() {
 		return presion;
 	}
