@@ -3,14 +3,16 @@ Ext.define('App.controller.MappingsController', {
 	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
-        this.control('mappings-list button[action=deleteMapping]', {
-    		click: this.deleteMapping
-        });
-        this.control('mappings-list', {
-    		edit: this.updateMapping
-        });
-        this.control('mappings-list button[action=save]', {
-    		click: this.createMapping
+        this.control({
+        	'mappings-list button[action=deleteMapping]': {
+    			click: this.deleteMapping
+        	},
+			'mappings-list': {
+    			edit: this.updateMapping
+	        },
+        	'mappings-list button[action=createMapping]': {
+    			click: this.createMapping
+        	}
         });
 	},
 	
@@ -23,27 +25,43 @@ Ext.define('App.controller.MappingsController', {
     models: ['Mapping'],
 	
 	createMapping: function() {
+		var record = new App.model.Mapping();
 	    var store = this.getStore('MappingStore');
-	    var form = this.getMappingsForm().getForm();
-	    if(form.isValid()) {
-	    	App.util.FormSubmit.submit(form, '/api/mapping', store); 
-		}
+
+		var editor = this.getGridPanel().getPlugin('row-editor');
+		// edit.cancelEdit();
+		
+		store.insert(0, record);
+		editor.startEdit(0, 0);
+	
+	
+	    //var form = this.getMappingsForm().getForm();
+	    //if(form.isValid()) {
+	    //	App.util.FormSubmit.submit(form, '/api/mapping', store); 
+		//}
 	},
 	
 	updateMapping: function(editor, e) {
-		console.log(e.record);
-	    Ext.Ajax.request({
-            url: '/api/mapping',
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-          	},
-          	params: Ext.JSON.encode(e.record.data),
-          	success: function(response, options) {
-				e.record.commit();
-            },
-            failure: App.util.FormSubmit.failureHandler
-		});
+	    var selected = this.getGridPanel().getSelectionModel().selected;
+	    if(selected.getCount() > 0) {
+	    	var row = selected.first();
+		    var mappingId = row.get('id');
+			var method = mappingId ? 'PUT' : 'POST';
+			
+		    Ext.Ajax.request({
+	            url: '/api/mapping',
+	            method: method,
+	            headers: {
+	              'Content-Type': 'application/json;charset=utf-8'
+	          	},
+	          	params: Ext.JSON.encode(e.record.data),
+	          	success: function(response, options) {
+					e.record.commit();
+	            },
+	            failure: App.util.FormSubmit.failureHandler
+			});
+	    }
+		
 	},
 	
 	deleteMapping: function() {
@@ -52,24 +70,27 @@ Ext.define('App.controller.MappingsController', {
 	    if(selected.getCount() > 0) {
 	    	var row = selected.first();
 		    var mappingId = row.get('id');
-		    var device = row.name;
-		    var code = row.code;
-
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo para el dispositivo ' + device + '?',
-			    function(resp) { 
-			    	if(resp == 'yes') {
-					    var store = this.getStore('MappingStore');
-			            Ext.Ajax.request({
-				            url: '/api/mapping/' + mappingId,
-				            method: 'DELETE',
-				          	success: function(response, options) {
-			          			store.reload();
-				                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
-				            },
-				            failure: App.util.FormSubmit.failureHandler
-						});
-				    }
-				}, this);
+		    var store = this.getStore('MappingStore');
+		    if(typeof mappingId != 'undefined' && mappingId != null) {
+			    var device = row.get('name');
+	
+			    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el mapeo para el dispositivo ' + device + '?',
+				    function(resp) { 
+				    	if(resp == 'yes') {
+				            Ext.Ajax.request({
+					            url: '/api/mapping/' + mappingId,
+					            method: 'DELETE',
+					          	success: function(response, options) {
+				          			store.reload();
+					                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
+					            },
+					            failure: App.util.FormSubmit.failureHandler
+							});
+					    }
+					}, this);
+			} else {
+      			store.reload();
+			}
 		}
 	}
 });

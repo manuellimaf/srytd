@@ -79,6 +79,7 @@ public class MappingController {
 		validateOrFail("El dispositivo ya se encuentra mapeado", () -> {
 			return !service.existsMappingForDevice(dto.getName());
 		});
+		// TODO - validar que no se repitan los tags
 	}
 
 	private void validateId(String id) {
@@ -94,7 +95,7 @@ public class MappingController {
 			return service.isValidDevice(dto.getId(), dto.getName());
 		});
 		
-		// TODO - validar que no se repitan los mapeos
+		// TODO - validar que no se repitan los tags
 	}
 
 	public void requiredValidations(MappingDTO dto) {

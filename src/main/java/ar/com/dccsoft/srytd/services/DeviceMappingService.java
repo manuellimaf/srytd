@@ -45,8 +45,11 @@ public class DeviceMappingService {
 
 	public void createMapping(MappingDTO dto, String username) {
 		DeviceMapping device = new DeviceMapping();
-		device.setName(dto.getName());
-		device.setCode(dto.getCode());
+		try {
+			BeanUtils.copyProperties(device, dto);
+		} catch (Exception e) {
+			throw new RuntimeException("Error creating device mapping", e);
+		}
 		device.setCreatedBy(username);
 		device.setCreationDate(new Date());
 		transactional(MySQL, (session) -> {
