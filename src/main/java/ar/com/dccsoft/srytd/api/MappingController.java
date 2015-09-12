@@ -24,13 +24,13 @@ import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.api.dto.MappingDTO;
 import ar.com.dccsoft.srytd.api.dto.Page;
-import ar.com.dccsoft.srytd.services.DeviceService;
+import ar.com.dccsoft.srytd.services.DeviceMappingService;
 
 @Path("/mapping")
 public class MappingController {
 
 	private static Logger logger = LoggerFactory.getLogger(MappingController.class);
-	private DeviceService service = new DeviceService();
+	private DeviceMappingService service = new DeviceMappingService();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

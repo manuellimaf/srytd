@@ -29,7 +29,7 @@
 		<!-- Mappings -->
 		<mapping resource="hibernate/MappedFieldValue.xml"/>
         <mapping resource="hibernate/Process.xml"/>
-        <mapping resource="hibernate/Device.xml"/>
+        <mapping resource="hibernate/DeviceMapping.xml"/>
         <mapping resource="hibernate/ProcessAlert.xml"/>
         <mapping resource="hibernate/AppProperty.xml"/>
         <mapping resource="hibernate/User.xml"/>

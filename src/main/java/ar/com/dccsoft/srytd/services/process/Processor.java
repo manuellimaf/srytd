@@ -3,7 +3,6 @@ package ar.com.dccsoft.srytd.services.process;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static java.lang.String.format;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,18 +14,18 @@ import org.apache.commons.collections.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.model.Device;
-import ar.com.dccsoft.srytd.model.FieldValue;
+import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
+import ar.com.dccsoft.srytd.model.TagValue;
 import ar.com.dccsoft.srytd.services.AppPropertyService;
-import ar.com.dccsoft.srytd.services.DeviceService;
-import ar.com.dccsoft.srytd.services.FieldValueService;
+import ar.com.dccsoft.srytd.services.DeviceMappingService;
 import ar.com.dccsoft.srytd.services.ManualFieldValueService;
 import ar.com.dccsoft.srytd.services.MappedFieldValueService;
 import ar.com.dccsoft.srytd.services.NotificationsService;
 import ar.com.dccsoft.srytd.services.ProcessAlertService;
 import ar.com.dccsoft.srytd.services.ProcessService;
+import ar.com.dccsoft.srytd.services.TagValueService;
 import ar.com.dccsoft.srytd.services.process.FileBuilder.FileBuildResult;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
@@ -34,16 +33,15 @@ import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnectorType;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 public class Processor {
 
 	private static Logger logger = LoggerFactory.getLogger(Processor.class);
 
-	private FieldValueService fieldValueService = new FieldValueService();
+	private TagValueService fieldValueService = new TagValueService();
 	private MappedFieldValueService mappedFieldValueService = new MappedFieldValueService();
 	private ManualFieldValueService manualFieldValueService = new ManualFieldValueService();
-	private DeviceService deviceService = new DeviceService();
+	private DeviceMappingService deviceMappingService = new DeviceMappingService();
 	private ProcessService processService = new ProcessService();
 	private AppPropertyService propService = new AppPropertyService();
 	private NotificationsService notificationsService = new NotificationsService();
@@ -73,29 +71,32 @@ public class Processor {
 		Long processId = process.getId();
 		MDCUtils.put(MDCKey.PROCESS_ID, processId.toString());
 		
-		List<MappedFieldValue> mappings = mapFieldValues(process, process.getStartedBy());
+		List<MappedFieldValue> mappings = getMappedFieldValues(process, process.getStartedBy());
 
 		buildFileAndSend(process, mappings);
 	}
 
-	private List<MappedFieldValue> mapFieldValues(Process process, String username) {
+	@SuppressWarnings("unchecked")
+	private List<MappedFieldValue> getMappedFieldValues(Process process, String username) {
+		// Leer mapeos de dispositivos con sus tags
+		List<DeviceMapping> devices = deviceMappingService.getAllDeviceMappings();
+		
 		// Leer datos de campo
-		List<FieldValue> fieldValues = fieldValueService.readOneHourValues(process.getValuesFrom());
+		Set<TagValue> tagValues = fieldValueService.readOneHourValues(process.getValuesFrom(), devices);
+
+		// Mapear valores de campo
+		List<MappedFieldValue> fieldValues = mappedFieldValueService.map(tagValues, devices);
+		
+		// Persistir valores de campo mapeados
+		mappedFieldValueService.save(fieldValues, process, username);
+		
 		// Leer valores manuales
 		List<MappedFieldValue> manualValues = manualFieldValueService.readOneHourValues(process.getValuesFrom());
-		// Unir ambas listas de valores y perservar solo los que tengan fecha más cercana al final de la hora
-		List<FieldValue> unprocessed = removeDuplicates(ListUtils.sum(fieldValues, manualValues));
 		
-		// Leer mapeos de tags
-		List<Device> devices = deviceService.getAllDevices();
-
-		// Realizar validaciones
-		performValidations(fieldValues, devices);
-
-		// Persistir valores mapeados
-		List<MappedFieldValue> mappings = mappedFieldValueService.mapAndSave(process, fieldValues, devices, username);
-
-		return mappings;
+		// Unir ambas listas de valores y perservar solo los que tengan fecha más cercana al final de la hora
+		List<MappedFieldValue> unprocessed = removeDuplicates(ListUtils.sum(fieldValues, manualValues));
+		
+		return unprocessed;
 	}
 
 	public void buildFileAndSend(Process process, List<MappedFieldValue> mappings) {
@@ -154,25 +155,11 @@ public class Processor {
 		return format("%tY-%tm-%td %tH:%tM", from, from, from, from, from);
 	}
 
-	private void performValidations(List<FieldValue> fieldValues, List<Device> mappings) {
-		Set<String> tagNames = Sets.newHashSet(Lists.transform(mappings, mapping -> mapping.getName()));
-		Set<String> fieldTagNames = Sets.newHashSet(Lists.transform(fieldValues, fieldVale -> fieldVale.getDeviceId()));
-
-		if (!tagNames.containsAll(fieldTagNames)) {
-			fieldTagNames.removeAll(tagNames);
-			String notFound = Arrays.toString(fieldTagNames.toArray(new String[0]));
-			logger.info(format("Tag Mappings not found for: %s", notFound));
-			
-			// Marcar el proceso para finalización con warning
-			processAlertService.addWarning("Unmapped devices", format("This devices does not have mappings: %s", notFound));
-		}
-	}
-	
-	private List<FieldValue> removeDuplicates(List<FieldValue> values) {
-		Map<String, FieldValue> valuesByDevice = Maps.newHashMap();
-		for(FieldValue fieldValue : values) {
+	private List<MappedFieldValue> removeDuplicates(List<MappedFieldValue> values) {
+		Map<String, MappedFieldValue> valuesByDevice = Maps.newHashMap();
+		for(MappedFieldValue fieldValue : values) {
 			String device = fieldValue.getDeviceId();
-			FieldValue currMax = valuesByDevice.get(device);
+			MappedFieldValue currMax = valuesByDevice.get(device);
 			if(currMax != null) {
 				currMax = currMax.getTimestamp().after(fieldValue.getTimestamp()) ? currMax : fieldValue;
 			} else {

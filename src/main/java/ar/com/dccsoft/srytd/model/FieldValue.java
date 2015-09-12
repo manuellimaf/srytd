@@ -72,9 +72,9 @@ public class FieldValue {
 	private String c6_q;
 	private BigDecimal volumen_seco;
 	private String volumen_seco_q;
-	private Date inicio_transac;
+	private BigDecimal inicio_transac;
 	private String inicio_transac_q;
-	private Date fin_transac;
+	private BigDecimal fin_transac;
 	private String fin_transac_q;
 	private BigDecimal volumen_hoy_9300;
 	private String volumen_hoy_9300_q;
@@ -84,6 +84,31 @@ public class FieldValue {
 	private String volumen_bruto_hoy_q;
 	private BigDecimal volumen_neto_acumulado;
 	private String volumen_neto_acumulado_q;
+
+	public void updateTimestamp(Date date) {
+		if(timestamp == null || timestamp.before(date))
+			timestamp = date;
+		
+	}
+	public BigDecimal getInicio_transac() {
+		return inicio_transac;
+	}
+
+	public void setInicio_transac(BigDecimal inicio_transac) {
+		this.inicio_transac = inicio_transac;
+	}
+
+	public BigDecimal getFin_transac() {
+		return fin_transac;
+	}
+
+	public void setFin_transac(BigDecimal fin_transac) {
+		this.fin_transac = fin_transac;
+	}
+
+	public String getFin_transac_q() {
+		return fin_transac_q;
+	}
 
 	public BigDecimal getPresion() {
 		return presion;
@@ -595,26 +620,6 @@ public class FieldValue {
 
 	public void setInicio_transac_q(String inicio_transac_q) {
 		this.inicio_transac_q = inicio_transac_q;
-	}
-
-	public Date getInicio_transac() {
-		return inicio_transac;
-	}
-
-	public void setInicio_transac(Date inicio_transac) {
-		this.inicio_transac = inicio_transac;
-	}
-
-	public Date getFin_transac() {
-		return fin_transac;
-	}
-
-	public void setFin_transac(Date fin_transac) {
-		this.fin_transac = fin_transac;
-	}
-
-	public String getFin_transac_q() {
-		return fin_transac_q;
 	}
 
 	public void setFin_transac_q(String fin_transac_q) {

@@ -42,6 +42,7 @@ public class HttpServer {
 		context.setServer(server);
 		context.setWar("webapp");
 		context.setWelcomeFiles(new String[] {"/login.html"});
+		context.getSessionHandler().getSessionManager().setMaxInactiveInterval(Integer.MAX_VALUE);
 		
 		FilterHolder securityFilterHolder = new FilterHolder(SecurityFilter.class);
 		securityFilterHolder.setInitParameter("validate", "true");

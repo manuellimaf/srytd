@@ -12,20 +12,20 @@ import org.slf4j.LoggerFactory;
 
 import ar.com.dccsoft.srytd.api.dto.MappingDTO;
 import ar.com.dccsoft.srytd.api.dto.Page;
-import ar.com.dccsoft.srytd.daos.DeviceDao;
-import ar.com.dccsoft.srytd.model.Device;
+import ar.com.dccsoft.srytd.daos.DeviceMappingDao;
+import ar.com.dccsoft.srytd.model.DeviceMapping;
 
-public class DeviceService {
+public class DeviceMappingService {
 
-	private static Logger logger = LoggerFactory.getLogger(DeviceService.class);
-	private DeviceDao dao = new DeviceDao();
+	private static Logger logger = LoggerFactory.getLogger(DeviceMappingService.class);
+	private DeviceMappingDao dao = new DeviceMappingDao();
 
-	public List<Device> getAllDevices() {
-		return tryAndInform("Error reading devices", () -> {
-			logger.info("Reading devices");
-			List<Device> devices = transactional(MySQL, (session) -> dao.getAll());
-			logger.info(String.format("%d devices found", devices.size()));
-			return devices;
+	public List<DeviceMapping> getAllDeviceMappings() {
+		return tryAndInform("Error reading device mappings", () -> {
+			logger.info("Reading device mappings");
+			List<DeviceMapping> deviceMappings = transactional(MySQL, (session) -> dao.getAll());
+			logger.info(String.format("%d device mappings found", deviceMappings.size()));
+			return deviceMappings;
 		});
 	}
 
@@ -43,9 +43,9 @@ public class DeviceService {
 	}
 
 	public void createMapping(MappingDTO dto, String username) {
-		Device device = new Device();
+		DeviceMapping device = new DeviceMapping();
 		device.setName(dto.getName());
-		device.setTag(dto.getTag());
+		device.setCode(dto.getTag());
 		device.setCreatedBy(username);
 		device.setCreationDate(new Date());
 		transactional(MySQL, (session) -> {
@@ -56,9 +56,9 @@ public class DeviceService {
 
 	public void updateMapping(MappingDTO dto) {
 		transactional(MySQL, (session) -> {
-			Device device = dao.findDevice(dto.getId());
+			DeviceMapping device = dao.findDevice(dto.getId());
 			device.setName(dto.getName());
-			device.setTag(dto.getTag());
+			device.setCode(dto.getTag());
 			dao.update(device);
 			return null;
 		});
@@ -75,8 +75,8 @@ public class DeviceService {
 
 	public Boolean isValidDevice(Long id, String name) {
 		return transactional(MySQL, (session) -> {
-			Device device = dao.findDevice(id);
-			for(Device d : dao.findByName(name)) {
+			DeviceMapping device = dao.findDevice(id);
+			for(DeviceMapping d : dao.findByName(name)) {
 				if(!device.getId().equals(d.getId())) {
 					// Ya existe otro dispositivo con este nombre.
 					return false;
@@ -88,8 +88,8 @@ public class DeviceService {
 
 	public Boolean isValidTag(Long id, String tag) {
 		return transactional(MySQL, (session) -> {
-			Device device = dao.findDevice(id);
-			for(Device d : dao.findByTag(tag)) {
+			DeviceMapping device = dao.findDevice(id);
+			for(DeviceMapping d : dao.findByTag(tag)) {
 				if(!device.getId().equals(d.getId())) {
 					// Ya existe un mapeo con este tag para otro dispositivo.
 					return false;

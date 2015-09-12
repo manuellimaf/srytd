@@ -10,58 +10,58 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import ar.com.dccsoft.srytd.model.Device;
+import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.model.Process;
 
-public class DeviceDao {
+public class DeviceMappingDao {
 
 	@SuppressWarnings("unchecked")
-	public List<Device> getAll() {
-		return MySQL.currentSession().createCriteria(Device.class).addOrder(Order.asc("name")).list();
+	public List<DeviceMapping> getAll() {
+		return MySQL.currentSession().createCriteria(DeviceMapping.class).addOrder(Order.asc("name")).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Process> getPage(Integer start, Integer limit) {
-		String qStr = "select distinct d from " + Device.class.getName() + " d order by d.name";
+		String qStr = "select distinct d from " + DeviceMapping.class.getName() + " d order by d.name";
 		Query query = MySQL.currentSession().createQuery(qStr);
 		return query.setFirstResult(start).setMaxResults(limit).list();
 	}
 	
 	public Long countAll() {
-		return (Long) MySQL.currentSession().createCriteria(Device.class)
+		return (Long) MySQL.currentSession().createCriteria(DeviceMapping.class)
 				.setProjection(Projections.countDistinct("id")).uniqueResult();
 	}
 
-	public Device findDevice(Long id) {
-		return (Device) MySQL.currentSession().get(Device.class, id);
+	public DeviceMapping findDevice(Long id) {
+		return (DeviceMapping) MySQL.currentSession().get(DeviceMapping.class, id);
 	}
 	
 	public void delete(Long id) {
-		Device device = findDevice(id);
+		DeviceMapping device = findDevice(id);
 		MySQL.currentSession().delete(device);
 	}
 
-	public void save(Device device) {
+	public void save(DeviceMapping device) {
 		MySQL.currentSession().save(device);
 	}
 
-	public void update(Device device) {
+	public void update(DeviceMapping device) {
 		MySQL.currentSession().update(device);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Device> findByName(String name) {
+	public List<DeviceMapping> findByName(String name) {
 		return MySQL.currentSession()
-				.createCriteria(Device.class)
+				.createCriteria(DeviceMapping.class)
 				.add(Restrictions.eq("name", name))
 				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
 				.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Device> findByTag(String tag) {
+	public List<DeviceMapping> findByTag(String tag) {
 		return MySQL.currentSession()
-				.createCriteria(Device.class)
+				.createCriteria(DeviceMapping.class)
 				.add(Restrictions.eq("tag", tag))
 				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
 				.list();

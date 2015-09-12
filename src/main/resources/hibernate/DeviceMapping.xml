@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ar.com.dccsoft.srytd.model">
+	<class name="DeviceMapping" table="device_mapping">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="name" not-null="true"/>
+		<property name="code" not-null="true"/>
+		<property name="creationDate" column="creation_date" not-null="true"/>
+		<property name="createdBy" column="created_by" not-null="true"/>
+
+		<property name="presion"/>
+		<property name="temperatura"/>
+		<property name="caudal_horario"/>
+		<property name="volumen_bruto_acumulado"/>
+		<property name="volumen_neto_hoy"/>
+		<property name="caudal_horario_9300"/>
+		<property name="volumen_acumulado_9300"/>
+		<property name="volumen_desplazado"/>
+		<property name="altura_liquida"/>
+		<property name="mf"/>
+		<property name="ctl"/>
+		<property name="cpl"/>
+		<property name="factor_k"/>
+		<property name="pulsos_brutos"/>
+		<property name="fcv"/>
+		<property name="ctsh"/>
+		<property name="porcentaje_agua"/>
+		<property name="poder_calorifico"/>
+		<property name="densidad_relativa"/>
+		<property name="co2"/>
+		<property name="n2"/>
+		<property name="sh2"/>
+		<property name="c1"/>
+		<property name="c2"/>
+		<property name="c3"/>
+		<property name="ic4"/>
+		<property name="nc4"/>
+		<property name="ic5"/>
+		<property name="nc5"/>
+		<property name="c6"/>
+		<property name="volumen_seco"/>
+		<property name="inicio_transac"/>
+		<property name="fin_transac"/>
+		<property name="volumen_hoy_9300"/>
+		<property name="densidad"/>
+		<property name="volumen_bruto_hoy"/>
+		<property name="volumen_neto_acumulado"/>
+	
+	</class>
+	
+</hibernate-mapping>

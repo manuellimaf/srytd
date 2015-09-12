@@ -25,6 +25,7 @@
 		 		and tv.version = 'Latest'
 		 		and tagname = :tagname
 		 		and datetime between :from and :to
-		 		and startDatetime >= :from]]>
+		 		and startDatetime >= :from
+		 	order by startDatetime desc]]>
 	</query>
 </hibernate-mapping>

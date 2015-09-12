@@ -30,8 +30,8 @@ public class LoginController {
 	@GET
 	@Path("/role")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getRole(@Context HttpServletRequest httpRequest) {
-		String user = httpRequest.getRemoteUser();
+	public String getRole(@Context HttpServletRequest request) {
+		String user = request.getRemoteUser();
 		logger.info("Getting role for user: " + user);
 		Role role = userService.findByName(user).getRole();
 		return role.name();
@@ -39,9 +39,9 @@ public class LoginController {
 
 	@POST
 	@Path("/invalidate")
-	public Response logout(@Context HttpServletRequest httpRequest) {
-		logger.info("Logout");
-		httpRequest.getSession().invalidate();
+	public Response logout(@Context HttpServletRequest request) {
+		logger.info(String.format("Logout (user: %s)", request.getRemoteUser()));
+		request.getSession().invalidate();
 		return Response.ok().build();
 	}
 

@@ -89,8 +89,6 @@ public class ManualFieldValueService {
 			BeanUtils.copyProperties(mapped, dto);
 			mapped.setValueType("M");
 			mapped.setTimestamp(parse(dto.getValueDate(), dto.getValueTime(), "dd/MM/yyyy HH:mm"));
-			mapped.setInicio_transac(parse(dto.getItDate(), dto.getItTime(), "dd/MM/yyyy HH:mm"));
-			mapped.setFin_transac(parse(dto.getFtDate(), dto.getFtTime(), "dd/MM/yyyy HH:mm"));
 		} catch (Exception e) {
 			throw new RuntimeException("Error cloning value from DTO to MappingFieldValue", e);
 		}

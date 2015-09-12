@@ -5,6 +5,10 @@ Ext.define('App.Application', {
     
     name: 'App',
 
+	requires: [
+	    'App.util.ActivityMonitor'
+	],
+	
     stores: [
         // TODO: add global / shared stores here
     ],
@@ -36,6 +40,31 @@ Ext.define('App.Application', {
     ],
     
     launch: function () {
+    	App.util.ActivityMonitor.init({
+			verbose: true,
+//			maxInactive:  (1000 * 60 * 15), // 15 minutes
+			
+			interval: (1000 * 5), //1 minute
+			maxInactive:  (1000 * 10), // 10 seconds
+			isInactive: function () {
+				Ext.MessageBox.alert('Sesi&oacuten expirada',
+					'El tiempo de la sesi&oacuten actual expir&oacute. Debe reloguearse para poder continuar.',
+					function () {
+						Ext.Ajax.request({
+				            url: '/api/auth/invalidate',
+				            method: 'POST',
+				          	success: function(response, options) {
+						        location.href = 'login.html';
+				            },
+				            failure: function(response, options) {
+						        location.href = 'login.html';
+					        }
+						}, this);
+					});
+			}
+		});
+		App.util.ActivityMonitor.start();
+		
         Ext.create('App.view.layout.MainPanel');
     }
 

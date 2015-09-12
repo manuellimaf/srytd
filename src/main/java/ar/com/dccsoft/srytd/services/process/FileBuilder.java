@@ -46,38 +46,34 @@ public class FileBuilder {
 				String ID_EMPRESA = propService.getCompanyId();
 
 				for (MappedFieldValue v : mappings) {
-					String tagCode = v.getTag();
+					String code = v.getCode();
 
-					if (tagCode != null) {
-						Date ts = v.getTimestamp();
-						String timestamp = String.format("%td-%tm-%tY %tH:%tM", ts, ts, ts, ts, ts);
-						String readingType = v.getValueType();
+					Date ts = v.getTimestamp();
+					String timestamp = String.format("%td-%tm-%tY %tH:%tM", ts, ts, ts, ts, ts);
+					String readingType = v.getValueType();
 
-						// TODO - Ojo con los campos inicio/fin transac!! (no se si son números o fechas)
-						printer.printRecord(ID_EMPRESA, v.getDeviceId(), tagCode, timestamp, readingType, numFormat(v.getPresion()),
-						v.getPresion_q(), numFormat(v.getTemperatura()), v.getTemperatura_q(), numFormat(v.getCaudal_horario()),
-						v.getCaudal_horario_q(), numFormat(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
-						numFormat(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), numFormat(v.getCaudal_horario_9300()),
-						v.getCaudal_horario_9300_q(), numFormat(v.getVolumen_acumulado_9300()), v.getVolumen_acumulado_9300_q(),
-						numFormat(v.getVolumen_desplazado()), v.getVolumen_desplazado_q(), numFormat(v.getAltura_liquida()),
-						v.getAltura_liquida_q(), numFormat(v.getMf()), v.getMf_q(), numFormat(v.getCtl()), v.getCtl_q(),
-						numFormat(v.getCpl()), v.getCpl_q(), numFormat(v.getFactor_k()), v.getFactor_k_q(),
-						numFormat(v.getPulsos_brutos()), v.getPulsos_brutos_q(), numFormat(v.getFcv()), v.getFcv_q(),
-						numFormat(v.getCtsh()), v.getCtsh_q(), numFormat(v.getPorcentaje_agua()), v.getPorcentaje_agua_q(),
-						numFormat(v.getPoder_calorifico()), v.getPoder_calorifico_q(), numFormat(v.getDensidad_relativa()),
-						v.getDensidad_relativa_q(), numFormat(v.getCo2()), v.getCo2_q(), numFormat(v.getN2()), v.getN2_q(),
-						numFormat(v.getSh2()), v.getSh2_q(), numFormat(v.getC1()), v.getC1_q(), numFormat(v.getC2()), v.getC2_q(),
-						numFormat(v.getC3()), v.getC3_q(), numFormat(v.getIc4()), v.getIc4_q(), numFormat(v.getNc4()), v.getNc4_q(),
-						numFormat(v.getIc5()), v.getIc5_q(), numFormat(v.getNc5()), v.getNc5_q(), numFormat(v.getC6()), v.getC6_q(),
-						numFormat(v.getVolumen_seco()), v.getVolumen_seco_q(), v.getInicio_transac(), v.getInicio_transac_q(),
-						v.getFin_transac(), v.getFin_transac_q(), numFormat(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
-						numFormat(v.getDensidad()), v.getDensidad_q(), numFormat(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
-						numFormat(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
+					// TODO - Ojo con los campos inicio/fin transac!! (no se si son números o fechas)
+					printer.printRecord(ID_EMPRESA, v.getDeviceId(), code, timestamp, readingType, numFormat(v.getPresion()),
+					v.getPresion_q(), numFormat(v.getTemperatura()), v.getTemperatura_q(), numFormat(v.getCaudal_horario()),
+					v.getCaudal_horario_q(), numFormat(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
+					numFormat(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), numFormat(v.getCaudal_horario_9300()),
+					v.getCaudal_horario_9300_q(), numFormat(v.getVolumen_acumulado_9300()), v.getVolumen_acumulado_9300_q(),
+					numFormat(v.getVolumen_desplazado()), v.getVolumen_desplazado_q(), numFormat(v.getAltura_liquida()),
+					v.getAltura_liquida_q(), numFormat(v.getMf()), v.getMf_q(), numFormat(v.getCtl()), v.getCtl_q(),
+					numFormat(v.getCpl()), v.getCpl_q(), numFormat(v.getFactor_k()), v.getFactor_k_q(),
+					numFormat(v.getPulsos_brutos()), v.getPulsos_brutos_q(), numFormat(v.getFcv()), v.getFcv_q(),
+					numFormat(v.getCtsh()), v.getCtsh_q(), numFormat(v.getPorcentaje_agua()), v.getPorcentaje_agua_q(),
+					numFormat(v.getPoder_calorifico()), v.getPoder_calorifico_q(), numFormat(v.getDensidad_relativa()),
+					v.getDensidad_relativa_q(), numFormat(v.getCo2()), v.getCo2_q(), numFormat(v.getN2()), v.getN2_q(),
+					numFormat(v.getSh2()), v.getSh2_q(), numFormat(v.getC1()), v.getC1_q(), numFormat(v.getC2()), v.getC2_q(),
+					numFormat(v.getC3()), v.getC3_q(), numFormat(v.getIc4()), v.getIc4_q(), numFormat(v.getNc4()), v.getNc4_q(),
+					numFormat(v.getIc5()), v.getIc5_q(), numFormat(v.getNc5()), v.getNc5_q(), numFormat(v.getC6()), v.getC6_q(),
+					numFormat(v.getVolumen_seco()), v.getVolumen_seco_q(), numFormat(v.getInicio_transac()), v.getInicio_transac_q(),
+					numFormat(v.getFin_transac()), v.getFin_transac_q(), numFormat(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
+					numFormat(v.getDensidad()), v.getDensidad_q(), numFormat(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
+					numFormat(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
 
-						result.addProcessedValue();
-					} else {
-						result.addMissingMapping(v.getDeviceId());
-					}
+					result.addProcessedValue();
 				}
 
 				result.setFile(sb.toString());

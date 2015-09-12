@@ -12,7 +12,7 @@
 		<many-to-one name="process"/>
 		
 		<property name="deviceId" column="device_id" not-null="true"/>
-		<property name="tag" column="tag"/>
+		<property name="code" column="code"/>
 		<property name="timestamp" column="ts" not-null="true"/>
 		<property name="valueType" column="value_type" length="1" not-null="true"/>
 		<property name="dateCreated" column="date_created" not-null="true"/>
@@ -80,9 +80,9 @@
 		<property name="c6_q" length="2"/>
 		<property name="volumen_seco" scale="12"/>
 		<property name="volumen_seco_q" length="2"/>
-		<property name="inicio_transac"/>
+		<property name="inicio_transac" scale="12"/>
 		<property name="inicio_transac_q" length="2"/>
-		<property name="fin_transac"/>
+		<property name="fin_transac" scale="12"/>
 		<property name="fin_transac_q" length="2"/>
 		<property name="volumen_hoy_9300" scale="12"/>
 		<property name="volumen_hoy_9300_q" length="2"/>

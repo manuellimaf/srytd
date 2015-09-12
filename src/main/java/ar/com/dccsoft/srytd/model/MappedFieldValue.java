@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class MappedFieldValue extends FieldValue {
 
-	private String tag;
+	private String code;
 	@JsonIgnore
 	private Process process;
 	private Date dateCreated;
@@ -20,12 +20,12 @@ public class MappedFieldValue extends FieldValue {
 		this.process = process;
 	}
 
-	public String getTag() {
-		return tag;
+	public String getCode() {
+		return code;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Date getDateCreated() {
