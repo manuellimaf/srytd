@@ -83,7 +83,14 @@ Ext.define('App.controller.MainPanelController', {
         Ext.Ajax.request({
             url: '/api/auth/invalidate',
             method: 'POST',
+            callback: function(options, success, response) {
+          		console.log("Callback opts: " + options);
+          		console.log("Callback success: " + success);
+          		console.log("Callback response type: " + response.responseType);
+          		console.log(response);
+            },
           	success: function(response, options) {
+          		console.log("logout status code: " + response.status);
 		        location.href = 'login.html';
             },
             failure: function(response, options) {
@@ -91,6 +98,13 @@ Ext.define('App.controller.MainPanelController', {
     	    		Ext.Msg.alert('Error', 'No es posible conectarse al servidor');
         		} else {
 	                Ext.Msg.alert('Error ' + response.status, response.responseText);
+	        	}
+	        },
+	        listeners: {
+	        	'requestexception': {
+	        		fn: function( conn, response, options, eOpts ) {
+		        		Ext.Msg.alert('Error ' + response.status, response.responseText);
+		        	}
 	        	}
 	        }
 		}, this);

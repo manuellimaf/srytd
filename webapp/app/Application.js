@@ -42,10 +42,8 @@ Ext.define('App.Application', {
     launch: function () {
     	App.util.ActivityMonitor.init({
 			verbose: true,
-//			maxInactive:  (1000 * 60 * 15), // 15 minutes
-			
-//			interval: (1000 * 5), //1 minute
-//			maxInactive:  (1000 * 10), // 10 seconds
+			maxInactive:  (1000 * 60 * 30), // 30 minutes
+			interval: (1000 * 60 * 1), //1 minute
 			isInactive: function () {
 				Ext.MessageBox.alert('Sesi&oacuten expirada',
 					'El tiempo de la sesi&oacuten actual expir&oacute. Debe reloguearse para poder continuar.',
