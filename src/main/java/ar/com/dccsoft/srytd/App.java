@@ -24,29 +24,27 @@ public class App {
 
 		String mode = args.length == 0 ? SERVER : args[0];
 		logger.info("Loading in mode " + mode);
-		
-		Config.init();
-		HibernateUtil.init();
-		ProcessScheduler.init();
-		
-		if (mode.equals(SERVER)) {
-			HttpServer.start();
-//			System.out.close();
-//			System.err.close();
-		} else {
-			int exitCode = 0;
-			try {
+		int exitCode = 0;
+
+		try {
+			Config.init();
+			HibernateUtil.init();
+			ProcessScheduler.init();
+
+			if (mode.equals(SERVER)) {
+				HttpServer.start();
+			} else {
 				Date from = DateUtils.parseDate(args[1], "yyyy-MM-dd HH:mm:ss");
 				from = DateUtils.truncate(from, Calendar.HOUR_OF_DAY);
 				new Processor().start(from, USER);
-			} catch (Throwable t) {
-				// Errors have been handled
-				exitCode = 1;
-			} finally {
-				 HibernateUtil.closeSessions();
-				 System.exit(exitCode);
-			}
 
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
+			exitCode = 1;
+		} finally {
+			HibernateUtil.closeSessions();
+			System.exit(exitCode);
 		}
 
 	}
