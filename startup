@@ -1,4 +1,4 @@
 #!/bin/sh
 
-java -Dlogback.configurationFile="/home/manuel/srytd/logback.xml" -Dr318.configLocation="/home/manuel/srytd/config.xml" -jar target/srytd-jar-with-dependencies.jar 
+java -Dlogback.configurationFile=$HOME"/srytd/logback.xml" -Dr318.configLocation=$HOME"/srytd/config.xml" -jar target/srytd-jar-with-dependencies.jar 
 
