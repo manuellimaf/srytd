@@ -19,6 +19,7 @@ import ar.com.dccsoft.srytd.api.dto.ManualValuesDTO;
 import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.daos.MappedFieldValueDao;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
+import ar.com.dccsoft.srytd.model.Process;
 
 public class ManualFieldValueService {
 
@@ -80,8 +81,21 @@ public class ManualFieldValueService {
 		});
 	}
 
+	public void update(List<MappedFieldValue> manualValues, Process process) {
+		tryAndInform("Error updating manual values", () -> {
+			transactional(MySQL, (session) -> {
+				for (MappedFieldValue v : manualValues) {
+					v.setProcess(process);
+					dao.udpate(v);
+				}
 
-	public void copy(ManualValuesDTO dto, MappedFieldValue mapped) {
+				return null;
+			});
+			return null;
+		});
+	}
+
+	private void copy(ManualValuesDTO dto, MappedFieldValue mapped) {
 		// This prevents errors when cloning bean with null properties
 		BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
 

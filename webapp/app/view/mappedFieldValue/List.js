@@ -10,7 +10,7 @@ Ext.define('App.view.mappedFieldValue.List', {
     		hideable: false
     	},
     	items: [
-			{ text: 'Dispositivo',  dataIndex: 'deviceId' },
+			{ text: 'Dispositivo', width: 150,  dataIndex: 'deviceId' },
 			{ text: 'C&oacute;digo',  dataIndex: 'code' },
 			{ text: 'F. medici&oacute;n',  dataIndex: 'timestamp' },
 			{ text: 'Tipo', width: 50,  dataIndex: 'valueType' },

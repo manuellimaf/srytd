@@ -35,7 +35,7 @@ public class HibernateUtil {
 	}
 
 	private static SessionFactory buildSQLServerSessionFactory() {
-		return buildSessionFactory("hibernate/hibernate-mysql-scada.cfg.xml", Config.getSqlServerUrl(), Config.getSqlServerUser(),
+		return buildSessionFactory("hibernate/hibernate-sqlserver-scada.cfg.xml", Config.getSqlServerUrl(), Config.getSqlServerUser(),
 				Config.getSqlServerPassword());
 	}
 

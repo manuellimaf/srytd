@@ -93,9 +93,12 @@ public class Processor {
 		// Leer valores manuales
 		List<MappedFieldValue> manualValues = manualFieldValueService.readOneHourValues(process.getValuesFrom());
 		
+		// Asocio los valores manuales a un proceso
+		manualFieldValueService.update(manualValues, process);
+		
 		// Unir ambas listas de valores y perservar solo los que tengan fecha más cercana al final de la hora
 		List<MappedFieldValue> unprocessed = removeDuplicates(ListUtils.sum(fieldValues, manualValues));
-		
+
 		return unprocessed;
 	}
 

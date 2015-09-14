@@ -243,8 +243,10 @@ public class MappedFieldValueService {
 	public void applyForTag(Map<String, TagValue> tagValuesMap, String tag, MappedFieldValue fv, TagValueProcessor processor) {
 		if (StringUtils.isNotBlank(tag)) {
 			TagValue tagValue = tagValuesMap.get(tag);
-			processor.process(tagValue);
-			fv.updateTimestamp(tagValue.getDatetime());
+			if(tagValue != null) {
+				processor.process(tagValue);
+				fv.updateTimestamp(tagValue.getDatetime());
+			}
 		}
 	}
 

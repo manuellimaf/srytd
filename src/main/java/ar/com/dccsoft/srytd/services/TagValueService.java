@@ -83,7 +83,7 @@ public class TagValueService {
 		if(StringUtils.isNotBlank(tag)) {
 			TagValue tagValue = readOneHourValues(from, tag);
 			if(tagValue == null) {
-				logger.warn("Values for tag + " + tag + " not found.");
+				logger.warn("Values for tag " + tag + " not found.");
 				processAlertService.addWarning("Tag without value", 
 						String.format("Could not find value for tag %s", tag));
 			} else {
