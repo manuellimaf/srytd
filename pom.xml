@@ -180,7 +180,10 @@
 							<mainClass>ar.com.dccsoft.srytd.App</mainClass>
 						</manifest>
 					</archive>
-	
+					<descriptors>
+						<descriptor>src/main/resources/assembly/jar.xml</descriptor>
+						<descriptor>src/main/resources/assembly/zip.xml</descriptor>
+					</descriptors>
 				</configuration>
 				<executions>
 					<execution>

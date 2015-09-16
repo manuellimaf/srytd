@@ -37,10 +37,11 @@ public class HttpServer {
 	private static Server createJettyServer() {
 		Server server = new Server(Config.getHttpPort());
 
+		String webappDir = HttpServer.class.getClassLoader().getResource("webapp").toExternalForm();
 		WebAppContext context = new WebAppContext();
 		context.setContextPath(Config.getContextPath());
 		context.setServer(server);
-		context.setWar("webapp");
+		context.setResourceBase(webappDir);
 		context.setWelcomeFiles(new String[] {"/login.html"});
 		context.getSessionHandler().getSessionManager().setMaxInactiveInterval(Integer.MAX_VALUE);
 		
