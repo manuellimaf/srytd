@@ -3,97 +3,85 @@ Ext.define('App.controller.ManualValuesController', {
 	requires: ['App.util.FormSubmit'],
 	
 	init: function() {
-        this.control('gridpanel#manual-value-list', {
-        	selectionchange: this.onSelectionChange
-        });
-        this.control('gridpanel#manual-value-list button[action=deleteManualValue]', {
-    		click: this.deleteManualValue
-        });
-        this.control('manual-values-form combobox[name=deviceId]', {
-        	select: this.onComboSelection
-        });
-        this.control('manual-values-form button[action=update]', {
-    		click: this.updateMapping
-        });
-        this.control('manual-values-form button[action=save]', {
-    		click: this.saveValue
+        this.control({
+        	'manual-values-list button[action=deleteManualValue]': {
+	    		click: this.deleteValue
+	        },
+	        'manual-values-list': {
+	    		edit: this.updateValue
+	        },
+	        'manual-values-list button[action=createManualValue]': {
+	    		click: this.saveValue
+	        }
         });
 	},
 	
 	views: ['manualFieldValue.ManualFieldValueForm'],
     refs: [{
-		selector: 'manual-values-form',
-		ref: 'manualValuesForm'
-	},{
-		selector: 'gridpanel#manual-values-list',
+		selector: 'manual-values-list',
 		ref: 'gridPanel'
 	}],
 	stores: ['ManualFieldValueStore', 'DeviceMappingStore'],
     models: ['ManualFieldValue', 'DeviceMapping'],
 	
-	onSelectionChange: function(model, records) {
-        var rec = records[0];
-        if (rec) {
-	    	var panel = this.getManualValuesForm();
-	    	var form = panel.getForm();
-	    	form.loadRecord(rec);
-	    	this.parseAndSetDate(form, 'valueDate', 'valueTime', rec.get('timestamp'));
-        }
-	},
-	parseAndSetDate: function(form, dateId, timeId, timestamp) {
-    	if(timestamp) {
-    		var datetime = timestamp.split(" ");
-    		vDate = datetime[0];
-    		vTime = datetime[1];
-    		form.setValues([
-    			{id: dateId, value: vDate}, 
-    			{id: timeId, value: vTime}
-    		]);
-    	}
-	},	
-	onComboSelection: function(combo, records) {
-    	var panel = this.getManualValuesForm();
-    	var form = panel.getForm();
-    	var code = "";
-		if(records.length > 0) {
-			var rec = records[0].data;
-			console.log(rec);
-			code = rec.code;
-		} 
-		form.setValues([{id: 'code', value: code}]);
-		
-	},
 	saveValue: function() {
+		var record = new App.model.ManualFieldValue();
 	    var store = this.getStore('ManualFieldValueStore');
-	    var form = this.getManualValuesForm().getForm();
-	    if(form.isValid()) {
-	    	App.util.FormSubmit.submit(form, '/api/manual-field-values', store); 
-		}
+		var editor = this.getGridPanel().getPlugin('mfv-row-editor');
+		
+		store.insert(0, record);
+		editor.startEdit(0, 0);
 	},
 	
-	updateMapping: function() {
-	    var store = this.getStore('ManualFieldValueStore');
-	    var form = this.getManualValuesForm().getForm();
-	    if(form.isValid() && form.getValues().id) {
-	    	App.util.FormSubmit.update(form, '/api/manual-field-values', store); 
-		}
+	updateValue: function(editor, e) {
+	    var selected = this.getGridPanel().getSelectionModel().selected;
+	    if(selected.getCount() > 0) {
+	    	var row = selected.first();
+		    var valueId = row.get('id');
+			var method = valueId ? 'PUT' : 'POST';
+			var store = this.getStore('ManualFieldValueStore');
+		    Ext.Ajax.request({
+	            url: '/api/manual-field-values',
+	            method: method,
+	            headers: {
+	              'Content-Type': 'application/json;charset=utf-8'
+	          	},
+	          	params: Ext.JSON.encode(e.record.data),
+	          	success: function(response, options) {
+					e.record.commit();
+					store.reload();
+	            },
+	            failure: App.util.FormSubmit.failureHandler
+			});
+	    }
 	},
 
-	deleteManualValue: function() {
-	    var form = this.getManualValuesForm().getForm();
-	    if(form.isValid()) {
-	    	var values = form.getValues();
-		    var id = values.id;
-		    var device = values.deviceId;
-		    var store = this.getStore('ManualFieldValueStore');
-		    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar los datos para el dispositivo ' + device + '?',
-			    function(resp) { 
-			    	if(resp == 'yes') {
-				    	App.util.FormSubmit.delete('/api/manual-field-values/' + id, store);
-				    	form.reset();
-				    }
-				}, this);
-		}
-	}
+	deleteValue: function() {
 	
+	    var selected = this.getGridPanel().getSelectionModel().selected;
+	    if(selected.getCount() > 0) {
+	    	var row = selected.first();
+		    var valueId = row.get('id');
+		    var store = this.getStore('ManualFieldValueStore');
+		    if(typeof valueId != 'undefined' && valueId != null) {
+	
+			    Ext.Msg.confirm('Eliminar?', 'Realmente desea eliminar el registro?',
+				    function(resp) { 
+				    	if(resp == 'yes') {
+				            Ext.Ajax.request({
+					            url: '/api/manual-field-values/' + valueId,
+					            method: 'DELETE',
+					          	success: function(response, options) {
+				          			store.reload();
+					                Ext.Msg.alert('Info', 'Operaci&oacute;n concretada con &eacute;xito');
+					            },
+					            failure: App.util.FormSubmit.failureHandler
+							});
+					    }
+					}, this);
+			} else {
+      			store.reload();
+			}
+		}
+	}	
 });

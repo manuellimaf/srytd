@@ -1,5 +1,6 @@
 package ar.com.dccsoft.srytd.services;
 
+import static ar.com.dccsoft.srytd.api.MyObjectMapperProvider.STANDARD_FORMAT;
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
@@ -15,15 +16,19 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.api.dto.ManualValuesDTO;
+import ar.com.dccsoft.srytd.api.dto.ManualValueDTO;
 import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.daos.MappedFieldValueDao;
+import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.Process;
+
+import com.google.common.collect.Lists;
 
 public class ManualFieldValueService {
 
 	private static Logger logger = LoggerFactory.getLogger(ManualFieldValueService.class);
+	private DeviceMappingService deviceService = new DeviceMappingService();
 	private MappedFieldValueDao dao = new MappedFieldValueDao();
 
 	public List<MappedFieldValue> readOneHourValues(Date from) {
@@ -42,8 +47,25 @@ public class ManualFieldValueService {
 		return transactional(MySQL, (session) -> {
 			List<MappedFieldValue> elems = dao.getPageForManualValues(start, limit);
 			Long total = dao.countAllManualValues();
-			return new Page(elems, total);
+			return new Page(asDtoList(elems), total);
 		});
+	}
+
+	private List<ManualValueDTO> asDtoList(List<MappedFieldValue> elems) {
+		List<ManualValueDTO> result = Lists.newLinkedList();
+		for(MappedFieldValue value : elems) {
+			ManualValueDTO dto = new ManualValueDTO();
+			try {
+				BeanUtils.copyProperties(dto, value);
+				String[] datetime = STANDARD_FORMAT.format(value.getTimestamp()).split(" ");
+				dto.setValueDate(datetime[0]);
+				dto.setValueTime(datetime[1]);
+			} catch (Exception e) {
+				throw new RuntimeException("Error generating DTO from manual field value", e);
+			} 
+			result.add(dto);
+		}
+		return result;
 	}
 
 	public MappedFieldValue find(Long id) {
@@ -52,13 +74,12 @@ public class ManualFieldValueService {
 
 	public void deleteManualValue(Long id) {
 		transactional(MySQL, (session) -> {
-			MappedFieldValue value = dao.findManualValue(id);
-			dao.delete(value);
+			dao.delete(find(id));
 			return null;
 		});
 	}
 
-	public void createManualValue(ManualValuesDTO dto, String username) {
+	public void createManualValue(ManualValueDTO dto, String username) {
 		transactional(MySQL, (session) -> {
 			
 			MappedFieldValue mapped = new MappedFieldValue();
@@ -72,7 +93,7 @@ public class ManualFieldValueService {
 		
 	}
 
-	public void updateManualValue(ManualValuesDTO dto) {
+	public void updateManualValue(ManualValueDTO dto) {
 		transactional(MySQL, (session) -> {
 			MappedFieldValue mapped = dao.findManualValue(dto.getId());
 			copy(dto, mapped);
@@ -95,14 +116,18 @@ public class ManualFieldValueService {
 		});
 	}
 
-	private void copy(ManualValuesDTO dto, MappedFieldValue mapped) {
+	private void copy(ManualValueDTO dto, MappedFieldValue mapped) {
 		// This prevents errors when cloning bean with null properties
 		BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
 
 		try {
 			BeanUtils.copyProperties(mapped, dto);
+
+			DeviceMapping mapping = deviceService.getMappingForDevice(dto.getDeviceId());
+			mapped.setCode(mapping.getCode());
+			
 			mapped.setValueType("M");
-			mapped.setTimestamp(parse(dto.getValueDate(), dto.getValueTime(), "dd/MM/yyyy HH:mm"));
+			mapped.setTimestamp(parse(dto.getValueDate(), dto.getValueTime(), "yyyy-MM-dd HH:mm"));
 		} catch (Exception e) {
 			throw new RuntimeException("Error cloning value from DTO to MappingFieldValue", e);
 		}
@@ -112,10 +137,8 @@ public class ManualFieldValueService {
 		try {
 			return DateUtils.parseDate(dateStr + " " + timeStr, format);
 		} catch (ParseException e) {
-			// nothing to do
+			throw new RuntimeException("Error parsing date and time", e);
 		}
-
-		return null;
 	}
 
 }

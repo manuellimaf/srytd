@@ -1,6 +1,7 @@
 Ext.define('App.model.ManualFieldValue', {
     extend: 'Ext.data.Model',
     fields: [
+    	'id',
     	'deviceId',
     	'code',
 		'timestamp',
@@ -43,5 +44,7 @@ Ext.define('App.model.ManualFieldValue', {
 		'volumen_hoy_9300',
 		'densidad',
 		'volumen_bruto_hoy',
-		'volumen_neto_acumulado']
+		'volumen_neto_acumulado',
+		'dateCreated',
+		'createdBy']
 });

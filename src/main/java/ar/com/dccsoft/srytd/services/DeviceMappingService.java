@@ -60,7 +60,7 @@ public class DeviceMappingService {
 
 	public void updateMapping(MappingDTO dto) {
 		transactional(MySQL, (session) -> {
-			DeviceMapping device = dao.findDevice(dto.getId());
+			DeviceMapping device = dao.findDeviceMapping(dto.getId());
 			try {
 				BeanUtils.copyProperties(device, dto);
 			} catch (Exception e) {
@@ -73,24 +73,23 @@ public class DeviceMappingService {
 	}
 
 	public Boolean existsMappingForDevice(String name) {
-		return transactional(MySQL, (session) -> !dao.findByName(name).isEmpty());
+		return transactional(MySQL, (session) -> dao.findByDeviceName(name) != null);
 	}
 
 	public Boolean isValidDevice(Long id, String name) {
 		return transactional(MySQL, (session) -> {
-			DeviceMapping device = dao.findDevice(id);
-			for(DeviceMapping d : dao.findByName(name)) {
-				if(!device.getId().equals(d.getId())) {
-					// Ya existe otro dispositivo con este nombre.
-					return false;
-				}
-			}
-			return true;
+			DeviceMapping device = dao.findDeviceMapping(id);
+			DeviceMapping d = dao.findByDeviceName(name);
+			return device.getId().equals(d.getId());
 		});
 	}
 
+	public DeviceMapping getMappingForDevice(String name) {
+		return transactional(MySQL, (session) -> dao.findByDeviceName(name));
+	}
+	
 	public Boolean existsDevice(Long id) {
-		return transactional(MySQL, (session) -> dao.findDevice(id) != null);
+		return transactional(MySQL, (session) -> dao.findDeviceMapping(id) != null);
 	}
 
 }

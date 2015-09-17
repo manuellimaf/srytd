@@ -71,7 +71,7 @@ Ext.define('App.controller.MainPanelController', {
 
     onShowFieldValues: function() {
     	var body = this.clearBody();
-    	body.add({xtype: 'manual-values-form'});
+    	body.add({xtype: 'manual-values-list'});
     },
 
     onShowConfig: function() {

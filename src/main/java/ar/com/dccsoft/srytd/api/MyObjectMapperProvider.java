@@ -17,7 +17,7 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
 	private ObjectMapper defaultObjectMapper;
-	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	public static DateFormat STANDARD_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 	public MyObjectMapperProvider() {
 		defaultObjectMapper = createDefaultMapper();
@@ -31,7 +31,7 @@ public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	private static ObjectMapper createDefaultMapper() {
 		final ObjectMapper mapper = new ObjectMapper()
 		.configure(SerializationFeature.INDENT_OUTPUT, true)
-		.setDateFormat(df)
+		.setDateFormat(STANDARD_FORMAT)
         .setAnnotationIntrospector(createJaxbJacksonAnnotationIntrospector());
 		
 		return mapper;

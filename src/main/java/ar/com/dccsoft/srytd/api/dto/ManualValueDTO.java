@@ -3,7 +3,7 @@ package ar.com.dccsoft.srytd.api.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ManualValuesDTO {
+public class ManualValueDTO {
 	private Long id;
 	private String code;
 	private String deviceId;
@@ -13,6 +13,9 @@ public class ManualValuesDTO {
 	
 	private String valueType;
 
+	private Date dateCreated;
+	private String createdBy;
+	
 	private BigDecimal presion;
 	private BigDecimal temperatura;
 	private BigDecimal caudal_horario;
@@ -50,6 +53,22 @@ public class ManualValuesDTO {
 	private BigDecimal densidad;
 	private BigDecimal volumen_bruto_hoy;
 	private BigDecimal volumen_neto_acumulado;
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
 	public String getCode() {
 		return code;

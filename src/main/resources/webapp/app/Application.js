@@ -41,7 +41,7 @@ Ext.define('App.Application', {
     
     launch: function () {
     	App.util.ActivityMonitor.init({
-			verbose: true,
+			verbose: false,
 			maxInactive:  (1000 * 60 * 30), // 30 minutes
 			interval: (1000 * 60 * 1), //1 minute
 			isInactive: function () {

@@ -25,7 +25,7 @@
 	<mail-smtp-auth>true</mail-smtp-auth>
 	
 	<!-- Alert mail -->
-	<alert-subject>[SRyTD] Error durante el proceso de envío de mediciones de campo</alert-subject>
+	<alert-subject>[R318] Error durante el proceso de envío de mediciones de campo</alert-subject>
 	<alert-body>
 Se produjo un error cuando el usuario %s realizó el procesamiento de las mediciones 
 de campo a enviar a la secretaría de energía.
@@ -33,7 +33,7 @@ Si necesita más información\, contáctese con un administrador con este códig
 	</alert-body>
 
 	<!-- Process finished notification email -->
-	<finish-subject>[SRyTD][%s] Proceso de envío de mediciones de campo finalizado</finish-subject>
+	<finish-subject>[R318][%s] Proceso de envío de mediciones de campo finalizado</finish-subject>
 	<finish-body>
 El proceso correspondiente a la fecha %s hs. finalizó correctamente. 
 Se adjunta el archivo envíado a la secretaría de energía.

@@ -27,18 +27,10 @@ Ext.define('App.controller.MappingsController', {
 	createMapping: function() {
 		var record = new App.model.Mapping();
 	    var store = this.getStore('MappingStore');
-
 		var editor = this.getGridPanel().getPlugin('row-editor');
-		// edit.cancelEdit();
 		
 		store.insert(0, record);
 		editor.startEdit(0, 0);
-	
-	
-	    //var form = this.getMappingsForm().getForm();
-	    //if(form.isValid()) {
-	    //	App.util.FormSubmit.submit(form, '/api/mapping', store); 
-		//}
 	},
 	
 	updateMapping: function(editor, e) {

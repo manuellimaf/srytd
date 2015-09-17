@@ -5,7 +5,6 @@ import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.MySQL;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -31,12 +30,12 @@ public class DeviceMappingDao {
 				.setProjection(Projections.countDistinct("id")).uniqueResult();
 	}
 
-	public DeviceMapping findDevice(Long id) {
+	public DeviceMapping findDeviceMapping(Long id) {
 		return (DeviceMapping) MySQL.currentSession().get(DeviceMapping.class, id);
 	}
 	
 	public void delete(Long id) {
-		DeviceMapping device = findDevice(id);
+		DeviceMapping device = findDeviceMapping(id);
 		MySQL.currentSession().delete(device);
 	}
 
@@ -48,13 +47,12 @@ public class DeviceMappingDao {
 		MySQL.currentSession().update(device);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<DeviceMapping> findByName(String name) {
-		return MySQL.currentSession()
+	public DeviceMapping findByDeviceName(String name) {
+		return (DeviceMapping) MySQL.currentSession()
 				.createCriteria(DeviceMapping.class)
 				.add(Restrictions.eq("name", name))
-				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-				.list();
+				.setMaxResults(1)
+				.uniqueResult();
 	}
 
 }

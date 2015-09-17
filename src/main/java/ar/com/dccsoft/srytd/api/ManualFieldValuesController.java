@@ -26,7 +26,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.api.dto.ManualValuesDTO;
+import ar.com.dccsoft.srytd.api.dto.ManualValueDTO;
 import ar.com.dccsoft.srytd.api.dto.Page;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
 import ar.com.dccsoft.srytd.model.ProcessStatus;
@@ -47,7 +47,7 @@ public class ManualFieldValuesController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveValue(ManualValuesDTO dto, @Context HttpServletRequest request) {
+	public Response saveValue(ManualValueDTO dto, @Context HttpServletRequest request) {
 		logger.info("Persisting manual value");
 
 		String username = request.getRemoteUser();
@@ -59,7 +59,7 @@ public class ManualFieldValuesController {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateManualValue(ManualValuesDTO dto) {
+	public Response updateManualValue(ManualValueDTO dto) {
 		logger.info("Updating manual value id " + dto.getId());
 
 		updateValidations(dto);
@@ -79,7 +79,7 @@ public class ManualFieldValuesController {
 		return Response.status(200).build();
 	}
 	
-	private void updateValidations(ManualValuesDTO dto) {
+	private void updateValidations(ManualValueDTO dto) {
 		validateOrNotFound(() -> {
 			if(dto.getId() != null) {
 				 MappedFieldValue value = service.find(dto.getId());
@@ -96,7 +96,7 @@ public class ManualFieldValuesController {
 		genericValidations(dto);
 	}
 
-	private void createValidations(ManualValuesDTO dto) {
+	private void createValidations(ManualValueDTO dto) {
 		genericValidations(dto);
 	}
 
@@ -113,13 +113,23 @@ public class ManualFieldValuesController {
 	}
 	
 
-	public void genericValidations(ManualValuesDTO dto) {
+	public void genericValidations(ManualValueDTO dto) {
 		validateOrFail("Dispositivo es requerido", () -> isNotEmpty(dto.getDeviceId()));
-		validateOrFail("Código es requerido", () -> isNotEmpty(dto.getCode()));
 		validateOrFail("Fecha y hora de medición son requeridos", () -> 
 			isNotEmpty(dto.getValueDate()) && isNotEmpty(dto.getValueDate()));
-		validateOrFail("Formato inválido de fecha y hora de medición (o fecha en el futuro)", () -> 
-			isValidDate(dto.getValueDate() + " " + dto.getValueTime(), "dd/MM/yyyy HH:mm"));
+
+		validateOrFail("Formato inválido de fecha y hora de medición (o fecha en el futuro)", () -> {
+			// FIXME - Indeseable efeceto de lado en la validación. Hacer que ExtJs mande los datos como corresponde. 
+			String dateStr = dto.getValueDate().split("T")[0];
+			String timeStr = dto.getValueTime().split("T")[1].substring(0, 5);
+			logger.debug(String.format("Validating date (%s) and time (%s)", dateStr, timeStr));
+			boolean isValid = isValidDate(dateStr + " " + timeStr, "yyyy-MM-dd HH:mm");
+			if(isValid) {
+				dto.setValueDate(dateStr);
+				dto.setValueTime(timeStr);
+			}
+			return isValid;
+		});
 	}
 
 	private boolean isValidDate(String dateStr, String... formats) {

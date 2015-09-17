@@ -31,10 +31,8 @@ Ext.define('App.controller.LoginController', {
 		            Ext.Ajax.request({
 			            url: '/api/auth/role',
 			          	success: function(response, options) {
-			          		console.log(response.responseText);
 			          		var role = response.responseText;
 			          		localStorage.setItem('ROLE', role);
-	          		
 					        location.href = 'index.html';
 					    }
 					});
