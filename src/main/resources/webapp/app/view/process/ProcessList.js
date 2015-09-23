@@ -5,6 +5,7 @@ Ext.define('App.view.process.ProcessList', {
     title: 'Env&iacute;os',
 	border: false,
     autoScroll: true,
+    
     store: 'ProcessStore',
     columns: [
         { text: 'C&oacute;digo',  dataIndex: 'id' },

@@ -1,6 +1,7 @@
 package ar.com.dccsoft.srytd.utils.ftp;
 
 import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
+import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +31,7 @@ public class PlainFTPConnector implements FTPConnector {
 					try {
 						ftp.disconnect();
 					} catch (IOException ioe) {
-						logger.warn(String.format("Error disconnecting from FTP server: %s", ioe.getMessage()));
+						logger.warn(format("Error disconnecting from FTP server: %s", ioe.getMessage()));
 					}
 				}
 			}
@@ -52,28 +53,28 @@ public class PlainFTPConnector implements FTPConnector {
 	private FTPClient connect(String server, Integer port) {
 		FTPClient ftpClient = new FTPClient();
 		try {
-			logger.info(String.format("Connecting to FTP server at %s:%d", server, port));
+			logger.info(format("Connecting to FTP server at %s:%d", server, port));
 			ftpClient.connect(server, port);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
 		int reply = ftpClient.getReplyCode();
-		logger.info(String.format("FTP server connection response: %d", reply));
+		logger.info(format("FTP server connection response: %d", reply));
 
 		if (!FTPReply.isPositiveCompletion(reply)) {
 			throw new RuntimeException("FTP server refused connection.");
 		}
 
-		logger.info(String.format("Connected to %s:%d", server, port));
+		logger.info(format("Connected to %s:%d", server, port));
 		return ftpClient;
 	}
 
 	private void login(FTPClient ftp, String username, String password) {
-		logger.info(String.format("About to login to FTP Server (username: '%s')", username));
+		logger.info(format("About to login to FTP Server (username: '%s')", username));
 		try {
 			if (!ftp.login(username, password)) {
-				throw new RuntimeException(String.format("Access denied for '%s'", username));
+				throw new RuntimeException(format("Access denied for '%s'", username));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -91,9 +92,12 @@ public class PlainFTPConnector implements FTPConnector {
 	}
 
 	private void sendFile(FTPClient ftp, InputStream is, String fileName) {
-		logger.info(String.format("Starting to send file %s", fileName));
+		logger.info(format("Starting to send file %s", fileName));
 		try {
-			ftp.storeFile(fileName, is);
+			boolean success = ftp.storeFile(fileName, is);
+			if(!success) {
+				throw new RuntimeException("File could not been correctly stored");
+			}
 		} catch (IOException e) {
 			throw new RuntimeException("Error transferring file", e);
 		}

@@ -38,9 +38,7 @@ Ext.define('App.controller.LoginController', {
 					});
 	            },
 	            failure: function(response, options) {
-		        	if(response.status <= 0) {
-	    	    		Ext.Msg.alert('Error', 'No es posible conectarse al servidor');
-	        		} else if(response.status == 401) {
+		        	if(response.status == 401) {
 		        		Ext.Msg.alert('No autorizado', 'Usuario/Contrase&nacute;a inv&aacute;lidos');
 		        	} else {
 		                Ext.Msg.alert('Error ' + response.status, response.responseText);

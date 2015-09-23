@@ -1,6 +1,9 @@
 Ext.define('App.controller.ProcessController', {
     extend: 'Ext.app.Controller',
 
+    runner: null,
+    task: null,
+
 	init: function() {
         this.control({
 	        'process-list': {
@@ -29,6 +32,17 @@ Ext.define('App.controller.ProcessController', {
 	    		click: this.downloadFile
 	        }
 		});
+		
+		Ext.apply(this, {}, {
+            runner: new Ext.util.TaskRunner(),
+            ui: Ext.getBody(),
+            task: {
+                run: this.refreshGrid,
+                interval: (1000 * 10),
+                scope: this
+            }
+        });
+        this.runner.start(this.task);
     },
     
     views: ['process.ProcessList', 'process.Result', 'mappedFieldValue.List', 'process.ManualSendView'],
@@ -102,12 +116,22 @@ Ext.define('App.controller.ProcessController', {
     	Ext.create('App.view.process.ManualSendView').show();
     },
     
+    refreshGrid: function() {
+    	console.log("Refresing grid");
+    	var grid = this.getProcessList();
+    	grid.view.loadMask.maskOnDisable = false;
+		var emptyLoadMask = grid.view.loadMask.disable();
+		this.getStore('ProcessStore').reload(function(){
+            emptyLoadMask.enable();
+        });
+    },
+    
     startProcess: function () {
     	var window = this.getManualSendView();
 		var form = window.down('form').getForm();
 		var store = this.getStore('ProcessStore');
 		App.util.FormSubmit.submit(form, '/api/process/start', store);
-		store.reload();
+		Ext.Msg.alert('Informaci&oacute;n', 'El proceso comenz&oacute; correctamente, el mismo puede demorar varios minutos.');
 		window.close();
     },
     

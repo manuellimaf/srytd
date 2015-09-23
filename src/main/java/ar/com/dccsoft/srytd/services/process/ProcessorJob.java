@@ -22,7 +22,7 @@ public class ProcessorJob implements Job {
 	    logger.info(jobKey + " - Processor job execution started");
 
 		Date from = new Date();
-		from = DateUtils.truncate(from, Calendar.HOUR_OF_DAY);
+		from = DateUtils.addHours(DateUtils.truncate(from, Calendar.HOUR_OF_DAY), -1);
 		new Processor().start(from, USER);
 
 		logger.info(jobKey + " - Processor job execution finished");
