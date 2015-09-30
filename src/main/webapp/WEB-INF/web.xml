@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<display-name>R318</display-name>
+	
+	<!-- Session Configuration -->
+	<session-config> <!-- 720 minutes -->
+		<session-timeout>720</session-timeout>
+	</session-config>
+	
+	<!-- Jersey Servlet -->
+	<servlet>
+		<servlet-name>R318JerseyServlet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.fasterxml.jackson.jaxrs.json;jersey.jetty.embedded;ar.com.dccsoft.srytd.api</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>R318JerseyServlet</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Security Filter -->
+	<filter>
+		<filter-name>SecurityFilter</filter-name>
+		<filter-class>org.securityfilter.filter.SecurityFilter</filter-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/classes/security/securityfilter-config.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>validate</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginSubmitPattern</param-name>
+			<param-value>/api/auth</param-value>
+		</init-param>
+	</filter>
+	
+	<!-- Filter Mappings -->
+	<filter-mapping>
+		<filter-name>SecurityFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+	
+	<listener>
+		<listener-class>ar.com.dccsoft.srytd.utils.Initializer</listener-class>
+	</listener>
+	
+	<!-- Welcome File -->
+	<welcome-file-list>
+		<welcome-file>login.html</welcome-file>
+	</welcome-file-list>
+</web-app>

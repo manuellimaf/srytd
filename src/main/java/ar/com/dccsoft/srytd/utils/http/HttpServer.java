@@ -46,6 +46,7 @@ public class HttpServer {
 		context.getSessionHandler().getSessionManager().setMaxInactiveInterval(Integer.MAX_VALUE);
 		
 		FilterHolder securityFilterHolder = new FilterHolder(SecurityFilter.class);
+		securityFilterHolder.setInitParameter(SecurityFilter.CONFIG_FILE_KEY, "/WEB-INF/classes/security/securityfilter-config.xml");
 		securityFilterHolder.setInitParameter("validate", "true");
 		securityFilterHolder.setInitParameter(FormAuthenticator.LOGIN_SUBMIT_PATTERN_KEY, "/api/auth");
 		context.addFilter(securityFilterHolder, "*.html", EnumSet.of(DispatcherType.REQUEST));

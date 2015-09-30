@@ -1,4 +1,5 @@
 #!/bin/sh
 
-java -Dlogback.configurationFile=$HOME"/srytd/logback.xml" -Dr318.configLocation=$HOME"/srytd/config.xml" -jar target/srytd-jar-with-dependencies.jar 
+export JAVA_OPTS="-server -Xmx512m -Dlogback.configurationFile=$HOME/srytd/logback.xml -Dr318.configLocation=$HOME/srytd/config.xml"
+/usr/local/tomcat/bin/startup.sh
 
