@@ -22,21 +22,31 @@ import javax.mail.util.ByteArrayDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ar.com.dccsoft.srytd.utils.Config;
-
 import com.google.common.collect.Lists;
+
+import ar.com.dccsoft.srytd.utils.Config;
 
 public class MailService {
 
 	private static Logger log = LoggerFactory.getLogger(MailService.class);
 
 	public void send(String subject, String body, List<String> recipients) {
+		if(recipients.isEmpty()) {
+			log.warn("Trying to send email to an empty list of recipients!");
+			return;
+		}
+		
 		InternetAddress[] to = createInternetAddresses(recipients);
 		Message message = createMessage(subject, body, to);
 		send(message);
 	}
 
 	public void send(String subject, String body, List<String> recipients, byte[] attachment, String attachmentName, String attachmentType) {
+		if(recipients.isEmpty()) {
+			log.warn("Trying to send email to an empty list of recipients!");
+			return;
+		}
+
 		InternetAddress[] to = createInternetAddresses(recipients);
 		Multipart multipart = createMultipartBody(body, attachment, attachmentName, attachmentType);
 		Message message = createMultipartMessage(subject, multipart, to);
@@ -45,7 +55,6 @@ public class MailService {
 
 	private void send(Message message) {
 		try {
-			
 			log.debug("About to send email");
 			Transport.send(message);
 			log.debug("Email sent");

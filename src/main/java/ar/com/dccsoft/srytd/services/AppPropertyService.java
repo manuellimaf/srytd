@@ -6,11 +6,13 @@ import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactio
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Lists;
+
 import ar.com.dccsoft.srytd.api.dto.PropertiesDTO;
 import ar.com.dccsoft.srytd.daos.AppPropertyDao;
 import ar.com.dccsoft.srytd.model.AppProperty;
-
-import com.google.common.collect.Lists;
 
 // FIXME - Hacer que tenga un mapa con las propiedades en memoria y que se puedan recargar
 public class AppPropertyService {
@@ -64,7 +66,7 @@ public class AppPropertyService {
 	}
 
 	private List<String> asRecipientsList(AppProperty prop) {
-		if (prop != null) {
+		if (prop != null && StringUtils.isNotBlank(prop.getValue())) {
 			return Arrays.asList(prop.getValue().split(RECIPIENTS_DELIMITER));
 		}
 		return Lists.newArrayList();

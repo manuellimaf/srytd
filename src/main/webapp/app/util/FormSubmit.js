@@ -49,7 +49,7 @@ Ext.define('App.util.FormSubmit', {
         		Ext.Msg.alert('Error de usaurio', response.responseText);
         	} else if(response.status == 401) {
         		Ext.Msg.alert('No autorizado', response.responseText);
-        	} else {
+        	} else if(response.status > 0) {
                 Ext.Msg.alert('Error ' + response.status, response.responseText);
         	}
         }
