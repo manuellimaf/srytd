@@ -29,6 +29,9 @@ public class FileBuilder {
 	private List<MappedFieldValue> mappings;
 	private AppPropertyService propService = new AppPropertyService();
 
+	private String Q_OK = "ok";
+	private String Q_ERROR = "ec";
+	
 	public FileBuilder withMappings(List<MappedFieldValue> mappings) {
 		this.mappings = mappings;
 		return this;
@@ -54,24 +57,24 @@ public class FileBuilder {
 
 					// TODO - Ojo con los campos inicio/fin transac!! (no se si son números o fechas)
 					printer.printRecord(ID_EMPRESA, v.getDeviceId(), code, timestamp, readingType, numFormat(v.getPresion()),
-					v.getPresion_q(), numFormat(v.getTemperatura()), v.getTemperatura_q(), numFormat(v.getCaudal_horario()),
-					v.getCaudal_horario_q(), numFormat(v.getVolumen_bruto_acumulado()), v.getVolumen_bruto_acumulado_q(),
-					numFormat(v.getVolumen_neto_hoy()), v.getVolumen_neto_hoy_q(), numFormat(v.getCaudal_horario_9300()),
-					v.getCaudal_horario_9300_q(), numFormat(v.getVolumen_acumulado_9300()), v.getVolumen_acumulado_9300_q(),
-					numFormat(v.getVolumen_desplazado()), v.getVolumen_desplazado_q(), numFormat(v.getAltura_liquida()),
-					v.getAltura_liquida_q(), numFormat(v.getMf()), v.getMf_q(), numFormat(v.getCtl()), v.getCtl_q(),
-					numFormat(v.getCpl()), v.getCpl_q(), numFormat(v.getFactor_k()), v.getFactor_k_q(),
-					numFormat(v.getPulsos_brutos()), v.getPulsos_brutos_q(), numFormat(v.getFcv()), v.getFcv_q(),
-					numFormat(v.getCtsh()), v.getCtsh_q(), numFormat(v.getPorcentaje_agua()), v.getPorcentaje_agua_q(),
-					numFormat(v.getPoder_calorifico()), v.getPoder_calorifico_q(), numFormat(v.getDensidad_relativa()),
-					v.getDensidad_relativa_q(), numFormat(v.getCo2()), v.getCo2_q(), numFormat(v.getN2()), v.getN2_q(),
-					numFormat(v.getSh2()), v.getSh2_q(), numFormat(v.getC1()), v.getC1_q(), numFormat(v.getC2()), v.getC2_q(),
-					numFormat(v.getC3()), v.getC3_q(), numFormat(v.getIc4()), v.getIc4_q(), numFormat(v.getNc4()), v.getNc4_q(),
-					numFormat(v.getIc5()), v.getIc5_q(), numFormat(v.getNc5()), v.getNc5_q(), numFormat(v.getC6()), v.getC6_q(),
-					numFormat(v.getVolumen_seco()), v.getVolumen_seco_q(), numFormat(v.getInicio_transac()), v.getInicio_transac_q(),
-					numFormat(v.getFin_transac()), v.getFin_transac_q(), numFormat(v.getVolumen_hoy_9300()), v.getVolumen_hoy_9300_q(),
-					numFormat(v.getDensidad()), v.getDensidad_q(), numFormat(v.getVolumen_bruto_hoy()), v.getVolumen_bruto_hoy_q(),
-					numFormat(v.getVolumen_neto_acumulado()), v.getVolumen_neto_acumulado_q());
+					qFormat(v.getPresion_q()), numFormat(v.getTemperatura()), qFormat(v.getTemperatura_q()), numFormat(v.getCaudal_horario()),
+					qFormat(v.getCaudal_horario_q()), numFormat(v.getVolumen_bruto_acumulado()), qFormat(v.getVolumen_bruto_acumulado_q()),
+					numFormat(v.getVolumen_neto_hoy()), qFormat(v.getVolumen_neto_hoy_q()), numFormat(v.getCaudal_horario_9300()),
+					qFormat(v.getCaudal_horario_9300_q()), numFormat(v.getVolumen_acumulado_9300()), qFormat(v.getVolumen_acumulado_9300_q()),
+					numFormat(v.getVolumen_desplazado()), qFormat(v.getVolumen_desplazado_q()), numFormat(v.getAltura_liquida()),
+					qFormat(v.getAltura_liquida_q()), numFormat(v.getMf()), qFormat(v.getMf_q()), numFormat(v.getCtl()), qFormat(v.getCtl_q()),
+					numFormat(v.getCpl()), qFormat(v.getCpl_q()), numFormat(v.getFactor_k()), qFormat(v.getFactor_k_q()),
+					numFormat(v.getPulsos_brutos()), qFormat(v.getPulsos_brutos_q()), numFormat(v.getFcv()), qFormat(v.getFcv_q()),
+					numFormat(v.getCtsh()), qFormat(v.getCtsh_q()), numFormat(v.getPorcentaje_agua()), qFormat(v.getPorcentaje_agua_q()),
+					numFormat(v.getPoder_calorifico()), qFormat(v.getPoder_calorifico_q()), numFormat(v.getDensidad_relativa()),
+					qFormat(v.getDensidad_relativa_q()), numFormat(v.getCo2()), qFormat(v.getCo2_q()), numFormat(v.getN2()), qFormat(v.getN2_q()),
+					numFormat(v.getSh2()), qFormat(v.getSh2_q()), numFormat(v.getC1()), qFormat(v.getC1_q()), numFormat(v.getC2()), qFormat(v.getC2_q()),
+					numFormat(v.getC3()), qFormat(v.getC3_q()), numFormat(v.getIc4()), qFormat(v.getIc4_q()), numFormat(v.getNc4()), qFormat(v.getNc4_q()),
+					numFormat(v.getIc5()), qFormat(v.getIc5_q()), numFormat(v.getNc5()), qFormat(v.getNc5_q()), numFormat(v.getC6()), qFormat(v.getC6_q()),
+					numFormat(v.getVolumen_seco()), qFormat(v.getVolumen_seco_q()), numFormat(v.getInicio_transac()), qFormat(v.getInicio_transac_q()),
+					numFormat(v.getFin_transac()), qFormat(v.getFin_transac_q()), numFormat(v.getVolumen_hoy_9300()), qFormat(v.getVolumen_hoy_9300_q()),
+					numFormat(v.getDensidad()), qFormat(v.getDensidad_q()), numFormat(v.getVolumen_bruto_hoy()), qFormat(v.getVolumen_bruto_hoy_q()),
+					numFormat(v.getVolumen_neto_acumulado()), qFormat(v.getVolumen_neto_acumulado_q()));
 
 					result.addProcessedValue();
 				}
@@ -106,6 +109,12 @@ public class FileBuilder {
 				"Volumen_neto_acumulado_q");
 	}
 
+	private String qFormat(String value) {
+		if (value == null)
+			return "";
+		return "0".equals(value)? Q_OK: Q_ERROR;
+	}
+	
 	private NumberFormat numberFormat() {
 		DecimalFormatSymbols syms = DecimalFormatSymbols.getInstance();
 		syms.setDecimalSeparator(Config.getDecimalSeparator());
