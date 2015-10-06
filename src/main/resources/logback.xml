@@ -24,7 +24,8 @@
   <logger name="org.eclipse.jetty" level="INFO" />
   <logger name="org.hibernate" level="INFO" />
   <logger name="org.hibernate.type" level="OFF" /> <!-- For Hibernate queries with params use TRACE -->
-	
+  <logger name="com.zaxxer" level="WARN"/>
+  	
   <root level="DEBUG">
     <appender-ref ref="FILE" />
     <appender-ref ref="STDOUT" />
