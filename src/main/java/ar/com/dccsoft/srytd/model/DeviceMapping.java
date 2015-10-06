@@ -10,6 +10,8 @@ public class DeviceMapping {
 	/** Tag code assigned by authority **/
 	private String code;
 	
+	private Integer timeOffset = 0;
+	
 	private Date creationDate;
 	private String createdBy;
 
@@ -53,6 +55,14 @@ public class DeviceMapping {
 	
 	public String getPresion() {
 		return presion;
+	}
+
+	public Integer getTimeOffset() {
+		return timeOffset;
+	}
+
+	public void setTimeOffset(Integer timeOffset) {
+		this.timeOffset = timeOffset;
 	}
 
 	public void setPresion(String presion) {

@@ -4,6 +4,7 @@ Ext.define('App.model.Mapping', {
 		'id', 
     	'name', 
     	'code',
+    	'timeOffset',
     	'presion',
 		'temperatura',
 		'caudal_horario',

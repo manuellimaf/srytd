@@ -8,6 +8,7 @@ public class MappingDTO {
 	private Long id;
 	private String name;
 	private String code;
+	private Integer timeOffset;
 	private Date creationDate;
 	private String createdBy;
 	
@@ -49,6 +50,13 @@ public class MappingDTO {
 	private String volumen_bruto_hoy;
 	private String volumen_neto_acumulado;
 
+	
+	public Integer getTimeOffset() {
+		return timeOffset;
+	}
+	public void setTimeOffset(Integer timeOffset) {
+		this.timeOffset = timeOffset;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -37,6 +37,7 @@ Ext.define('App.view.config.MappingsForm', {
     	items: [
 	        { text: 'Dispositivo', width: 130, dataIndex: 'name', editor: { xtype: 'textfield', allowBlank: false } },
 	        { text: 'C&oacute;digo', width: 130, dataIndex: 'code', editor: { xtype: 'textfield', allowBlank: false } },
+	        { text: 'Offset<br/>mediciones [segs]', width: 110, dataIndex: 'timeOffset', editor: { xtype: 'numberfield', decimalPrecision: 0,  allowDecimals: false, allowBlank: false } },
 	        { 
 	        	text: 'Mapeo de tags',
 	        	columns: [

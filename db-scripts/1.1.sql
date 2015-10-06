@@ -1,0 +1,1 @@
+alter table device_mapping add column time_offset int(11) default 0;

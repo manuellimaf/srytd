@@ -4,11 +4,11 @@ import static ar.com.dccsoft.srytd.utils.errors.ErrorHandler.tryAndInform;
 import static ar.com.dccsoft.srytd.utils.hibernate.Datasource.SQLSERVER;
 import static ar.com.dccsoft.srytd.utils.hibernate.TransactionManager.transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import jersey.repackaged.com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -18,12 +18,14 @@ import org.slf4j.LoggerFactory;
 import ar.com.dccsoft.srytd.daos.TagValueDao;
 import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.model.TagValue;
+import jersey.repackaged.com.google.common.collect.Sets;
 
 public class TagValueService {
 
 	private static Logger logger = LoggerFactory.getLogger(TagValueService.class);
-	private ProcessAlertService processAlertService = new ProcessAlertService();
+	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	private ProcessAlertService processAlertService = new ProcessAlertService();
 	private TagValueDao tagDao = new TagValueDao();
 
 	public Set<TagValue> readOneHourValues(Date from, List<DeviceMapping> deviceMappings) {
@@ -32,46 +34,49 @@ public class TagValueService {
 				Set<TagValue> values = Sets.newHashSet();
 				
 				for (DeviceMapping device : deviceMappings) {
-					logger.info(String.format("Reading values for device %s", device.getName()));
+					Date adjustedFrom = DateUtils.addSeconds(from, device.getTimeOffset());
 					
-					appendValueOrAlert(values, device.getPresion(), from);
-					appendValueOrAlert(values, device.getTemperatura(), from);
-					appendValueOrAlert(values, device.getCaudal_horario(), from);
-					appendValueOrAlert(values, device.getVolumen_bruto_acumulado(), from);
-					appendValueOrAlert(values, device.getVolumen_neto_hoy(), from);
-					appendValueOrAlert(values, device.getCaudal_horario_9300(), from);
-					appendValueOrAlert(values, device.getVolumen_acumulado_9300(), from);
-					appendValueOrAlert(values, device.getVolumen_desplazado(), from);
-					appendValueOrAlert(values, device.getAltura_liquida(), from);
-					appendValueOrAlert(values, device.getMf(), from);
-					appendValueOrAlert(values, device.getCtl(), from);
-					appendValueOrAlert(values, device.getCpl(), from);
-					appendValueOrAlert(values, device.getFactor_k(), from);
-					appendValueOrAlert(values, device.getPulsos_brutos(), from);
-					appendValueOrAlert(values, device.getFcv(), from);
-					appendValueOrAlert(values, device.getCtsh(), from);
-					appendValueOrAlert(values, device.getPorcentaje_agua(), from);
-					appendValueOrAlert(values, device.getPoder_calorifico(), from);
-					appendValueOrAlert(values, device.getDensidad_relativa(), from);
-					appendValueOrAlert(values, device.getCo2(), from);
-					appendValueOrAlert(values, device.getN2(), from);
-					appendValueOrAlert(values, device.getSh2(), from);
-					appendValueOrAlert(values, device.getC1(), from);
-					appendValueOrAlert(values, device.getC2(), from);
-					appendValueOrAlert(values, device.getC3(), from);
-					appendValueOrAlert(values, device.getIc4(), from);
-					appendValueOrAlert(values, device.getNc4(), from);
-					appendValueOrAlert(values, device.getIc5(), from);
-					appendValueOrAlert(values, device.getNc5(), from);
-					appendValueOrAlert(values, device.getC6(), from);
-					appendValueOrAlert(values, device.getVolumen_seco(), from);
-					appendValueOrAlert(values, device.getInicio_transac(), from);
-					appendValueOrAlert(values, device.getFin_transac(), from);
-					appendValueOrAlert(values, device.getVolumen_hoy_9300(), from);
-					appendValueOrAlert(values, device.getDensidad(), from);
-					appendValueOrAlert(values, device.getVolumen_bruto_hoy(), from);
-					appendValueOrAlert(values, device.getVolumen_neto_hoy(), from);
-					appendValueOrAlert(values, device.getPresion(), from);
+					logger.info(String.format(
+							"Reading 1 hour values for device %s starting at %s", device.getName(), format.format(adjustedFrom)));
+					
+					appendValueOrAlert(values, device.getPresion(), adjustedFrom);
+					appendValueOrAlert(values, device.getTemperatura(), adjustedFrom);
+					appendValueOrAlert(values, device.getCaudal_horario(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_bruto_acumulado(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_neto_hoy(), adjustedFrom);
+					appendValueOrAlert(values, device.getCaudal_horario_9300(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_acumulado_9300(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_desplazado(), adjustedFrom);
+					appendValueOrAlert(values, device.getAltura_liquida(), adjustedFrom);
+					appendValueOrAlert(values, device.getMf(), adjustedFrom);
+					appendValueOrAlert(values, device.getCtl(), adjustedFrom);
+					appendValueOrAlert(values, device.getCpl(), adjustedFrom);
+					appendValueOrAlert(values, device.getFactor_k(), adjustedFrom);
+					appendValueOrAlert(values, device.getPulsos_brutos(), adjustedFrom);
+					appendValueOrAlert(values, device.getFcv(), adjustedFrom);
+					appendValueOrAlert(values, device.getCtsh(), adjustedFrom);
+					appendValueOrAlert(values, device.getPorcentaje_agua(), adjustedFrom);
+					appendValueOrAlert(values, device.getPoder_calorifico(), adjustedFrom);
+					appendValueOrAlert(values, device.getDensidad_relativa(), adjustedFrom);
+					appendValueOrAlert(values, device.getCo2(), adjustedFrom);
+					appendValueOrAlert(values, device.getN2(), adjustedFrom);
+					appendValueOrAlert(values, device.getSh2(), adjustedFrom);
+					appendValueOrAlert(values, device.getC1(), adjustedFrom);
+					appendValueOrAlert(values, device.getC2(), adjustedFrom);
+					appendValueOrAlert(values, device.getC3(), adjustedFrom);
+					appendValueOrAlert(values, device.getIc4(), adjustedFrom);
+					appendValueOrAlert(values, device.getNc4(), adjustedFrom);
+					appendValueOrAlert(values, device.getIc5(), adjustedFrom);
+					appendValueOrAlert(values, device.getNc5(), adjustedFrom);
+					appendValueOrAlert(values, device.getC6(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_seco(), adjustedFrom);
+					appendValueOrAlert(values, device.getInicio_transac(), adjustedFrom);
+					appendValueOrAlert(values, device.getFin_transac(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_hoy_9300(), adjustedFrom);
+					appendValueOrAlert(values, device.getDensidad(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_bruto_hoy(), adjustedFrom);
+					appendValueOrAlert(values, device.getVolumen_neto_hoy(), adjustedFrom);
+					appendValueOrAlert(values, device.getPresion(), adjustedFrom);
 				}
 				return values;
 			});
@@ -83,9 +88,9 @@ public class TagValueService {
 		if(StringUtils.isNotBlank(tag)) {
 			TagValue tagValue = readOneHourValues(from, tag);
 			if(tagValue == null) {
-				logger.warn("Values for tag " + tag + " not found.");
-				processAlertService.addWarning("Tag without value", 
-						String.format("Could not find value for tag %s", tag));
+				String msg = String.format("Values for tag %s not found.", tag);
+				logger.warn(msg);
+				processAlertService.addWarning("Tag without value", msg);
 			} else {
 				values.add(tagValue);
 			}

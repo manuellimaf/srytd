@@ -101,6 +101,7 @@ public class MappingController {
 	public void requiredValidations(MappingDTO dto) {
 		validateOrFail("Dispositivo es requerido", () -> isNotEmpty(dto.getName()));
 		validateOrFail("Código es requerido", () -> isNotEmpty(dto.getCode()));
+		validateOrFail("Offset es requerido", () -> dto.getTimeOffset() != null);
 	}
 
 }

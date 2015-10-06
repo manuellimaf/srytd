@@ -11,6 +11,8 @@
 		
 		<property name="name" not-null="true"/>
 		<property name="code" not-null="true"/>
+		<property name="timeOffset" column="time_offset" not-null="true"/>
+
 		<property name="creationDate" column="creation_date" not-null="true"/>
 		<property name="createdBy" column="created_by" not-null="true"/>
 
