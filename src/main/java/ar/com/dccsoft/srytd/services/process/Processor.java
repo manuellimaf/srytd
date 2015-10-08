@@ -151,7 +151,8 @@ public class Processor {
 		String facilityId = propService.getFacilityId();
 		String suffix = "res318_mediciones.txt";
 
-		return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
+		//return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
+		return String.format("%s_%s_2020%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, suffix);
 	}
 
 	private String formatDate(Date from) {

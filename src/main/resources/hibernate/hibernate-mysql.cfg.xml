@@ -28,7 +28,7 @@
         <property name="hbm2ddl.auto">update</property>
 
 		<!-- Mappings -->
-		<mapping resource="hibernate/MappedFieldValue.xml"/>
+	<mapping resource="hibernate/MappedFieldValue.xml"/>
         <mapping resource="hibernate/Process.xml"/>
         <mapping resource="hibernate/DeviceMapping.xml"/>
         <mapping resource="hibernate/ProcessAlert.xml"/>

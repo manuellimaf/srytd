@@ -7,18 +7,18 @@
 	<sqlserver-password>SQLs3rv3r</sqlserver-password>
 
 	<!-- MySQL datasource properties -->
-	<mysql-url>jdbc:mysql://127.0.0.1/srytd</mysql-url>
+	<mysql-url>jdbc:mysql://localhost/r318</mysql-url>
 	<mysql-user>root</mysql-user>
-	<mysql-password>root</mysql-password>
+	<mysql-password></mysql-password>
 	
 	<!-- Quartz ProcessorJob -->
 	<job-expression>0 0 0/1 * * ? *</job-expression>
 	
 	<!-- Mail properties -->
-	<mail-from>srytd@gmail.com</mail-from>
-	<mail-user>srytd@gmail.com</mail-user>
-	<mail-password>srytd</mail-password>
-	<mail-smtp-host>smtp.gmail.com</mail-smtp-host>
+	<mail-from>r318@dccsoft.com.ar</mail-from>
+	<mail-user>AKIAJ7OQJKCY4EUETX2A</mail-user>
+	<mail-password>Ati0dmE2GljxlvCSnFY7L/bZqqBDpGionTggnmuSTntb</mail-password>
+	<mail-smtp-host>email-smtp.us-east-1.amazonaws.com</mail-smtp-host>
 	<mail-smtp-port>465</mail-smtp-port>
 	<mail-smtp-socketFactory-port>465</mail-smtp-socketFactory-port>
 	<mail-smtp-socketFactory-class>javax.net.ssl.SSLSocketFactory</mail-smtp-socketFactory-class>
