@@ -4,7 +4,12 @@ public enum FTPConnectorType {
 	FTP {
 		@Override
 		public FTPConnector getInstance() {
-			//return new PlainFTPConnector();
+			return new PlainFTPConnector();
+		}
+	},
+	FTPS {
+		@Override
+		public FTPConnector getInstance() {
 			return new FTPSConnector();
 		}
 	},

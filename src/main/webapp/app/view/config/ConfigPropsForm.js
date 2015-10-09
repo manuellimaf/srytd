@@ -72,6 +72,10 @@ Ext.define('App.view.config.ConfigPropsForm', {
 	                    inputValue: 'FTP',
 	                    checked: true
 	                },{
+	                    boxLabel  : 'FTPS',
+	                    name      : 'ftpType',
+	                    inputValue: 'FTPS'
+	                },{
 	                    boxLabel  : 'SFTP',
 	                    name      : 'ftpType',
 	                    inputValue: 'SFTP'
