@@ -114,8 +114,10 @@ public class ProcessService {
 
 	public void startProcess(StartProcessDTO dto, String username) {
 		Date dateFrom = parseDateFrom(dto);
+		Date date = DateUtils.addHours(dateFrom, 1);
+
 		Processor processor = new Processor();
-		processor.start(dateFrom, username);
+		processor.start(date, username);
 	}
 
 	public Date parseDateFrom(StartProcessDTO dto) {
@@ -127,7 +129,7 @@ public class ProcessService {
 		try {
 			dateFrom = DateUtils.parseDate(dateStr, "dd/MM/yyyy HH:mm");
 		} catch (ParseException e) {
-			// It's soposed to be validated in a previous step
+			// It's supposed to be validated in a previous step
 			throw new RuntimeException(e);
 		}
 		return dateFrom;

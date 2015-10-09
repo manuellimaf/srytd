@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jersey.repackaged.com.google.common.collect.Maps;
-
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 import ar.com.dccsoft.srytd.model.DeviceMapping;
 import ar.com.dccsoft.srytd.model.MappedFieldValue;
@@ -31,8 +32,7 @@ import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnectorType;
-
-import com.google.common.collect.Lists;
+import jersey.repackaged.com.google.common.collect.Maps;
 
 public class Processor {
 
@@ -78,11 +78,13 @@ public class Processor {
 
 	@SuppressWarnings("unchecked")
 	private List<MappedFieldValue> getMappedFieldValues(Process process, String username) {
+		Date from = DateUtils.addHours(process.getValuesFrom(), -1);
+		
 		// Leer mapeos de dispositivos con sus tags
 		List<DeviceMapping> devices = deviceMappingService.getAllDeviceMappings();
 		
 		// Leer datos de campo
-		Set<TagValue> tagValues = fieldValueService.readOneHourValues(process.getValuesFrom(), devices);
+		Set<TagValue> tagValues = fieldValueService.readOneHourValues(from, devices);
 
 		// Mapear valores de campo
 		List<MappedFieldValue> fieldValues = mappedFieldValueService.map(tagValues, devices);
@@ -91,7 +93,7 @@ public class Processor {
 		mappedFieldValueService.save(fieldValues, process, username);
 		
 		// Leer valores manuales
-		List<MappedFieldValue> manualValues = manualFieldValueService.readOneHourValues(process.getValuesFrom());
+		List<MappedFieldValue> manualValues = manualFieldValueService.readOneHourValues(from);
 		
 		// Asocio los valores manuales a un proceso
 		manualFieldValueService.update(manualValues, process);

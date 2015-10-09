@@ -21,8 +21,7 @@ public class ProcessorJob implements Job {
 	    JobKey jobKey = context.getJobDetail().getKey();
 	    logger.info(jobKey + " - Processor job execution started");
 
-		Date from = new Date();
-		from = DateUtils.addHours(DateUtils.truncate(from, Calendar.HOUR_OF_DAY), -1);
+		Date from = DateUtils.truncate(new Date(), Calendar.HOUR_OF_DAY);
 		new Processor().start(from, USER);
 
 		logger.info(jobKey + " - Processor job execution finished");
