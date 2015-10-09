@@ -40,8 +40,13 @@ Se adjunta el archivo envíado a la secretaría de energía.
 	</finish-body>
 	
 	<!-- File format -->
+	<!-- El patron del nombre se usa en este metodo: String.format(Config.getFilePattern(), companyId, facilityId, from, from, from, from); -->
+	<!-- <file-pattern>%s_%s_%tY%tm%td%tH%tM_%s</file-pattern> -->
+	<file-pattern>%s_%s_2020%tm%td%tH%tM_res318_mediciones.txt</file-pattern>
+	
 	<decimal-separator>\,</decimal-separator>
 	<delimiter>;</delimiter>
+	<decimal-pattern>#0.########</decimal-pattern>
 	
 	<!-- webapp -->
 	<http-port>8080</http-port>

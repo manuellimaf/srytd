@@ -25,8 +25,10 @@ public class Config {
 	private static String alertBody = null;
 	private static String finishEmailSubject = null;
 	private static String finishEmailBody = null;
+	private static String filePattern;
 	private static char delimiter;
 	private static char decimalSeparator;
+	private static String decimalPattern;
 	private static Integer httpPort;
 	private static String contextPath;
 	private static String jobExpression;
@@ -59,8 +61,10 @@ public class Config {
 			finishEmailSubject = config.getString("finish-subject");
 			finishEmailBody = config.getString("finish-body");
 
+			filePattern = config.getString("file-pattern");
 			decimalSeparator = config.getString("decimal-separator", ",").charAt(0);
 			delimiter = config.getString("delimiter", ";").charAt(0);
+			decimalPattern = config.getString("decimal-pattern");
 
 			httpPort = config.getInteger("http-port", 80);
 			contextPath = config.getString("context-path", "/srytd");
@@ -142,8 +146,16 @@ public class Config {
 		return finishEmailBody;
 	}
 
+	public static String getFilePattern() {
+		return filePattern;
+	}
+
 	public static char getDecimalSeparator() {
 		return decimalSeparator;
+	}
+	
+	public static String getDecimalPattern() {
+		return decimalPattern;
 	}
 
 	public static char getDelimiter() {

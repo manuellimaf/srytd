@@ -28,6 +28,7 @@ import ar.com.dccsoft.srytd.services.ProcessAlertService;
 import ar.com.dccsoft.srytd.services.ProcessService;
 import ar.com.dccsoft.srytd.services.TagValueService;
 import ar.com.dccsoft.srytd.services.process.FileBuilder.FileBuildResult;
+import ar.com.dccsoft.srytd.utils.Config;
 import ar.com.dccsoft.srytd.utils.MDCUtils;
 import ar.com.dccsoft.srytd.utils.MDCUtils.MDCKey;
 import ar.com.dccsoft.srytd.utils.ftp.FTPConnector;
@@ -151,10 +152,8 @@ public class Processor {
 	private String fileName(Date from) {
 		String companyId = propService.getCompanyId();
 		String facilityId = propService.getFacilityId();
-		String suffix = "res318_mediciones.txt";
 
-		//return String.format("%s_%s_%tY%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, from, suffix);
-		return String.format("%s_%s_2020%tm%td%tH%tM_%s", companyId, facilityId, from, from, from, from, suffix);
+		return String.format(Config.getFilePattern(), companyId, facilityId, from, from, from, from);
 	}
 
 	private String formatDate(Date from) {
